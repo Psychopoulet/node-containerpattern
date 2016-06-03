@@ -12,7 +12,7 @@
     "url": "git://github.com/Psychopoulet/node-containerpattern.git"
   },
   "keywords": [
-    "container", "pattern", "structure", "skeleton", "recursive", "Map"
+    "node", "container", "pattern", "structure", "skeleton", "recursive", "Map"
   ],
   "author": "Sébastien VIDAL",
   "license": "ISC",
