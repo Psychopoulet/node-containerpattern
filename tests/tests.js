@@ -43,6 +43,7 @@ describe("bindSkeleton", function() {
 		assert.strictEqual(true, container.bindSkeleton("testskeletonobject", "object") instanceof Container, "normal running has invalid return");
 		assert.strictEqual(true, container.bindSkeleton("testskeletonnumber", "number") instanceof Container, "normal running has invalid return");
 		assert.strictEqual(true, container.bindSkeleton("testskeletonboolean", "boolean") instanceof Container, "normal running has invalid return");
+		assert.strictEqual(true, container.bindSkeleton("testskeletonboolean.recursive", "boolean") instanceof Container, "normal running has invalid return");
 		assert.strictEqual(true, container.bindSkeleton("testskeletoninteger", "integer") instanceof Container, "normal running has invalid return");
 		assert.strictEqual(true, container.bindSkeleton("testskeletonfloat", "float") instanceof Container, "normal running has invalid return");
 	});
@@ -131,22 +132,33 @@ describe("set", function() {
 			it("should check normal running with boolean skeleton", function() {
 
 				assert.doesNotThrow(function() { container.set("testskeletonboolean", true); }, Error, "normal running with boolean skeleton throw an error");
+				assert.strictEqual(true, container.get("testskeletonboolean"), "normal running has invalid return");
 				assert.doesNotThrow(function() { container.set("testskeletonboolean", "true"); }, Error, "normal running with boolean skeleton throw an error");
+				assert.strictEqual(true, container.get("testskeletonboolean"), "normal running has invalid return");
 				assert.doesNotThrow(function() { container.set("testskeletonboolean", "yes"); }, Error, "normal running with boolean skeleton throw an error");
+				assert.strictEqual(true, container.get("testskeletonboolean"), "normal running has invalid return");
 				assert.doesNotThrow(function() { container.set("testskeletonboolean", "y"); }, Error, "normal running with boolean skeleton throw an error");
+				assert.strictEqual(true, container.get("testskeletonboolean"), "normal running has invalid return");
 				assert.doesNotThrow(function() { container.set("testskeletonboolean", "1"); }, Error, "normal running with boolean skeleton throw an error");
+				assert.strictEqual(true, container.get("testskeletonboolean"), "normal running has invalid return");
 				assert.doesNotThrow(function() { container.set("testskeletonboolean", 1); }, Error, "normal running with boolean skeleton throw an error");
-
 				assert.strictEqual(true, container.get("testskeletonboolean"), "normal running has invalid return");
 
 				assert.doesNotThrow(function() { container.set("testskeletonboolean", false); }, Error, "normal running with boolean skeleton throw an error");
-				assert.doesNotThrow(function() { container.set("testskeletonboolean", "false"); }, Error, "normal running with boolean skeleton throw an error");
-				assert.doesNotThrow(function() { container.set("testskeletonboolean", "no"); }, Error, "normal running with boolean skeleton throw an error");
-				assert.doesNotThrow(function() { container.set("testskeletonboolean", "n"); }, Error, "normal running with boolean skeleton throw an error");
-				assert.doesNotThrow(function() { container.set("testskeletonboolean", "0"); }, Error, "normal running with boolean skeleton throw an error");
-				assert.doesNotThrow(function() { container.set("testskeletonboolean", 0); }, Error, "normal running with boolean skeleton throw an error");
-
 				assert.strictEqual(false, container.get("testskeletonboolean"), "normal running has invalid return");
+				assert.doesNotThrow(function() { container.set("testskeletonboolean", "false"); }, Error, "normal running with boolean skeleton throw an error");
+				assert.strictEqual(false, container.get("testskeletonboolean"), "normal running has invalid return");
+				assert.doesNotThrow(function() { container.set("testskeletonboolean", "no"); }, Error, "normal running with boolean skeleton throw an error");
+				assert.strictEqual(false, container.get("testskeletonboolean"), "normal running has invalid return");
+				assert.doesNotThrow(function() { container.set("testskeletonboolean", "n"); }, Error, "normal running with boolean skeleton throw an error");
+				assert.strictEqual(false, container.get("testskeletonboolean"), "normal running has invalid return");
+				assert.doesNotThrow(function() { container.set("testskeletonboolean", "0"); }, Error, "normal running with boolean skeleton throw an error");
+				assert.strictEqual(false, container.get("testskeletonboolean"), "normal running has invalid return");
+				assert.doesNotThrow(function() { container.set("testskeletonboolean", 0); }, Error, "normal running with boolean skeleton throw an error");
+				assert.strictEqual(false, container.get("testskeletonboolean"), "normal running has invalid return");
+
+				assert.doesNotThrow(function() { container.set("testskeletonboolean.recursive", "y"); }, Error, "normal running with boolean skeleton throw an error");
+				assert.strictEqual(true, container.get("testskeletonboolean.recursive"), "normal running has invalid return");
 
 				assert.strictEqual(1, container.size, "normal running has invalid return");
 
