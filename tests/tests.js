@@ -5,7 +5,6 @@
 	const 	assert = require("assert"),
 			Container = require(require("path").join(__dirname, "..", "lib", "main.js"));
 
-
 // private
 
 	var container = new Container();
@@ -18,9 +17,9 @@ describe("clear", function() {
 	after(function() { container.clear(); });
 
 	it("should check normal running", function() {
-		assert.strictEqual(true, container.clearData() instanceof Container, "normal 'clearData' running has invalid return");
-		assert.strictEqual(true, container.clearSkeleton() instanceof Container, "normal 'clearSkeleton' running has invalid return");
-		assert.strictEqual(true, container.clear() instanceof Container, "normal 'clear' running has invalid return");
+		assert.strictEqual(true, container.clearData() instanceof Container, "normal \"clearData\" running has invalid return");
+		assert.strictEqual(true, container.clearSkeleton() instanceof Container, "normal \"clearSkeleton\" running has invalid return");
+		assert.strictEqual(true, container.clear() instanceof Container, "normal \"clear\" running has invalid return");
 		assert.strictEqual(0, container.size, "normal running has invalid return");
 	});
 

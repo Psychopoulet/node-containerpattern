@@ -18,8 +18,12 @@ $ npm install node-containerpattern
 
 ## Doc
 
-* ``` constructor([ string recursionSeparator = "." ]) ``` recursionSeparator: used to parse recursive keys
 * ``` int size ``` keys counter
+* ``` string recursionSeparator ``` used to parse recursive keys
+* ``` object skeletons ``` used to structure data
+
+* ``` constructor([ string recursionSeparator = "." ]) ```
+
 * ``` bindSkeleton(string key, string skeleton) : return this ``` skeleton must be "string", "object", "array", "boolean", "integer", "float" or "number"
 * ``` clearData() : return this ``` forget all the keys and there values (=> Map.clear)
 * ``` clearSkeleton() : return this ``` forget all the skeletons
@@ -64,10 +68,6 @@ for (let key of container.keys()) {
 }
 for (let value of container.values()) {
   console.log(value);
-}
-
-for (let [key, value] of container.entries()) {
-  console.log(key, value);
 }
 
 container.forEach(function(value, key) {
