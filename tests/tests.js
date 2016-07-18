@@ -258,7 +258,6 @@ describe("has", function() {
 	it("should check normal running", function() {
 		assert.strictEqual(true, container.set("test", "test").has("test"), "normal running has invalid return");
 		assert.strictEqual(false, container.has("test2"), "normal running has invalid return");
-		assert.strictEqual("test", container.get("tesT"), "normal running has invalid return");
 	});
 
 	it("should check recursive running", function() {
@@ -266,6 +265,7 @@ describe("has", function() {
 		assert.strictEqual(true, container.clearData().set("lvl1.lvl2", "test").has("lvl1.lvl2"), "normal recursive running has invalid return");
 		assert.strictEqual(true, container.clearData().set("lvl1.lvl2", true).has("lvl1.lvl2"), "normal recursive running has invalid return for boolean value (true)");
 		assert.strictEqual(true, container.clearData().set("lvl1.lvl2", false).has("lvl1.lvl2"), "normal recursive running has invalid return for boolean value (false)");
+		assert.strictEqual(true, container.clearData().set("lvl1.lvl2.lvl3.lvl4.lvl5", false).has("lvl1.lvl2.lvl3.lvl4.lvl5"), "normal recursive running has invalid return for boolean value (false)");
 	});
 
 });
@@ -282,7 +282,6 @@ describe("get", function() {
 
 	it("should check normal running", function() {
 		assert.strictEqual("test", container.set("test", "test").get("test"), "normal running has invalid return");
-		assert.strictEqual("test", container.get("tesT"), "normal running has invalid return");
 	});
 
 	it("should check wrong recursive running", function() {
