@@ -42,7 +42,7 @@ describe("clear", () => {
 
 	it("should check normal running", () => {
 
-		assert.strictEqual(1, container.bindSkeleton("test", "string").set("test", "test").size, "initialized data size is invalid");
+		assert.strictEqual(1, container.bindSkeleton("test", "string").set("test", "test", "This is a test").size, "initialized data size is invalid");
 		assert.strictEqual(1, Object.keys(container.skeletons).length, "initialized skeletons size is invalid");
 		assert.strictEqual(true, container.clearData() instanceof Container, "normal \"clearData\" running has invalid return");
 
@@ -80,63 +80,44 @@ describe("documentation", () => {
 	before(() => { container.clear(); });
 	after(() => { container.clear(); });
 
-	it("should check normal running with no skeleton or data", () => {
-		assert.strictEqual(0, Object.keys(container.documentation()).length, "normal running with no skeleton or data has invalid size");
+	it("should check normal running", () => {
+		assert.strictEqual(0, Object.keys(container.documentation()).length, "normal running has invalid size");
 	});
 
-	it("should check normal running with no skeleton", () => {
+	it("should check normal running", () => {
 
-		container
-			.set("teststring", "string")
-			.set("testemptyarray", [])
+		container.clear()
+			.set("testemptyarray", [], "This is an empty array")
+			.set("testnotemptyarray", [ "test", "test" ])
 			.set("testemptyobject", {})
+			.set("testnotemptyobject", { "test": "test" })
 			.set("testnotinstanciedobject", Object)
 			.set("testinstanciedobject", new Object)
+
+			.set("teststring", "string")
 			.set("testboolean", false)
 			.set("testnumber", 1)
 			.set("testinteger", 1)
 			.set("testbase16", 0xA5)
-			.set("testfloat", 1.1);
+			.set("testfloat", 1.1)
 
-		assert.strictEqual(10, Object.keys(container.documentation()).length, "normal running with no skeleton has invalid size");
-		assert.strictEqual("string", container.documentation().teststring, "normal running with no skeleton has invalid return for \"teststring\"");
-		assert.strictEqual("array", container.documentation().testemptyarray, "normal running with no skeleton has invalid return for \"testemptyarray\"");
-		assert.strictEqual("object", container.documentation().testemptyobject, "normal running with no skeleton has invalid return for \"testemptyobject\"");
-		assert.strictEqual("function", container.documentation().testnotinstanciedobject, "normal running with no skeleton has invalid return for \"testnotinstanciedobject\"");
-		assert.strictEqual("object", container.documentation().testinstanciedobject, "normal running with no skeleton has invalid return for \"testinstanciedobject\"");
-		assert.strictEqual("boolean", container.documentation().testboolean, "normal running with no skeleton has invalid return for \"testboolean\"");
-		assert.strictEqual("integer", container.documentation().testnumber, "normal running with no skeleton has invalid return for \"testnumber\"");
-		assert.strictEqual("integer", container.documentation().testinteger, "normal running with no skeleton has invalid return for \"testinteger\"");
-		assert.strictEqual("integer", container.documentation().testbase16, "normal running with no skeleton has invalid return for \"testbase16\"");
-		assert.strictEqual("float", container.documentation().testfloat, "normal running with no skeleton has invalid return for \"testfloat\"");
+			.bindSkeleton("testrecursivefloat.test", "float").set("testrecursivefloat.test", 1.1, "This is a recursive test");
 
-	});
+		assert.strictEqual(13, Object.keys(container.documentation()).length, "normal running has invalid size");
 
-	it("should check normal running with skeleton", () => {
+		assert.deepStrictEqual({ fullkey: "testemptyarray", type: "array", documentation: "This is an empty array" }, container.documentation().testemptyarray, "normal running has invalid return for \"testemptyarray\"");
+		assert.deepStrictEqual({ fullkey: "testnotemptyarray.0", type: "string", documentation: "" }, container.documentation().testnotemptyarray[0], "normal running has invalid return for \"testnotemptyarray\"");
+		assert.deepStrictEqual({ fullkey: "testemptyobject", type: "object", documentation: "" }, container.documentation().testemptyobject, "normal running has invalid return for \"testemptyobject\"");
+		assert.deepStrictEqual({ fullkey: "testnotemptyobject.test", type: "string", documentation: "" }, container.documentation().testnotemptyobject.test, "normal running has invalid return for \"testnotemptyobject\"");
+		assert.deepStrictEqual({ fullkey: "testnotinstanciedobject", type: "function", documentation: "" }, container.documentation().testnotinstanciedobject, "normal running has invalid return for \"testnotinstanciedobject\"");
+		assert.deepStrictEqual({ fullkey: "testinstanciedobject", type: "object", documentation: "" }, container.documentation().testinstanciedobject, "normal running has invalid return for \"testinstanciedobject\"");
 
-		/*container
-			.set("teststring", "string")
-			.set("testemptyarray", [])
-			.set("testemptyobject", {})
-			.set("testnotinstanciedobject", Object)
-			.set("testinstanciedobject", new Object)
-			.set("testboolean", false)
-			.set("testnumber", 1)
-			.set("testinteger", 1)
-			.set("testbase16", 0xA5)
-			.set("testfloat", 1.1);
-
-		assert.strictEqual(10, Object.keys(container.documentation()).length, "normal running with no skeleton has invalid size");
-		assert.strictEqual("string", container.documentation().teststring, "normal running with no skeleton has invalid return for \"teststring\"");
-		assert.strictEqual("array", container.documentation().testemptyarray, "normal running with no skeleton has invalid return for \"testemptyarray\"");
-		assert.strictEqual("object", container.documentation().testemptyobject, "normal running with no skeleton has invalid return for \"testemptyobject\"");
-		assert.strictEqual("function", container.documentation().testnotinstanciedobject, "normal running with no skeleton has invalid return for \"testnotinstanciedobject\"");
-		assert.strictEqual("object", container.documentation().testinstanciedobject, "normal running with no skeleton has invalid return for \"testinstanciedobject\"");
-		assert.strictEqual("boolean", container.documentation().testboolean, "normal running with no skeleton has invalid return for \"testboolean\"");
-		assert.strictEqual("integer", container.documentation().testnumber, "normal running with no skeleton has invalid return for \"testnumber\"");
-		assert.strictEqual("integer", container.documentation().testinteger, "normal running with no skeleton has invalid return for \"testinteger\"");
-		assert.strictEqual("integer", container.documentation().testbase16, "normal running with no skeleton has invalid return for \"testbase16\"");
-		assert.strictEqual("float", container.documentation().testfloat, "normal running with no skeleton has invalid return for \"testfloat\"");*/
+		assert.deepStrictEqual({ fullkey: "teststring", type: "string", documentation: "" }, container.documentation().teststring, "normal running has invalid return for \"teststring\"");
+		assert.deepStrictEqual({ fullkey: "testboolean", type: "boolean", documentation: "" }, container.documentation().testboolean, "normal running has invalid return for \"testboolean\"");
+		assert.deepStrictEqual({ fullkey: "testnumber", type: "integer", documentation: "" }, container.documentation().testnumber, "normal running has invalid return for \"testnumber\"");
+		assert.deepStrictEqual({ fullkey: "testinteger", type: "integer", documentation: "" }, container.documentation().testinteger, "normal running has invalid return for \"testinteger\"");
+		assert.deepStrictEqual({ fullkey: "testbase16", type: "integer", documentation: "" }, container.documentation().testbase16, "normal running has invalid return for \"testbase16\"");
+		assert.deepStrictEqual({ fullkey: "testfloat", type: "float", documentation: "" }, container.documentation().testfloat, "normal running has invalid return for \"testfloat\"");
 
 	});
 

@@ -25,12 +25,14 @@ $ npm install node-containerpattern
 * ``` constructor([ string recursionSeparator = "." ]) ```
 
 * ``` bindSkeleton(string key, string skeleton) : return this ``` skeleton must be "string", "object", "array", "boolean", "integer", "float" or "number"
-* ``` clearData() : return this ``` forget all the keys and there values (=> Map.clear)
+* ``` clearData() : return this ``` forget all the keys and there values and documentations (=> Map.clear)
+* ``` clearDocumentation() : return this ``` forget all the skeletons
 * ``` clearSkeleton() : return this ``` forget all the skeletons
-* ``` clear() : return this ``` clearData & clearSkeleton
+* ``` clear() : return this ``` clearData & clearDocumentation & clearSkeleton
+* ``` documentation() : return object ``` generate a documentation for all the stored data
 * ``` get(string key) : return mixed ``` return the value in association with this key (may be recursive)
 * ``` has(string key) : return bool ``` check if a key is used (may be recursive)
-* ``` set(string key, mixed value) : return this ``` associate and remember a key with a value (may be recursive)
+* ``` set(string key, mixed value [, string documentation ]) : return this ``` associate and remember a key with a value (may be recursive), and may remember a description for the documentation
 * ``` delete(string key) : return this ``` forget a key and its value
 
 ## Examples
