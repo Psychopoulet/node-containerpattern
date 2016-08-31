@@ -25,9 +25,12 @@ $ npm install node-containerpattern
 * ``` constructor([ string recursionSeparator = "." ]) ```
 
 * ``` bindSkeleton(string key, string skeleton) : return this ``` skeleton must be "string", "object", "array", "boolean", "integer", "float" or "number"
-* ``` clearData() : return this ``` forget all the keys and there values (=> Map.clear)
+* ``` clearData() : return this ``` forget all the keys and there values and documentations (=> Map.clear)
+* ``` clearDocumentation() : return this ``` forget all the skeletons
 * ``` clearSkeleton() : return this ``` forget all the skeletons
-* ``` clear() : return this ``` clearData & clearSkeleton
+* ``` clear() : return this ``` clearData & clearDocumentation & clearSkeleton
+* ``` document(string key, string documentation) : return this ``` attach a documentation on the data. only visible if "set" method is applied with this key.
+* ``` documentation() : return object ``` generate a documentation for all the stored data
 * ``` get(string key) : return mixed ``` return the value in association with this key (may be recursive)
 * ``` has(string key) : return bool ``` check if a key is used (may be recursive)
 * ``` set(string key, mixed value) : return this ``` associate and remember a key with a value (may be recursive)
@@ -43,7 +46,7 @@ var container = new Container();
 // if typeof is 'array' or 'object', and value data is a string, JSON.parse is apply before throw any error
 
 container
-  .bindSkeleton("debug", "boolean")
+  .bindSkeleton("debug", "boolean").document("debug", "This is the debug module")
   .bindSkeleton("vat", "float")
   .bindSkeleton("heigth", "integer")
 
@@ -73,6 +76,8 @@ for (let value of container.values()) {
 container.forEach(function(value, key) {
   console.log("container[" + key + "] = " + value);
 });
+
+console.log(container.documentation());
 
 container.clear();
 ```
