@@ -75,6 +75,23 @@ describe("delete", () => {
 
 });
 
+describe("document", () => {
+
+	before(() => { container.clear(); });
+	after(() => { container.clear(); });
+
+	it("should check type value", () => {
+		assert.throws(() => { container.document(false); }, Error, "check type value does not throw an error");
+		assert.throws(() => { container.document("testdocument"); }, Error, "check type value does not throw an error");
+		assert.throws(() => { container.document("testdocument", String); }, Error, "check type value does not throw an error");
+	});
+
+	it("should check normal running", () => {
+		assert.strictEqual(true, container.document("documentstring", "This is a random string") instanceof Container, "normal running has invalid return");
+	});
+
+});
+
 describe("documentation", () => {
 
 	before(() => { container.clear(); });
@@ -87,7 +104,7 @@ describe("documentation", () => {
 	it("should check normal running", () => {
 
 		container.clear()
-			.set("testemptyarray", [], "This is an empty array")
+			.set("testemptyarray", []).document("testemptyarray", "This is an empty array")
 			.set("testnotemptyarray", [ "test", "test" ])
 			.set("testemptyobject", {})
 			.set("testnotemptyobject", { "test": "test" })
