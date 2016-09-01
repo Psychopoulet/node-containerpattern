@@ -109,7 +109,7 @@ describe("documentation", () => {
 			.set("testemptyobject", {})
 			.set("testnotemptyobject", { "test": "test" })
 			.set("testnotinstanciedobject", Object)
-			.set("testinstanciedobject", new Object)
+			.set("testinstanciedobject", new Object).document("testinstanciedobject", "This is an instance of Object")
 
 			.set("teststring", "string")
 			.set("testboolean", false)
@@ -122,12 +122,27 @@ describe("documentation", () => {
 
 		assert.strictEqual(13, Object.keys(container.documentation()).length, "normal running has invalid size");
 
-		assert.deepStrictEqual({ fullkey: "testemptyarray", type: "array", documentation: "This is an empty array" }, container.documentation().testemptyarray, "normal running has invalid return for \"testemptyarray\"");
-		assert.deepStrictEqual({ fullkey: "testnotemptyarray.0", type: "string", documentation: "" }, container.documentation().testnotemptyarray[0], "normal running has invalid return for \"testnotemptyarray\"");
-		assert.deepStrictEqual({ fullkey: "testemptyobject", type: "object", documentation: "" }, container.documentation().testemptyobject, "normal running has invalid return for \"testemptyobject\"");
-		assert.deepStrictEqual({ fullkey: "testnotemptyobject.test", type: "string", documentation: "" }, container.documentation().testnotemptyobject.test, "normal running has invalid return for \"testnotemptyobject\"");
+		// array
+
+		assert.deepStrictEqual({ fullkey: "testemptyarray", type: "array", documentation: "This is an empty array", content: [] }, container.documentation().testemptyarray, "normal running has invalid return for \"testemptyarray\"");
+
+		assert.strictEqual("array", container.documentation().testnotemptyarray.type, "normal running has invalid return for \"testnotemptyarray\"");
+		assert.strictEqual("", container.documentation().testnotemptyarray.documentation, "normal running has invalid return for \"testnotemptyarray\"");
+		assert.strictEqual(2, Object.keys(container.documentation().testnotemptyarray.content).length, "normal running has invalid return for \"testnotemptyarray\"");
+		assert.deepStrictEqual({ fullkey: "testnotemptyarray.0", type: "string", documentation: "" }, container.documentation().testnotemptyarray.content[0], "normal running has invalid return for \"testnotemptyarray\"");
+
+		// object
+
+		assert.deepStrictEqual({ fullkey: "testemptyobject", type: "object", documentation: "", content: {} }, container.documentation().testemptyobject, "normal running has invalid return for \"testemptyobject\"");
+
+		assert.strictEqual("object", container.documentation().testnotemptyobject.type, "normal running has invalid return for \"testnotemptyobject\"");
+		assert.strictEqual("", container.documentation().testnotemptyobject.documentation, "normal running has invalid return for \"testnotemptyobject\"");
+		assert.strictEqual(1, Object.keys(container.documentation().testnotemptyobject.content).length, "normal running has invalid return for \"testnotemptyobject\"");
+		assert.deepStrictEqual({ fullkey: "testnotemptyobject.test", type: "string", documentation: "" }, container.documentation().testnotemptyobject.content.test, "normal running has invalid return for \"testnotemptyobject\"");
 		assert.deepStrictEqual({ fullkey: "testnotinstanciedobject", type: "function", documentation: "" }, container.documentation().testnotinstanciedobject, "normal running has invalid return for \"testnotinstanciedobject\"");
-		assert.deepStrictEqual({ fullkey: "testinstanciedobject", type: "object", documentation: "" }, container.documentation().testinstanciedobject, "normal running has invalid return for \"testinstanciedobject\"");
+		assert.deepStrictEqual({ fullkey: "testinstanciedobject", type: "object", documentation: "This is an instance of Object", content: {} }, container.documentation().testinstanciedobject, "normal running has invalid return for \"testinstanciedobject\"");
+
+		// others
 
 		assert.deepStrictEqual({ fullkey: "teststring", type: "string", documentation: "" }, container.documentation().teststring, "normal running has invalid return for \"teststring\"");
 		assert.deepStrictEqual({ fullkey: "testboolean", type: "boolean", documentation: "" }, container.documentation().testboolean, "normal running has invalid return for \"testboolean\"");

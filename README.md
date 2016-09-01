@@ -30,7 +30,7 @@ $ npm install node-containerpattern
 * ``` clearSkeleton() : return this ``` forget all the skeletons
 * ``` clear() : return this ``` clearData & clearDocumentation & clearSkeleton
 * ``` document(string key, string documentation) : return this ``` attach a documentation on the data. only visible if "set" method is applied with this key.
-* ``` documentation() : return object ``` generate a documentation for all the stored data
+* ``` documentation() : return JSON object ``` generate a documentation for all the stored data
 * ``` get(string key) : return mixed ``` return the value in association with this key (may be recursive)
 * ``` has(string key) : return bool ``` check if a key is used (may be recursive)
 * ``` set(string key, mixed value) : return this ``` associate and remember a key with a value (may be recursive)
