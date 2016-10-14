@@ -11,6 +11,27 @@
 
 // tests
 
+describe("limit", () => {
+
+	before(() => { container.clear(); });
+	after(() => { container.clear(); });
+
+	it("should check type value", () => {
+		assert.throws(() => { container.limit(false); }, Error, "check type value does not throw an error");
+		assert.throws(() => { container.limit("testslimit"); }, Error, "check type value does not throw an error");
+		assert.throws(() => { container.limit("testslimit", String); }, Error, "check type value does not throw an error");
+		assert.throws(() => { container.limit("testslimit", "String"); }, Error, "check type value does not throw an error");
+	});
+
+	it("should check normal running", () => {
+		assert.strictEqual(true, container.limit("testslimit", ["test1", "test2"]) instanceof Container, "normal running has invalid return");
+		assert.throws(() => { container.set("testslimit", "test"); }, Error, "check value value does not throw an error");
+		assert.strictEqual(true, container.set("testslimit", "test1") instanceof Container, "normal running has invalid return");
+		assert.strictEqual(true, container.set("testslimit", "test2") instanceof Container, "normal running has invalid return");
+	});
+
+});
+
 describe("bindSkeleton", () => {
 
 	before(() => { container.clear(); });
