@@ -18,32 +18,32 @@ $ npm install node-containerpattern
 
 ## Doc
 
-### Attributes
+  -- Attributes --
 
-* ``` int size ``` keys counter
-* ``` string recursionSeparator ``` used to parse recursive keys
-* ``` object skeletons ``` used to force data type
-* ``` object limits ``` used to limit data
+  * ``` int size ``` keys counter
+  * ``` string recursionSeparator ``` used to parse recursive keys
+  * ``` object skeletons ``` used to force data type
+  * ``` object limits ``` used to limit data
 
-### Constructor
+  -- Constructor --
 
-* ``` constructor([ string recursionSeparator = "." ]) ```
+  * ``` constructor([ string recursionSeparator = "." ]) ```
 
-### Methods
+  -- Methods --
 
-* ``` bindSkeleton(string key, string skeleton) : return this ``` skeleton must be "string", "object", "array", "boolean", "integer", "float" or "number"
-* ``` clear() : return this ``` clearData & clearDocumentation & clearLimits & clearSkeleton
-* ``` clearData() : return this ``` forget all the keys and there values and documentations (=> Map.clear)
-* ``` clearDocumentation() : return this ``` forget all the skeletons
-* ``` clearLimits() : return this ``` forget all the limits
-* ``` clearSkeleton() : return this ``` forget all the skeletons
-* ``` delete(string key) : return this ``` forget a key and its value
-* ``` document(string key, string documentation) : return this ``` attach a documentation on the data. only visible if "set" method is applied with this key.
-* ``` documentation() : return JSON object ``` generate a documentation for all the stored data
-* ``` get(string key) : return mixed ``` return the value in association with this key (may be recursive)
-* ``` has(string key) : return bool ``` check if a key is used (may be recursive)
-* ``` limit(string key, array limit) : return this ``` associate a key with a limit
-* ``` set(string key, mixed value) : return this ``` associate and remember a key with a value (may be recursive)
+  * ``` bindSkeleton(string key, string skeleton) : return this ``` skeleton must be "string", "object", "array", "boolean", "integer", "float" or "number"
+  * ``` clear() : return this ``` clearData & clearDocumentation & clearLimits & clearSkeleton
+  * ``` clearData() : return this ``` forget all the keys and there values and documentations (=> Map.clear)
+  * ``` clearDocumentation() : return this ``` forget all the skeletons
+  * ``` clearLimits() : return this ``` forget all the limits
+  * ``` clearSkeleton() : return this ``` forget all the skeletons
+  * ``` delete(string key) : return this ``` forget a key and its value
+  * ``` document(string key, string documentation) : return this ``` attach a documentation on the data. only visible if "set" method is applied with this key.
+  * ``` documentation() : return JSON object ``` generate a documentation for all the stored data
+  * ``` get(string key) : return mixed ``` return the value in association with this key (may be recursive)
+  * ``` has(string key) : return bool ``` check if a key is used (may be recursive)
+  * ``` limit(string key, array limit) : return this ``` associate a key with a limit
+  * ``` set(string key, mixed value) : return this ``` associate and remember a key with a value (may be recursive)
 
 ## Examples
 
