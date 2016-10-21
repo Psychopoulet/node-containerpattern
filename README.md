@@ -84,7 +84,7 @@ for (let value of container.values()) {
   console.log(value);
 }
 
-container.forEach(function(value, key) {
+container.forEach((value, key) => {
   console.log("container[" + key + "] = " + value);
 });
 
