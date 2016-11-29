@@ -1,11 +1,11 @@
 {
   "name": "node-containerpattern",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "A basic 'Container pattern' object for a clean global use of data.",
   "main": "lib/main.js",
   "scripts": {
     "start": "node lib/main.js",
-    "test": "gulp"
+    "test": "npm update && gulp"
   },
   "repository": {
     "type": "git",
@@ -24,12 +24,17 @@
   },
   "dependencies": {},
   "devDependencies": {
+
     "gulp": "^3.9.1",
-    "gulp-eslint": "^2.1.0",
-    "gulp-exclude-gitignore": "^1.0.0",
-    "gulp-mocha": "^2.2.0",
-    "gulp-plumber": "^1.1.0"
+    "gulp-plumber": "^1.1.0",
+
+    "gulp-babel": "^6.1.2",
+    "babel-preset-es2015": "^6.18.0",
+
+    "gulp-eslint": "^3.0.1",
+    "gulp-mocha": "^3.0.1"
+
   },
   "homepage": "https://github.com/Psychopoulet/node-containerpattern#readme",
-  "engines" : { "node" : ">=4.0.0" }
+  "engines" : { "node" : ">=0.11.15" }
 }
