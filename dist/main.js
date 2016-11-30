@@ -1,9 +1,7 @@
 
 "use strict";
 
-// private
-
-// methods
+// consts
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -16,6 +14,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var EMAIL_PATTERN = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+// private
+
+// methods
 
 function _checkData(that, key, value) {
 
@@ -56,7 +60,7 @@ function _checkData(that, key, value) {
 							throw new Error("The \"" + key + "\" data does not correspond to the skeleton");
 						}
 					}
-				} else if (-1 < ["string", "boolean", "number", "float", "integer"].indexOf(that.skeletons[key])) {
+				} else if (-1 < ["string", "email", "boolean", "number", "float", "integer"].indexOf(that.skeletons[key])) {
 
 					if (that.skeletons[key] !== (typeof value === "undefined" ? "undefined" : _typeof(value))) {
 
@@ -64,6 +68,16 @@ function _checkData(that, key, value) {
 
 							case "string":
 								value = value + "";
+								break;
+
+							case "email":
+
+								if ("string" !== typeof value) {
+									throw new Error("The \"" + key + "\" data does not correspond to the skeleton");
+								} else if ("" !== value && !EMAIL_PATTERN.test(value)) {
+									throw new Error("The \"" + key + "\" data does not correspond to the skeleton");
+								}
+
 								break;
 
 							case "boolean":
@@ -225,10 +239,10 @@ module.exports = function (_Map) {
 
 		var _this = _possibleConstructorReturn(this, (NodeContainerPattern.__proto__ || Object.getPrototypeOf(NodeContainerPattern)).call(this));
 
-		_this.recursionSeparator = "string" === typeof recursionSeparator ? recursionSeparator : ".";
-		_this.skeletons = {};
 		_this.documentations = {};
 		_this.limits = {};
+		_this.recursionSeparator = "string" === typeof recursionSeparator ? recursionSeparator : ".";
+		_this.skeletons = {};
 
 		return _this;
 	}
@@ -245,7 +259,7 @@ module.exports = function (_Map) {
 
 				skeleton = skeleton.trim().toLowerCase();
 
-				if (-1 >= ["string", "object", "array", "boolean", "integer", "float", "number"].indexOf(skeleton)) {
+				if (-1 >= ["string", "email", "object", "array", "boolean", "integer", "float", "number"].indexOf(skeleton)) {
 					throw new Error("The \"" + key + "\" data has an invalid \"skeleton\" attribute");
 				} else {
 					this.skeletons[key] = skeleton;
@@ -257,7 +271,7 @@ module.exports = function (_Map) {
 	}, {
 		key: "clear",
 		value: function clear() {
-			return this.clearData().clearDocumentation().clearLimits().clearSkeleton();
+			return this.clearData().clearDocumentations().clearLimits().clearSkeletons();
 		}
 	}, {
 		key: "clearData",
@@ -266,8 +280,8 @@ module.exports = function (_Map) {
 			return this;
 		}
 	}, {
-		key: "clearDocumentation",
-		value: function clearDocumentation() {
+		key: "clearDocumentations",
+		value: function clearDocumentations() {
 			this.documentations = {};
 			return this;
 		}
@@ -278,8 +292,8 @@ module.exports = function (_Map) {
 			return this;
 		}
 	}, {
-		key: "clearSkeleton",
-		value: function clearSkeleton() {
+		key: "clearSkeletons",
+		value: function clearSkeletons() {
 			this.skeletons = {};
 			return this;
 		}

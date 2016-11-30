@@ -3,7 +3,7 @@
 // deps
 
 	const 	assert = require("assert"),
-			Container = require(require("path").join(__dirname, "..", "lib", "main.js"));
+			Container = require(require("path").join(__dirname, "..", "dist", "main.js"));
 
 // private
 
@@ -59,6 +59,7 @@ describe("bindSkeleton", () => {
 
 	it("should check normal running", () => {
 		assert.strictEqual(true, container.bindSkeleton("testskeletonstring", "String") instanceof Container, "normal running has invalid return");
+		assert.strictEqual(true, container.bindSkeleton("testskeletonemail", "email") instanceof Container, "normal running has invalid return");
 		assert.strictEqual(true, container.bindSkeleton("testskeletonarray", "array") instanceof Container, "normal running has invalid return");
 		assert.strictEqual(true, container.bindSkeleton("testskeletonobject", "object") instanceof Container, "normal running has invalid return");
 		assert.strictEqual(true, container.bindSkeleton("testskeletonnumber", "number") instanceof Container, "normal running has invalid return");
@@ -84,7 +85,7 @@ describe("clear", () => {
 		assert.strictEqual(0, container.size, "cleaned data size is invalid");
 		assert.strictEqual(1, Object.keys(container.skeletons).length, "initialized skeletons size is invalid");
 
-		assert.strictEqual(true, container.clearSkeleton() instanceof Container, "normal \"clearSkeleton\" running has invalid return");
+		assert.strictEqual(true, container.clearSkeletons() instanceof Container, "normal \"clearSkeletons\" running has invalid return");
 
 		assert.strictEqual(0, container.size, "cleaned data size is invalid");
 		assert.strictEqual(0, Object.keys(container.skeletons).length, "cleaned skeletons size is invalid");
@@ -272,6 +273,7 @@ describe("set", () => {
 			.bindSkeleton("testskeletonbooleans", "object")
 				.bindSkeleton("testskeletonbooleans.recursive", "boolean")
 			.bindSkeleton("testskeletonstring", "string")
+			.bindSkeleton("testskeletonemail", "email")
 			.bindSkeleton("testskeletonnumber", "number")
 			.bindSkeleton("testskeletoninteger", "integer")
 			.bindSkeleton("testskeletonfloat", "float");
@@ -352,10 +354,31 @@ describe("set", () => {
 
 			it("should check normal running with skeleton", () => {
 
-				assert.doesNotThrow(() => { container.set("testskeletonstring", ""); }, Error, "normal running with skeleton throws an error");
-				assert.doesNotThrow(() => { container.set("testskeletonstring", 5); }, Error, "normal running with skeleton throws an error");
+				assert.doesNotThrow(() => { container.set("testskeletonstring", ""); }, Error, "empty running with skeleton throws an error");
+				assert.doesNotThrow(() => { container.set("testskeletonstring", 5); }, Error, "numeric running with skeleton throws an error");
+				assert.doesNotThrow(() => { container.set("testskeletonstring", "5"); }, Error, "normal running with skeleton throws an error");
 
 				assert.strictEqual("5", container.get("testskeletonstring"), "normal running has invalid return");
+
+				assert.strictEqual(1, container.size, "normal running has invalid return");
+
+			});
+
+		});
+
+		describe("email", () => {
+
+			before(() => { container.clearData(); });
+			after(() => { container.clearData(); });
+
+			it("should check normal running with skeleton", () => {
+
+				assert.doesNotThrow(() => { container.set("testskeletonemail", ""); }, Error, "empty running with skeleton throws an error");
+				assert.throws(() => { container.set("testskeletonemail", 5); }, Error, "wrong running with skeleton does not throw an error");
+				assert.throws(() => { container.set("testskeletonemail", "test"); }, Error, "wrong running with skeleton does not throw an error");
+				assert.doesNotThrow(() => { container.set("testskeletonemail", "myaddress@provider.com"); }, Error, "normal running with skeleton throws an error");
+
+				assert.strictEqual("myaddress@provider.com", container.get("testskeletonemail"), "normal running has invalid return");
 
 				assert.strictEqual(1, container.size, "normal running has invalid return");
 

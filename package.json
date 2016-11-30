@@ -1,7 +1,7 @@
 {
   "name": "node-containerpattern",
-  "version": "0.2.5",
-  "description": "A basic 'Container pattern' object for a clean global use of data.",
+  "version": "0.3.0",
+  "description": "A 'Container pattern' object for a clean global use of data.",
   "main": "lib/main.js",
   "scripts": {
     "start": "node lib/main.js",
@@ -15,7 +15,8 @@
     "node",
     "container", "pattern", "structure", "skeleton",
     "recursive", "Map",
-    "ES5", "ES6"
+    "data", "ensure", "formate",
+    "documentation"
   ],
   "author": "Sébastien VIDAL",
   "license": "ISC",
@@ -36,5 +37,5 @@
 
   },
   "homepage": "https://github.com/Psychopoulet/node-containerpattern#readme",
-  "engines" : { "node" : ">=0.11.15" }
+  "engines" : { "node" : ">=4.0.0" }
 }
