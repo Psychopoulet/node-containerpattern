@@ -95,27 +95,34 @@ function _checkData(that, key, value) {
 			}
 		}
 
-	return true;
+	return value;
 }
 
-function _createBaseObject(that, currentKey, currentObject, keys, i) {
+function _checkDataRecursive(that, key, value) {
 
-	if (!currentObject[keys[i]]) {
+	for (var i in value) {
 
-		if (_checkData(that, currentKey, {})) {
+		value[i] = _checkData(that, key + that.recursionSeparator + i, value[i]);
 
-			if (i < keys.length - 1) {
-				currentObject[keys[i]] = _createBaseObject(that, currentKey + that.recursionSeparator + keys[i], {}, keys, i + 1);
-			} else {
-				currentObject[keys[i]] = null;
-			}
+		if ("object" === _typeof(value[i]) && !(value[i] instanceof Array)) {
+			value[i] = _checkDataRecursive(that, key + that.recursionSeparator + i, value[i]);
 		}
-	} else {
-
-		currentObject[keys[i]] = _createBaseObject(that, currentKey + that.recursionSeparator + keys[i], currentObject[keys[i]], keys, i + 1);
 	}
 
-	return currentObject;
+	return value;
+}
+
+function _createBaseObject(that, parentKey, parentValue, keys, i, value) {
+
+	parentValue = _checkData(that, parentKey, parentValue);
+
+	if (i < keys.length - 1) {
+		parentValue[keys[i]] = _createBaseObject(that, parentKey + that.recursionSeparator + keys[i], !parentValue[keys[i]] ? {} : parentValue[keys[i]], keys, i + 1, value);
+	} else {
+		parentValue[keys[i]] = _checkData(that, parentKey + that.recursionSeparator + keys[i], value);
+	}
+
+	return parentValue;
 }
 
 function _extractDocumentation(that, previousKeys, object) {
@@ -378,70 +385,40 @@ module.exports = function (_Map) {
 		value: function set(key, value) {
 
 			key = _formateKey(key);
+			value = _checkData(this, key, value);
 
-			if (_checkData(this, key, value)) {
+			// check key recursivity
+			if (-1 < key.indexOf(this.recursionSeparator)) {
 
-				(0, console).log("");
-				(0, console).log(" ==>", key, "==", value);
-				(0, console).log("     -> skeletons : ", this.skeletons[key]);
-				(0, console).log("     -> limits : ", this.limits[key]);
+				var keys = key.split(this.recursionSeparator);
 
-				// check key recursivity
-				if (-1 < key.indexOf(this.recursionSeparator)) {
+				// if no more constraints, set
+				if ("object" !== (typeof value === "undefined" ? "undefined" : _typeof(value)) || value instanceof Array || 1 > Object.keys(value).length) {
 
-					var keys = key.split(this.recursionSeparator);
+					var firstKey = keys.shift();
 
-					key = keys[0];
-					value = _createBaseObject(this, key, _get(NodeContainerPattern.prototype.__proto__ || Object.getPrototypeOf(NodeContainerPattern.prototype), "has", this).call(this, key) ? _get(NodeContainerPattern.prototype.__proto__ || Object.getPrototypeOf(NodeContainerPattern.prototype), "get", this).call(this, key) : {}, keys, 0)[key];
-
-					if ("object" !== (typeof value === "undefined" ? "undefined" : _typeof(value)) || value instanceof Array) {
-						_get(NodeContainerPattern.prototype.__proto__ || Object.getPrototypeOf(NodeContainerPattern.prototype), "set", this).call(this, key, value);
-					} else if (1 > Object.keys(value).length) {
-						_get(NodeContainerPattern.prototype.__proto__ || Object.getPrototypeOf(NodeContainerPattern.prototype), "set", this).call(this, key, {});
-					}
-
-					// check content recursivity
-					else {
-
-							console.log("TODO : valider enfants puis enregistrer");
-						}
-				} else {
-
-					if ("object" !== (typeof value === "undefined" ? "undefined" : _typeof(value)) || value instanceof Array) {
-						_get(NodeContainerPattern.prototype.__proto__ || Object.getPrototypeOf(NodeContainerPattern.prototype), "set", this).call(this, key, value);
-					} else if (1 > Object.keys(value).length) {
-						_get(NodeContainerPattern.prototype.__proto__ || Object.getPrototypeOf(NodeContainerPattern.prototype), "set", this).call(this, key, {});
-					}
-
-					// check content recursivity
-					else {
-
-							console.log("TODO : valider enfants puis enregistrer");
-
-							console.log("object");
-
-							if (!_get(NodeContainerPattern.prototype.__proto__ || Object.getPrototypeOf(NodeContainerPattern.prototype), "has", this).call(this, key)) {
-								_get(NodeContainerPattern.prototype.__proto__ || Object.getPrototypeOf(NodeContainerPattern.prototype), "set", this).call(this, key, {});
-							}
-
-							console.log("HERE");
-
-							/*for (let i in value) {
-       			let subKey = key + this.recursionSeparator + i,
-       		oldValue = (super.has(subKey)) ? super.get(subKey) : null;
-       			(0, console).log("subKey : ", subKey, " => ", value[i]);
-       			try {
-       		this.set(subKey, value[i]);
-       	}
-       	catch(e) {
-       				if (oldValue) {
-       			super.set(subKey, oldValue);
-       		}
-       				throw e;
-       			}
-       		}*/
-						}
+					_get(NodeContainerPattern.prototype.__proto__ || Object.getPrototypeOf(NodeContainerPattern.prototype), "set", this).call(this, firstKey, _createBaseObject(this, firstKey, _get(NodeContainerPattern.prototype.__proto__ || Object.getPrototypeOf(NodeContainerPattern.prototype), "has", this).call(this, firstKey) ? _get(NodeContainerPattern.prototype.__proto__ || Object.getPrototypeOf(NodeContainerPattern.prototype), "get", this).call(this, firstKey) : {}, keys, 0, value));
 				}
+
+				// check content recursivity
+				else {
+
+						var _firstKey = keys.shift();
+
+						_get(NodeContainerPattern.prototype.__proto__ || Object.getPrototypeOf(NodeContainerPattern.prototype), "set", this).call(this, _firstKey, _createBaseObject(this, _firstKey, _get(NodeContainerPattern.prototype.__proto__ || Object.getPrototypeOf(NodeContainerPattern.prototype), "has", this).call(this, _firstKey) ? _get(NodeContainerPattern.prototype.__proto__ || Object.getPrototypeOf(NodeContainerPattern.prototype), "get", this).call(this, _firstKey) : {}, keys, 0, _checkDataRecursive(this, key, value)));
+					}
+			} else {
+
+				if ("object" !== (typeof value === "undefined" ? "undefined" : _typeof(value)) || value instanceof Array) {
+					_get(NodeContainerPattern.prototype.__proto__ || Object.getPrototypeOf(NodeContainerPattern.prototype), "set", this).call(this, key, value);
+				} else if (1 > Object.keys(value).length) {
+					_get(NodeContainerPattern.prototype.__proto__ || Object.getPrototypeOf(NodeContainerPattern.prototype), "set", this).call(this, key, {});
+				}
+
+				// check content recursivity
+				else {
+						_get(NodeContainerPattern.prototype.__proto__ || Object.getPrototypeOf(NodeContainerPattern.prototype), "set", this).call(this, key, _checkDataRecursive(this, key, value));
+					}
 			}
 
 			return this;

@@ -11,7 +11,7 @@
 
 // tests
 
-/*describe("limit", () => {
+describe("limit", () => {
 
 	before(() => { container.clear(); });
 	after(() => { container.clear(); });
@@ -258,7 +258,7 @@ describe("has", () => {
 		assert.strictEqual(true, container.clearData().set("lvl1.lvl2.lvl3.lvl4.lvl5", false).has("lvl1.lvl2.lvl3.lvl4.lvl5"), "normal recursive running has invalid return for boolean value (false)");
 	});
 
-});*/
+});
 
 describe("set", () => {
 
@@ -280,7 +280,7 @@ describe("set", () => {
 
 	after(() => { container.clear(); });
 
-	/*it("should check wrong data", () => {
+	it("should check wrong data", () => {
 		assert.throws(() => { container.set(""); }, Error, "check type value does not throw an error");
 		assert.throws(() => { container.set("test"); }, Error, "check type value does not throw an error");
 	});
@@ -338,14 +338,14 @@ describe("set", () => {
 		assert.throws(() => { container.set("testskeletonfloat", []); }, Error, "check type value \"testskeletonnumber\" does not throw an error");
 		assert.strictEqual("number", typeof container.set("testskeletonfloat", 1.1).get("testskeletonfloat"), "check type value \"testskeletonfloat\" has invalid return");
 
-	});*/
+	});
 
 	describe("set with skeleton", () => {
 
 		before(() => { container.clearData(); });
 		after(() => { container.clearData(); });
 
-		/*describe("string", () => {
+		describe("string", () => {
 
 			before(() => { container.clearData(); });
 			after(() => { container.clearData(); });
@@ -361,14 +361,14 @@ describe("set", () => {
 
 			});
 
-		});*/
+		});
 
 		describe("boolean", () => {
 
 			beforeEach(() => { container.clearData(); });
 			after(() => { container.clearData(); });
 
-			/*it("should check normal running with boolean skeleton", () => {
+			it("should check normal running with boolean skeleton", () => {
 
 				assert.doesNotThrow(() => { container.set("testskeletonboolean", true); }, Error, "normal running with boolean skeleton throws an error");
 				assert.strictEqual(true, container.get("testskeletonboolean"), "normal running has invalid return");
@@ -422,27 +422,29 @@ describe("set", () => {
 
 				assert.strictEqual(1, container.size, "normal running with limited boolean skeleton has invalid return");
 
-			});*/
+			});
 
 			it("should check normal running with limited recursive boolean skeleton", () => {
+
+				assert.doesNotThrow(() => { container.limit("testskeletonbooleans.recursive", [ true, false ]); }, Error, "normal running with limited recursive boolean skeleton throws an error");
 
 				// check key recursivity
 				assert.throws(() => { container.set("testskeletonbooleans.recursive", "y" ); }, Error, "normal running with limited recursive boolean skeleton does not throw an error");
 				assert.doesNotThrow(() => { container.set("testskeletonbooleans.recursive", true); }, Error, "normal running with limited recursive boolean skeleton throws an error");
 				assert.strictEqual(true, container.get("testskeletonbooleans.recursive"), "normal running with limited recursive boolean skeleton return");
 
-				/*// check content recursivity
+				// check content recursivity
 				assert.throws(() => { container.set("testskeletonbooleans", { "recursive": "y" } ); }, Error, "normal running with limited recursive boolean skeleton does not throw an error");
 				assert.doesNotThrow(() => { container.set("testskeletonbooleans", { "recursive": true } ); }, Error, "normal running with limited recursive boolean skeleton throws an error");
 				assert.strictEqual(true, container.get("testskeletonbooleans").recursive, "normal running with limited recursive boolean skeleton has invalid return");
 
-				assert.strictEqual(1, container.size, "normal running with limited recursive boolean skeleton has invalid return");*/
+				assert.strictEqual(1, container.size, "normal running with limited recursive boolean skeleton has invalid return");
 
 			});
 
 		});
 
-		/*describe("number", () => {
+		describe("number", () => {
 
 			before(() => { container.clearData(); });
 			after(() => { container.clearData(); });
@@ -451,7 +453,6 @@ describe("set", () => {
 
 				assert.doesNotThrow(() => { container.set("testskeletonnumber", 5.5); }, Error, "normal running with number skeleton throws an error");
 				assert.doesNotThrow(() => { container.set("testskeletonnumber", "5.5"); }, Error, "normal running with number skeleton throws an error");
-
 				assert.strictEqual(5.5, container.get("testskeletonnumber"), "normal running with number has invalid return");
 
 				assert.strictEqual(1, container.size, "normal running with number has invalid size");
@@ -516,7 +517,7 @@ describe("set", () => {
 
 			});
 
-		});*/
+		});
 
 	});
 
