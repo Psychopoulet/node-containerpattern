@@ -3,7 +3,7 @@
 // deps
 
 	const 	assert = require("assert"),
-			Container = require(require("path").join(__dirname, "..", "dist", "main.js"));
+			Container = require(require("path").join(__dirname, "..", "lib", "main.js"));
 
 // private
 
