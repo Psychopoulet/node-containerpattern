@@ -163,19 +163,21 @@ describe("documentation", () => {
 		// array
 
 		assert.deepStrictEqual({ fullkey: "testemptyarray", type: "array", documentation: "This is an empty array", content: [] }, container.documentation().testemptyarray, "normal running has invalid return for \"testemptyarray\"");
-
-		assert.strictEqual("array", container.documentation().testnotemptyarray.type, "normal running has invalid return for \"testnotemptyarray\"");
-		assert.strictEqual("", container.documentation().testnotemptyarray.documentation, "normal running has invalid return for \"testnotemptyarray\"");
-		assert.strictEqual(2, Object.keys(container.documentation().testnotemptyarray.content).length, "normal running has invalid return for \"testnotemptyarray\"");
-		assert.deepStrictEqual({ fullkey: "testnotemptyarray.0", type: "string", documentation: "" }, container.documentation().testnotemptyarray.content[0], "normal running has invalid return for \"testnotemptyarray\"");
+	
+		assert.strictEqual("testnotemptyarray", container.documentation().testnotemptyarray.fullkey, "normal running has invalid fullkey for \"testnotemptyarray\"");
+		assert.strictEqual("array", container.documentation().testnotemptyarray.type, "normal running has invalid type for \"testnotemptyarray\"");
+		assert.strictEqual("", container.documentation().testnotemptyarray.documentation, "normal running has invalid documentation for \"testnotemptyarray\"");
+		assert.deepStrictEqual([ "test", "test" ], container.documentation().testnotemptyarray.content, "normal running has invalid content for \"testnotemptyarray\"");
+		assert.deepStrictEqual({ fullkey: "testnotemptyarray", type: "array", documentation: "", content: [ "test", "test" ] }, container.documentation().testnotemptyarray, "normal running has invalid return for \"testnotemptyarray\"");
 
 		// object
 
 		assert.deepStrictEqual({ fullkey: "testemptyobject", type: "object", documentation: "", content: {} }, container.documentation().testemptyobject, "normal running has invalid return for \"testemptyobject\"");
 
-		assert.strictEqual("object", container.documentation().testnotemptyobject.type, "normal running has invalid return for \"testnotemptyobject\"");
-		assert.strictEqual("", container.documentation().testnotemptyobject.documentation, "normal running has invalid return for \"testnotemptyobject\"");
+		assert.strictEqual("object", container.documentation().testnotemptyobject.type, "normal running has invalid type for \"testnotemptyobject\"");
+		assert.strictEqual("", container.documentation().testnotemptyobject.documentation, "normal running has invalid documentation for \"testnotemptyobject\"");
 		assert.strictEqual(1, Object.keys(container.documentation().testnotemptyobject.content).length, "normal running has invalid return for \"testnotemptyobject\"");
+		assert.strictEqual("testnotemptyobject", container.documentation().testnotemptyobject.fullkey, "normal running has invalid fullkey for \"testnotemptyobject\"");
 		assert.deepStrictEqual({ fullkey: "testnotemptyobject.test", type: "string", documentation: "" }, container.documentation().testnotemptyobject.content.test, "normal running has invalid return for \"testnotemptyobject\"");
 		assert.deepStrictEqual({ fullkey: "testnotinstanciedobject", type: "function", documentation: "" }, container.documentation().testnotinstanciedobject, "normal running has invalid return for \"testnotinstanciedobject\"");
 		assert.deepStrictEqual({ fullkey: "testinstanciedobject", type: "object", documentation: "This is an instance of Object", content: {} }, container.documentation().testinstanciedobject, "normal running has invalid return for \"testinstanciedobject\"");
@@ -514,6 +516,7 @@ describe("set", () => {
 			it("should check normal running with array skeleton", () => {
 
 				assert.doesNotThrow(() => { container.set("testskeletonarray", []); }, Error, "normal running with array skeleton throws an error");
+				assert.doesNotThrow(() => { container.set("testskeletonarray", [ "test", "test" ]); }, Error, "normal running with array skeleton throws an error");
 				assert.doesNotThrow(() => { container.set("testskeletonarray", "[\"test\", \"test2\"]"); }, Error, "normal running with array skeleton throws an error");
 
 				assert.deepStrictEqual(["test", "test2"], container.get("testskeletonarray"), "normal running with array has invalid return");
@@ -531,7 +534,8 @@ describe("set", () => {
 
 			it("should check normal running with object skeleton", () => {
 
-				assert.doesNotThrow(() => { container.set("testskeletonobject", []); }, Error, "normal running with object skeleton throws an error");
+				assert.doesNotThrow(() => { container.set("testskeletonobject", {}); }, Error, "normal running with object skeleton throws an error");
+				assert.doesNotThrow(() => { container.set("testskeletonobject", { "test": "test" }); }, Error, "normal running with object skeleton throws an error");
 				assert.doesNotThrow(() => { container.set("testskeletonobject", "{ \"test\": \"test\"}"); }, Error, "normal running with object skeleton throws an error");
 
 				assert.deepStrictEqual({ "test": "test"}, container.get("testskeletonobject"), "normal running with object skeleton has invalid return");
