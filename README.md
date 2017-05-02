@@ -37,7 +37,6 @@ $ npm install node-containerpattern
 
   -- Methods --
 
-  * ``` bindSkeleton(string key, string skeleton) : return this ``` skeleton must be "string", "email", "object", "array", "boolean", "integer", "float" or "number"
   * ``` clear() : return this ``` clearData & clearDocumentations & clearLimits & clearSkeletons
   * ``` clearData() : return this ``` forget all the keys and there values and documentations (=> Map.clear)
   * ``` clearDocumentations() : return this ``` forget all the skeletons
@@ -50,6 +49,7 @@ $ npm install node-containerpattern
   * ``` has(string key) : return bool ``` check if a key is used (may be recursive)
   * ``` limit(string key, array limit) : return this ``` associate a key with a limit
   * ``` set(string key, mixed value) : return this ``` associate and remember a key with a value (may be recursive)
+  * ``` skeleton(string key, string skeleton) : return this ``` skeleton must be "array", "boolean", "email", "float", "integer", "ipv4", "ipv6", "number", "object", "string"
 
   -- notes --
 
@@ -63,10 +63,10 @@ const Container = require('node-containerpattern');
 var container = new Container();
 
 container
-  .bindSkeleton("contact", "email").document("contact", "Contact address")
-  .bindSkeleton("debug", "boolean").document("debug", "This is the debug module")
-  .bindSkeleton("vat", "float")
-  .bindSkeleton("heigth", "integer")
+  .skeleton("contact", "email").document("contact", "Contact address")
+  .skeleton("debug", "boolean").document("debug", "This is the debug module")
+  .skeleton("vat", "float")
+  .skeleton("heigth", "integer")
 
   .set('contact', "myaddress@provider.com")
   .set('debug', true) // '"yes"', '"y"', '"1"', '1', '"true"' or 'true' => get = true, else => get = false
