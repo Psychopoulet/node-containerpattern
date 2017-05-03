@@ -13,9 +13,6 @@
 	const eslint = require("gulp-eslint");
 	const mocha = require("gulp-mocha");
 
-	// compress
-	const uglify = require("gulp-uglify");
-
 // private
 
 	var _gulpFile = path.join(__dirname, "gulpfile.js");
