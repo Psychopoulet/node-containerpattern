@@ -5,13 +5,15 @@
 
 	const path = require("path");
 
+	// gulp
 	const gulp = require("gulp");
 	const plumber = require("gulp-plumber");
 
+	// tests
 	const eslint = require("gulp-eslint");
 	const mocha = require("gulp-mocha");
 
-	const babel = require("gulp-babel");
+	// compress
 	const uglify = require("gulp-uglify");
 
 // private
@@ -19,8 +21,6 @@
 	var _gulpFile = path.join(__dirname, "gulpfile.js");
 	var _libDir = path.join(__dirname, "lib");
 		var _libFiles = path.join(_libDir, "*.js");
-	var _distDir = path.join(__dirname, "dist");
-		var _distFiles = path.join(_distDir, "*.js");
 	var _unitTestsFiles = path.join(__dirname, "tests", "*.js");
 	var _toTestFiles = [_gulpFile, _libFiles, _unitTestsFiles];
 
@@ -59,24 +59,6 @@
 
 	});
 
-	gulp.task("babel", ["mocha"], () => {
-
-		return gulp.src(_libFiles)
-			.pipe(babel({
-				presets: ["es2015"]
-			}))
-			.pipe(gulp.dest(_distDir));
-
-	});
-
-	gulp.task("compress", ["babel"], () => {
-
-		return gulp.src(_distFiles)
-			.pipe(uglify())
-			.pipe(gulp.dest("dist"));
-
-	});
-
 // watcher
 
 	gulp.task("watch", () => {
@@ -86,5 +68,5 @@
 
 // default
 
-	gulp.task("default", ["compress"]);
+	gulp.task("default", ["mocha"]);
 	
