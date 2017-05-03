@@ -2,8 +2,8 @@
 
 // deps
 
-	const 	assert = require("assert"),
-			Container = require(require("path").join(__dirname, "..", "lib", "main.js"));
+	const assert = require("assert");
+	const Container = require(require("path").join(__dirname, "..", "lib", "main.js"));
 
 // private
 
