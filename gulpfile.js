@@ -3,23 +3,26 @@
 
 // deps
 
-	const	path = require("path"),
+	const path = require("path");
 
-			gulp = require("gulp"),
-			plumber = require("gulp-plumber"),
+	const gulp = require("gulp");
+	const plumber = require("gulp-plumber");
 
-			eslint = require("gulp-eslint"),
-			mocha = require("gulp-mocha");
+	const eslint = require("gulp-eslint");
+	const mocha = require("gulp-mocha");
+
+	const babel = require("gulp-babel");
+	const uglify = require("gulp-uglify");
 
 // private
 
-	var _gulpFile = path.join(__dirname, "gulpfile.js"),
-		_libDir = path.join(__dirname, "lib"),
-			_libFiles = path.join(_libDir, "*.js"),
-		_distDir = path.join(__dirname, "dist"),
-			_distFiles = path.join(_distDir, "*.js"),
-		_unitTestsFiles = path.join(__dirname, "tests", "*.js"),
-		_toTestFiles = [_gulpFile, _libFiles, _unitTestsFiles];
+	var _gulpFile = path.join(__dirname, "gulpfile.js");
+	var _libDir = path.join(__dirname, "lib");
+		var _libFiles = path.join(_libDir, "*.js");
+	var _distDir = path.join(__dirname, "dist");
+		var _distFiles = path.join(_distDir, "*.js");
+	var _unitTestsFiles = path.join(__dirname, "tests", "*.js");
+	var _toTestFiles = [_gulpFile, _libFiles, _unitTestsFiles];
 
 // tasks
 
@@ -56,6 +59,24 @@
 
 	});
 
+	gulp.task("babel", ["mocha"], () => {
+
+		return gulp.src(_libFiles)
+			.pipe(babel({
+				presets: ["es2015"]
+			}))
+			.pipe(gulp.dest(_distDir));
+
+	});
+
+	gulp.task("compress", ["babel"], () => {
+
+		return gulp.src(_distFiles)
+			.pipe(uglify())
+			.pipe(gulp.dest("dist"));
+
+	});
+
 // watcher
 
 	gulp.task("watch", () => {
@@ -65,5 +86,5 @@
 
 // default
 
-	gulp.task("default", ["mocha"]);
+	gulp.task("default", ["compress"]);
 	
