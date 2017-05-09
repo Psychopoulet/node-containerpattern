@@ -11,68 +11,111 @@
 
 // tests
 
-describe("limit", () => {
+describe("meta", () => {
 
 	before(() => { container.clear(); });
 	after(() => { container.clear(); });
 
-	it("should check type value", () => {
-		assert.throws(() => { container.limit(false); }, Error, "check type value does not throw an error");
-		assert.throws(() => { container.limit("testslimit"); }, Error, "check type value does not throw an error");
-		assert.throws(() => { container.limit("testslimit", String); }, Error, "check type value does not throw an error");
-		assert.throws(() => { container.limit("testslimit", "String"); }, Error, "check type value does not throw an error");
-	});
+	describe("document", () => {
 
-	it("should check normal running", () => {
-		assert.strictEqual(true, container.limit("testslimit", ["test1", "test2"]) instanceof Container, "normal running has invalid return");
-		assert.throws(() => { container.set("testslimit", "test"); }, Error, "check value value does not throw an error");
-		assert.strictEqual(true, container.set("testslimit", "test1") instanceof Container, "normal running has invalid return");
-		assert.strictEqual(true, container.set("testslimit", "test2") instanceof Container, "normal running has invalid return");
-	});
+		before(() => { container.clear(); });
+		after(() => { container.clear(); });
 
-	it("should check recursive running", () => {
+		it("should check type value", () => {
+			assert.throws(() => { container.document(); }, ReferenceError, "check type value does not throw an error");
+			assert.throws(() => { container.document(false); }, TypeError, "check type value does not throw an error");
+			assert.throws(() => { container.document("testdocument"); }, ReferenceError, "check type value does not throw an error");
+			assert.throws(() => { container.document("testdocument", false); }, TypeError, "check type value does not throw an error");
+		});
 
-		assert.strictEqual(true, container.limit("testslimitrecursive.string", ["test1", "test2"]) instanceof Container, "recursive running has invalid return");
-
-		assert.throws(() => { container.set("testslimitrecursive.string", "test"); }, Error, "check value value does not throw an error");
-		assert.strictEqual(true, container.set("testslimitrecursive.string", "test1") instanceof Container, "recursive running has invalid return");
-		assert.strictEqual(true, container.set("testslimitrecursive.string", "test2") instanceof Container, "recursive running has invalid return");
-
-		assert.throws(() => { container.set("testslimitrecursive", { "string": "test" } ); }, Error, "check value value does not throw an error");
-		assert.strictEqual(true, container.set("testslimitrecursive", { "string": "test1" } ) instanceof Container, "recursive running has invalid return");
-		assert.strictEqual(true, container.set("testslimitrecursive", { "string": "test2" } ) instanceof Container, "recursive running has invalid return");
+		it("should check normal running", () => {
+			assert.strictEqual(true, container.document("documentstring", "This is a random string") instanceof Container, "normal running has invalid return");
+		});
 
 	});
 
-});
+	describe("limit", () => {
 
-describe("skeleton", () => {
+		before(() => { container.clear(); });
+		after(() => { container.clear(); });
 
-	before(() => { container.clear(); });
-	after(() => { container.clear(); });
+		it("should check type value", () => {
+			assert.throws(() => { container.limit(false); }, Error, "check type value does not throw an error");
+			assert.throws(() => { container.limit("testslimit"); }, Error, "check type value does not throw an error");
+			assert.throws(() => { container.limit("testslimit", String); }, Error, "check type value does not throw an error");
+			assert.throws(() => { container.limit("testslimit", "String"); }, Error, "check type value does not throw an error");
+		});
 
-	it("should check type value", () => {
-		assert.throws(() => { container.skeleton(false); }, Error, "check type value does not throw an error");
-		assert.throws(() => { container.skeleton("testskeleton"); }, Error, "check type value does not throw an error");
-		assert.throws(() => { container.skeleton("testskeleton", String); }, Error, "check type value does not throw an error");
+		it("should check normal running", () => {
+			assert.strictEqual(true, container.limit("testslimit", ["test1", "test2"]) instanceof Container, "normal running has invalid return");
+			assert.throws(() => { container.set("testslimit", "test"); }, Error, "check value value does not throw an error");
+			assert.strictEqual(true, container.set("testslimit", "test1") instanceof Container, "normal running has invalid return");
+			assert.strictEqual(true, container.set("testslimit", "test2") instanceof Container, "normal running has invalid return");
+		});
+
+		it("should check recursive running", () => {
+
+			assert.strictEqual(true, container.limit("testslimitrecursive.string", ["test1", "test2"]) instanceof Container, "recursive running has invalid return");
+
+			assert.throws(() => { container.set("testslimitrecursive.string", "test"); }, Error, "check value value does not throw an error");
+			assert.strictEqual(true, container.set("testslimitrecursive.string", "test1") instanceof Container, "recursive running has invalid return");
+			assert.strictEqual(true, container.set("testslimitrecursive.string", "test2") instanceof Container, "recursive running has invalid return");
+
+			assert.throws(() => { container.set("testslimitrecursive", { "string": "test" } ); }, Error, "check value value does not throw an error");
+			assert.strictEqual(true, container.set("testslimitrecursive", { "string": "test1" } ) instanceof Container, "recursive running has invalid return");
+			assert.strictEqual(true, container.set("testslimitrecursive", { "string": "test2" } ) instanceof Container, "recursive running has invalid return");
+
+		});
+
+		it("should check normal recursive array running", () => {
+
+			container.clear().set("module.authors", [ "Sébastien VIDAL" ]);
+
+			assert.strictEqual(true, container.limit("module.authors.0", [ "Sébastien VIDAL" ]) instanceof Container, "normal recursive array running has invalid return");
+			assert.throws(() => { container.set("module.authors.0", 5); }, Error, "normal recursive array running does not throw an error");
+
+		});
+
 	});
+	
+	describe("skeleton", () => {
 
-	it("should check normal running", () => {
-		assert.strictEqual(true, container.skeleton("testskeletonarray", "Array") instanceof Container, "normal running has invalid return");
-		assert.strictEqual(true, container.skeleton("testskeletonarray", "array") instanceof Container, "normal running has invalid return");
-		assert.strictEqual(true, container.skeleton("testskeletonboolean", "boolean") instanceof Container, "normal running has invalid return");
-		assert.strictEqual(true, container.skeleton("testskeletonemail", "email") instanceof Container, "normal running has invalid return");
-		assert.strictEqual(true, container.skeleton("testskeletonfloat", "float") instanceof Container, "normal running has invalid return");
-		assert.strictEqual(true, container.skeleton("testskeletoninteger", "integer") instanceof Container, "normal running has invalid return");
-		assert.strictEqual(true, container.skeleton("testskeletonipv4", "ipv4") instanceof Container, "normal running has invalid return");
-		assert.strictEqual(true, container.skeleton("testskeletonipv6", "ipv6") instanceof Container, "normal running has invalid return");
-		assert.strictEqual(true, container.skeleton("testskeletonnumber", "number") instanceof Container, "normal running has invalid return");
-		assert.strictEqual(true, container.skeleton("testskeletonobject", "object") instanceof Container, "normal running has invalid return");
-		assert.strictEqual(true, container.skeleton("testskeletonstring", "string") instanceof Container, "normal running has invalid return");
-	});
+		before(() => { container.clear(); });
+		after(() => { container.clear(); });
 
-	it("should check normal recursive running", () => {
-		assert.strictEqual(true, container.skeleton("testskeletonrecursive.test", "string") instanceof Container, "normal running has invalid return");
+		it("should check type value", () => {
+			assert.throws(() => { container.skeleton(false); }, Error, "check type value does not throw an error");
+			assert.throws(() => { container.skeleton("testskeleton"); }, Error, "check type value does not throw an error");
+			assert.throws(() => { container.skeleton("testskeleton", String); }, Error, "check type value does not throw an error");
+		});
+
+		it("should check normal running", () => {
+			assert.strictEqual(true, container.skeleton("testskeletonarray", "Array") instanceof Container, "normal running has invalid return");
+			assert.strictEqual(true, container.skeleton("testskeletonarray", "array") instanceof Container, "normal running has invalid return");
+			assert.strictEqual(true, container.skeleton("testskeletonboolean", "boolean") instanceof Container, "normal running has invalid return");
+			assert.strictEqual(true, container.skeleton("testskeletonemail", "email") instanceof Container, "normal running has invalid return");
+			assert.strictEqual(true, container.skeleton("testskeletonfloat", "float") instanceof Container, "normal running has invalid return");
+			assert.strictEqual(true, container.skeleton("testskeletoninteger", "integer") instanceof Container, "normal running has invalid return");
+			assert.strictEqual(true, container.skeleton("testskeletonipv4", "ipv4") instanceof Container, "normal running has invalid return");
+			assert.strictEqual(true, container.skeleton("testskeletonipv6", "ipv6") instanceof Container, "normal running has invalid return");
+			assert.strictEqual(true, container.skeleton("testskeletonnumber", "number") instanceof Container, "normal running has invalid return");
+			assert.strictEqual(true, container.skeleton("testskeletonobject", "object") instanceof Container, "normal running has invalid return");
+			assert.strictEqual(true, container.skeleton("testskeletonstring", "string") instanceof Container, "normal running has invalid return");
+		});
+
+		it("should check normal recursive running", () => {
+			assert.strictEqual(true, container.skeleton("testskeletonrecursive.test", "string") instanceof Container, "normal running has invalid return");
+		});
+
+		it("should check normal recursive array running", () => {
+
+			container.clear().set("module.authors", [ "Sébastien VIDAL" ]);
+
+			assert.strictEqual(true, container.skeleton("module.authors.0", "string") instanceof Container, "normal recursive array running has invalid return");
+			assert.throws(() => { container.set("module.authors.0", 5); }, Error, "normal recursive array running does not throw an error");
+
+		});
+
 	});
 
 });
@@ -113,24 +156,6 @@ describe("delete", () => {
 	it("should check normal running", () => {
 		assert.strictEqual(true, container.set("test", "test").delete("test") instanceof Container, "normal running has invalid return");
 		assert.strictEqual(0, container.set("test", "test").delete("test").size, "normal running has invalid return");
-	});
-
-});
-
-describe("document", () => {
-
-	before(() => { container.clear(); });
-	after(() => { container.clear(); });
-
-	it("should check type value", () => {
-		assert.throws(() => { container.document(); }, ReferenceError, "check type value does not throw an error");
-		assert.throws(() => { container.document(false); }, TypeError, "check type value does not throw an error");
-		assert.throws(() => { container.document("testdocument"); }, ReferenceError, "check type value does not throw an error");
-		assert.throws(() => { container.document("testdocument", false); }, TypeError, "check type value does not throw an error");
-	});
-
-	it("should check normal running", () => {
-		assert.strictEqual(true, container.document("documentstring", "This is a random string") instanceof Container, "normal running has invalid return");
 	});
 
 });
@@ -240,6 +265,18 @@ describe("get", () => {
 
 		assert.strictEqual(true, container.clearData().set("lvl1.lvl2", true).get("lvl1.lvl2"), "normal recursive running has invalid return for boolean value (true)");
 		assert.strictEqual(false, container.clearData().set("lvl1.lvl2", false).get("lvl1.lvl2"), "normal recursive running has invalid return for boolean value (false)");
+
+	});
+
+	it("should check normal recursive array running", () => {
+
+		container.clearData().set("module.authors", [ "Sébastien VIDAL" ]);
+
+		assert.deepStrictEqual({ "authors": [ "Sébastien VIDAL" ] }, container.get("module"), "normal recursive array running has invalid return (get)");
+		assert.deepStrictEqual([ "Sébastien VIDAL" ], container.get("module.authors"), "normal recursive array running has invalid return (get)");
+		assert.strictEqual(1, container.size, "normal recursive array running has invalid size");
+		
+		container.clearData().set("module.authors", [ "Sébastien VIDAL", "1", "2" ]);
 
 	});
 
