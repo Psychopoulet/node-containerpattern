@@ -109,10 +109,10 @@ describe("meta", () => {
 
 		it("should check normal recursive array running", () => {
 
-			container.clear().set("module.authors", [ "Sébastien VIDAL" ]);
+			container.clear().set("module.versions", [ 1 ]);
 
-			assert.strictEqual(true, container.skeleton("module.authors.0", "string") instanceof Container, "normal recursive array running has invalid return");
-			assert.throws(() => { container.set("module.authors.0", 5); }, Error, "normal recursive array running does not throw an error");
+			assert.strictEqual(true, container.skeleton("module.versions.0", "integer") instanceof Container, "normal recursive array running has invalid return");
+			assert.throws(() => { container.set("module.versions.0", "one"); }, Error, "normal recursive array running does not throw an error");
 
 		});
 
@@ -225,6 +225,30 @@ describe("documentation", () => {
 
 	});
 
+	it("should check normal recursive array running", () => {
+
+		container.clear().skeleton("module.versions.0", "integer").set("module.versions.0", 1).document("module.versions.0", "This is the first version");
+
+		assert.strictEqual(true, container.skeleton("module.versions.0", "integer") instanceof Container, "normal recursive array running has invalid return");
+
+		assert.strictEqual("object", typeof container.documentation().module, "recursive array running has invalid type for \"module\"");
+			assert.strictEqual("module", container.documentation().module.fullkey, "recursive array running has invalid return for \"module.fullkey\"");
+			assert.strictEqual("", container.documentation().module.documentation, "recursive array running has invalid return for \"module.documentation\"");
+			assert.strictEqual("object", container.documentation().module.type, "recursive array running has invalid return for \"module.type\"");
+
+			assert.strictEqual("object", typeof container.documentation().module.content, "recursive array running has invalid type for \"module.content\"");
+				assert.strictEqual("object", typeof container.documentation().module.content.versions, "recursive array running has invalid type for \"module.content.versions\"");
+					assert.strictEqual("module.versions", container.documentation().module.content.versions.fullkey, "recursive array running has invalid return for \"module.content.versions.fullkey\"");
+					assert.strictEqual("", container.documentation().module.content.versions.documentation, "recursive array running has invalid return for \"module.content.versions.documentation\"");
+					assert.strictEqual("object", container.documentation().module.content.versions.type, "recursive array running has invalid return for \"module.content.versions.type\"");
+		
+					assert.strictEqual("object", typeof container.documentation().module.content.versions.content, "recursive array running has invalid type for \"module.content.versions.content\"");
+						assert.strictEqual("object", typeof container.documentation().module.content.versions.content[0], "recursive array running has invalid type for \"module.content.versions.content.0\"");
+
+		assert.deepStrictEqual({ fullkey: "module.versions.0", type: "integer", documentation: "This is the first version" }, container.documentation().module.content.versions.content[0], "recursive array running has invalid return for \"module.content.versions.content.0\"");
+
+	});
+
 });
 
 describe("get", () => {
@@ -280,6 +304,17 @@ describe("get", () => {
 
 	});
 
+	it("should check normal recursive array running", () => {
+
+		container.clear()
+			.skeleton("module.versions.0", "string").set("module.versions.0", 1)
+			.skeleton("module.versions.1", "integer").set("module.versions.1", "2");
+
+		assert.strictEqual("1", container.get("module.versions.0"), "normal recursive array running has invalid return");
+		assert.strictEqual(2, container.get("module.versions.1"), "normal recursive array running has invalid return");
+
+	});
+
 });
 
 describe("has", () => {
@@ -303,6 +338,15 @@ describe("has", () => {
 		assert.strictEqual(true, container.clearData().set("lvl1.lvl2", true).has("lvl1.lvl2"), "normal recursive running has invalid return for boolean value (true)");
 		assert.strictEqual(true, container.clearData().set("lvl1.lvl2", false).has("lvl1.lvl2"), "normal recursive running has invalid return for boolean value (false)");
 		assert.strictEqual(true, container.clearData().set("lvl1.lvl2.lvl3.lvl4.lvl5", false).has("lvl1.lvl2.lvl3.lvl4.lvl5"), "normal recursive running has invalid return for boolean value (false)");
+	});
+
+	it("should check normal recursive array running", () => {
+
+		container.clear().skeleton("module.versions.0", "string").set("module.versions.0", 1);
+
+		assert.strictEqual(true, container.has("module.versions.0"), "normal recursive array running has invalid return");
+		assert.strictEqual(false, container.has("module.versions.1"), "normal recursive array running has invalid return");
+
 	});
 
 });
