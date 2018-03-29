@@ -11,33 +11,37 @@
 
 // private
 
-	const container = new Container();
+	const container = new Container(".");
 
 // tests
 
 describe("set", () => {
 
-	before(() => {
+	it("should check normal running for skeletons", () => {
 
-		container.clear()
+		assert.doesNotThrow(() => {
 
-			.skeleton("testskeletonarray", "array")
-			.skeleton("testskeletonboolean", "boolean")
-			.skeleton("testskeletonemail", "email")
-			.skeleton("testskeletonfloat", "float")
-			.skeleton("testskeletoninteger", "integer")
-			.skeleton("testskeletonipv4", "ipv4")
-			.skeleton("testskeletonipv6", "ipv6")
-			.skeleton("testskeletonnumber", "number")
-			.skeleton("testskeletonobject", "object")
-			.skeleton("testskeletonbooleans", "object")
-				.skeleton("testskeletonbooleans.recursive", "boolean")
-			.skeleton("testskeletonstring", "string");
+			container.clear()
 
-	});
+				.skeleton("testskeletonarray", "array")
+				.skeleton("testskeletonboolean", "boolean")
+				.skeleton("testskeletonemail", "email")
+				.skeleton("testskeletonfloat", "float")
+				.skeleton("testskeletoninteger", "integer")
+				.skeleton("testskeletonipv4", "ipv4")
+				.skeleton("testskeletonipv6", "ipv6")
+				.skeleton("testskeletonnumber", "number")
+				.skeleton("testskeletonobject", "object")
+				.skeleton("testskeletonbooleans", "object")
+					.skeleton("testskeletonbooleans.recursive", "boolean")
+				.skeleton("testskeletonstring", "string");
 
-	after(() => {
-		container.clear();
+		}, Error, "check right skeletons throws an error");
+
+		assert.throws(() => {
+			container.skeleton("test", "test");
+		}, Error, "check wrong skeleton does not throw an error");
+
 	});
 
 	it("should check wrong data", () => {

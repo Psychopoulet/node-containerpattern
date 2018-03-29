@@ -33,6 +33,7 @@ describe("has", () => {
 	it("should check recursive running", () => {
 
 		assert.strictEqual(container.set("lvl1", "test").has("lvl1.lvl2"), false, "normal recursive running has invalid return");
+		assert.strictEqual(container.has("lvl2.lvl1"), false, "wrong recursive running has invalid return");
 
 		assert.strictEqual(
 			container.clearData().set("lvl1.lvl2", "test").has("lvl1.lvl2"), true,
