@@ -594,6 +594,24 @@ describe("set", () => {
 
 			});
 
+			it("should check recursive running", () => {
+
+				assert.doesNotThrow(() => {
+
+					container.set("testrecursiveobject", {
+						"recursiveobject": {
+							"object1": {
+								"object2": "test"
+							}
+						}
+					});
+
+				}, Error, "normal running with object skeleton throws an error");
+
+				assert.strictEqual(container.size, 1, "normal running with object skeleton has invalid size");
+
+			});
+
 		});
 
 		describe("string", () => {
