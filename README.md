@@ -2,6 +2,9 @@
 A 'Container pattern' object for a clean global use of data.
 Basicaly, it extends Map object with lot of controls, recursive methods and documentation
 
+[![Build Status](https://api.travis-ci.org/Psychopoulet/node-containerpattern.svg?branch=master)](https://travis-ci.org/Psychopoulet/node-containerpattern)
+[![Coverage Status](https://coveralls.io/repos/github/Psychopoulet/node-containerpattern/badge.svg?branch=master)](https://coveralls.io/github/Psychopoulet/node-containerpattern)
+[![Dependency Status](https://img.shields.io/david/Psychopoulet/node-containerpattern/master.svg)](https://github.com/Psychopoulet/node-containerpattern)
 
 ## Installation
 
@@ -106,7 +109,7 @@ container.clear();
 ## Tests
 
 ```bash
-$ gulp
+$ gulp tests
 ```
 
 ## License
