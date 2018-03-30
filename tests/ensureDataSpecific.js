@@ -29,9 +29,9 @@ describe("ensureDataSpecific", () => {
 			ensureDataSpecific("test", "ipv4", 4);
 		}, Error, "check data does not throw an error");
 
-		// assert.throws(() => {
-		// 	ensureDataSpecific("test", "ipv4", "test");
-		// }, Error, "check data does not throw an error");
+		assert.throws(() => {
+			ensureDataSpecific("test", "ipv4", "test");
+		}, Error, "check data does not throw an error");
 
 		assert.strictEqual(ensureDataSpecific("test", "ipv4", "127.0.0.1"), "127.0.0.1", "checked data is invalid");
 
@@ -43,9 +43,9 @@ describe("ensureDataSpecific", () => {
 			ensureDataSpecific("test", "ipv6", 4);
 		}, Error, "check data does not throw an error");
 
-		// assert.throws(() => {
-		// 	ensureDataSpecific("test", "ipv6", "test");
-		// }, Error, "check data does not throw an error");
+		assert.throws(() => {
+			ensureDataSpecific("test", "ipv6", "test");
+		}, Error, "check data does not throw an error");
 
 		assert.strictEqual(
 			ensureDataSpecific("test", "ipv6", "0000:0000:0000:0000:0000:0000:0000:0001"), "0000:0000:0000:0000:0000:0000:0000:0001",
