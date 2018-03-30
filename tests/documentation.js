@@ -23,7 +23,10 @@ describe("documentation", () => {
 			.set("testemptyarray", []).document("testemptyarray", "This is an empty array")
 			.set("testnotemptyarray", [ "test", "test" ])
 			.set("testemptyobject", {})
-			.set("testnotemptyobject", { "test": "test" })
+			.set("testnotemptyobject", {
+				"test": "test",
+				"array": [ "test1", "test2" ]
+			})
 			.set("testnotinstanciedobject", Object)
 			.set("testinstanciedobject", {}).document("testinstanciedobject", "This is an instance of Object")
 
@@ -93,7 +96,7 @@ describe("documentation", () => {
 		);
 
 		assert.strictEqual(
-			Object.keys(container.documentation().testnotemptyobject.content).length, 1,
+			Object.keys(container.documentation().testnotemptyobject.content).length, 2,
 			"normal running has invalid return for \"testnotemptyobject\""
 		);
 
