@@ -41,6 +41,14 @@ describe("meta", () => {
 				container.document("testdocument", false);
 			}, TypeError, "check type value does not throw an error");
 
+			assert.throws(() => {
+				container.document("testdocument", String);
+			}, Error, "check type value does not throw an error");
+
+			assert.throws(() => {
+				container.document("testdocument", "");
+			}, Error, "check type value does not throw an error");
+
 		});
 
 		it("should check normal running", () => {
@@ -172,6 +180,10 @@ describe("meta", () => {
 
 			assert.throws(() => {
 				container.skeleton("testskeleton", String);
+			}, Error, "check type value does not throw an error");
+
+			assert.throws(() => {
+				container.skeleton("testskeleton", "");
 			}, Error, "check type value does not throw an error");
 
 		});

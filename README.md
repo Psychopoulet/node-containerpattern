@@ -29,30 +29,30 @@ $ npm install node-containerpattern
 
   -- Attributes --
 
-  * ``` object documentations ``` used to save documentation by data's key
-  * ``` object limits ``` used to limit data's values possibilities
-  * ``` string recursionSeparator ``` used to parse recursive keys (default : '.')
-  * ``` object skeletons ``` used to force data type
+  * ``` documentations: object ``` used to save documentation by data's key
+  * ``` limits: object ``` used to limit data's values possibilities
+  * ``` recursionSeparator: string ``` used to parse recursive keys (default : '.')
+  * ``` skeletons: object ``` used to force data type
 
   -- Constructor --
 
-  * ``` constructor([ string recursionSeparator = "." ]) ```
+  * ``` constructor(recursionSeparator: string = ".") ```
 
   -- Methods --
 
-  * ``` clear() : return this ``` clearData & clearDocumentations & clearLimits & clearSkeletons
-  * ``` clearData() : return this ``` forget all the keys and there values and documentations (=> Map.clear)
-  * ``` clearDocumentations() : return this ``` forget all the skeletons
-  * ``` clearLimits() : return this ``` forget all the limits
-  * ``` clearSkeletons() : return this ``` forget all the skeletons
-  * ``` delete(string key) : return this ``` forget a key and its value
-  * ``` document(string key, string documentation) : return this ``` attach a documentation on the data. only visible if "set" method is applied with this key.
-  * ``` documentation() : return JSON object ``` generate a documentation for all the stored data
-  * ``` get(string key) : return mixed ``` return the value in association with this key (may be recursive)
-  * ``` has(string key) : return bool ``` check if a key is used (may be recursive)
-  * ``` limit(string key, array limit) : return this ``` associate a key with a limit
-  * ``` set(string key, mixed value) : return this ``` associate and remember a key with a value (may be recursive)
-  * ``` skeleton(string key, string skeleton) : return this ``` skeleton must be "array", "boolean", "email", "float", "integer", "ipv4", "ipv6", "number", "object", "string"
+  * ``` clear(): this ``` clearData & clearDocumentations & clearLimits & clearSkeletons
+  * ``` clearData() : this ``` forget all the keys and there values and documentations (=> Map.clear)
+  * ``` clearDocumentations() : this ``` forget all the skeletons
+  * ``` clearLimits() : this ``` forget all the limits
+  * ``` clearSkeletons() : this ``` forget all the skeletons
+  * ``` delete(key: string) : this ``` forget a key and its value
+  * ``` document(key: string, documentation: string) : this ``` attach a documentation on the data. only visible if "set" method is applied with this key.
+  * ``` documentation() : JSON object ``` generate a documentation for all the stored data
+  * ``` get(key: string) : mixed ``` the value in association with this key (may be recursive)
+  * ``` has(key: string) : bool ``` check if a key is used (may be recursive)
+  * ``` limit(key: string, array limit) : this ``` associate a key with a limit
+  * ``` set(key: string, mixed value) : this ``` associate and remember a key with a value (may be recursive)
+  * ``` skeleton(key: string, skeleton: string) : this ``` skeleton must be "array", "boolean", "email", "float", "integer", "ipv4", "ipv6", "number", "object", "string"
 
   -- notes --
 
@@ -61,9 +61,11 @@ $ npm install node-containerpattern
 
 ## Examples
 
-```js
-const Container = require('node-containerpattern');
-var container = new Container();
+### Native
+
+```javascript
+const Container = require("node-containerpattern");
+const container = new Container();
 
 container
   .skeleton("contact", "email").document("contact", "Contact address")
@@ -71,23 +73,23 @@ container
   .skeleton("vat", "float")
   .skeleton("heigth", "integer")
 
-  .set('contact', "myaddress@provider.com")
-  .set('debug', true) // '"yes"', '"y"', '"1"', '1', '"true"' or 'true' => get = true, else => get = false
-  .set('vat', '5.5').set('vat', 5.5)
-  .set('conf', { usr : { login : 'login', pwd : 'pwd' } })
-  .set('conf.usr.login', "login2")
-  .set('object', new Object())
+  .set("contact", "myaddress@provider.com")
+  .set("debug", true) // '"yes"', '"y"', '"1"', '1', '"true"' or 'true' => get = true, else => get = false
+  .set("vat", '5.5').set('vat', 5.5)
+  .set("conf", { usr : { login : 'login', pwd : 'pwd' } })
+  .set("conf.usr.login", "login2")
+  .set("object", new Object())
 
   .limit("debug", [true, false]); // debug is now limited to 'true' or 'false'
 
-console.log(container.get('conf').usr.login);
-console.log(container.get('conf.usr.login'));
-console.log(container.get('object'));
-console.log(container.get('conf'));
+console.log(container.get("conf").usr.login);
+console.log(container.get("conf.usr.login"));
+console.log(container.get("object"));
+console.log(container.get("conf"));
 
-container.delete('object');
+container.delete("object");
 
-console.log(container.has('object'));
+console.log(container.has("object"));
 console.log(container.size);
 
 for (let key of container.keys()) {
@@ -104,6 +106,20 @@ container.forEach((value, key) => {
 console.log(container.documentation());
 
 container.clear();
+```
+
+### Typescript
+
+```typescript
+import Container = require("node-containerpattern");
+const container = new Container();
+
+container
+  .skeleton("contact", "email").document("contact", "Contact address")
+  .set("contact", "myaddress@provider.com");
+
+console.log(container.get("contact"));
+
 ```
 
 ## Tests
