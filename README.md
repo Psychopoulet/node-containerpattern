@@ -50,7 +50,7 @@ $ npm install node-containerpattern
   * ``` documentation() : JSON object ``` generate a documentation for all the stored data
   * ``` get(key: string) : mixed ``` the value in association with this key (may be recursive)
   * ``` has(key: string) : bool ``` check if a key is used (may be recursive)
-  * ``` limit(key: string, array limit) : this ``` associate a key with a limit
+  * ``` limit(key: string, limit: Array<string>) : this ``` associate a key with a limit
   * ``` set(key: string, mixed value) : this ``` associate and remember a key with a value (may be recursive)
   * ``` skeleton(key: string, skeleton: string) : this ``` skeleton must be "array", "boolean", "email", "float", "integer", "ipv4", "ipv6", "number", "object", "string"
 
