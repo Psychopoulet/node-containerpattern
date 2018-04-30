@@ -5,10 +5,10 @@ declare module "node-containerpattern" {
 		// Map
 		public size: number;
 
-		protected documentations: object;
-		protected limits: object;
-		protected skeletons: object;
-		protected recursionSeparator: string;
+		protected _documentations: object;
+		protected _limits: object;
+		protected _skeletons: object;
+		protected _recursionSeparator: string;
 
 		constructor(recursionSeparator?: string);
 
