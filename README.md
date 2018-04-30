@@ -4,7 +4,8 @@ Basicaly, it extends Map object with lot of controls, recursive methods and docu
 
 [![Build Status](https://api.travis-ci.org/Psychopoulet/node-containerpattern.svg?branch=master)](https://travis-ci.org/Psychopoulet/node-containerpattern)
 [![Coverage Status](https://coveralls.io/repos/github/Psychopoulet/node-containerpattern/badge.svg?branch=master)](https://coveralls.io/github/Psychopoulet/node-containerpattern)
-[![Dependency Status](https://img.shields.io/david/Psychopoulet/node-containerpattern/master.svg)](https://github.com/Psychopoulet/node-containerpattern)
+[![Dependency Status](https://david-dm.org/Psychopoulet/node-containerpattern/status.svg)](https://david-dm.org/Psychopoulet/node-containerpattern)
+[![Dev dependency Status](https://david-dm.org/Psychopoulet/node-containerpattern/dev-status.svg)](https://david-dm.org/Psychopoulet/node-containerpattern?type=dev)
 
 ## Installation
 
@@ -26,13 +27,6 @@ $ npm install node-containerpattern
   -- Inheritance --
 
   [check the official 'Map' object documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
-
-  -- Attributes --
-
-  * ``` documentations: object ``` used to save documentation by data's key
-  * ``` limits: object ``` used to limit data's values possibilities
-  * ``` recursionSeparator: string ``` used to parse recursive keys (default : '.')
-  * ``` skeletons: object ``` used to force data type
 
   -- Constructor --
 
