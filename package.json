@@ -5,13 +5,17 @@
   "main": "lib/main.js",
   "typings": "lib/index.d.ts",
   "scripts": {
+    "lint": "npx eslint ./gulpfile.js ./lib/**/*.js ./tests/**/*.js",
+    "tests": "npm run-script lint && npx gulp mocha",
     "ci": "gulp coveralls",
-    "precommit": "gulp eslint",
-    "prepush": "gulp mocha"
+    "updates": "npx gulp check-updates"
   },
-  "pre-push": [
-    "tests"
-  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run-script lint",
+      "pre-push": "npm run-script tests"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/Psychopoulet/node-containerpattern.git"
@@ -36,14 +40,14 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@types/node": "10.10.1",
+    "@types/node": "10.12.18",
+    "colors": "1.3.3",
     "gulp": "4.0.0",
     "gulp-coveralls": "0.1.4",
-    "gulp-eslint": "5.0.0",
     "gulp-istanbul": "1.1.3",
     "gulp-mocha": "3.0.1",
-    "gulp-plumber": "1.2.0",
-    "husky": "0.14.3"
+    "gulp-plumber": "1.2.1",
+    "husky": "1.3.1"
   },
   "homepage": "https://github.com/Psychopoulet/node-containerpattern#readme",
   "engines": {
