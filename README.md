@@ -119,7 +119,7 @@ console.log(container.get("contact"));
 ## Tests
 
 ```bash
-$ gulp tests
+$ npm run-script tests
 ```
 
 ## License

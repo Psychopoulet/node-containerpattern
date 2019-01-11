@@ -1,5 +1,5 @@
 /*
-	eslint max-nested-callbacks: [ "error", 6 ]
+	eslint max-lines: 0
 */
 
 "use strict";

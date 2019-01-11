@@ -34,7 +34,7 @@ describe("delete", () => {
 		assert.strictEqual(container.delete("test.test") instanceof Container, true, "recursive running has invalid return");
 		assert.strictEqual(container.delete("test.test").size, 1, "recursive running has invalid return");
 
-		assert.deepStrictEqual(container.get("test").size, {
+		assert.deepStrictEqual(container.get("test"), {
 			"test2": "test2"
 		}, "recursive running has invalid return");
 
