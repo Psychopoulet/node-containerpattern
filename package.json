@@ -1,13 +1,14 @@
 {
   "name": "node-containerpattern",
-  "version": "0.5.8",
+  "version": "0.5.9",
   "description": "A 'Container pattern' object for a clean global use of data.",
   "main": "lib/main.js",
   "typings": "lib/index.d.ts",
   "scripts": {
     "lint": "npx eslint ./lib/**/*.js ./test/**/*.js",
     "check-updates": "npx check-version-modules",
-    "tests": "npm run-script lint && npm run-script check-updates && npx nyc --reporter=html --reporter=text mocha",
+    "unit-tests": "npx nyc --reporter=html --reporter=text mocha",
+    "tests": "npm run-script lint && npm run-script check-updates && npm run-script unit-tests",
     "ci": "npm run-script tests && npx nyc report --reporter=text-lcov | coveralls"
   },
   "husky": {
@@ -41,7 +42,7 @@
   "dependencies": {},
   "devDependencies": {
     "@types/node": "10.12.18",
-    "check-version-modules": "1.0.2",
+    "check-version-modules": "1.1.0",
     "coveralls": "3.0.2",
     "eslint": "5.12.0",
     "mocha": "5.2.0",
