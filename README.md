@@ -2,10 +2,12 @@
 A 'Container pattern' object for a clean global use of data.
 Basicaly, it extends Map object with lot of controls, recursive methods and documentation
 
-[![Build Status](https://api.travis-ci.org/Psychopoulet/node-containerpattern.svg?branch=master)](https://travis-ci.org/Psychopoulet/node-containerpattern)
-[![Coverage Status](https://coveralls.io/repos/github/Psychopoulet/node-containerpattern/badge.svg?branch=master)](https://coveralls.io/github/Psychopoulet/node-containerpattern)
-[![Dependency Status](https://david-dm.org/Psychopoulet/node-containerpattern/status.svg)](https://david-dm.org/Psychopoulet/node-containerpattern)
-[![Dev dependency Status](https://david-dm.org/Psychopoulet/node-containerpattern/dev-status.svg)](https://david-dm.org/Psychopoulet/node-containerpattern?type=dev)
+[![Build status](https://api.travis-ci.org/Psychopoulet/node-containerpattern.svg?branch=master)](https://travis-ci.org/Psychopoulet/node-containerpattern)
+[![Coverage status](https://coveralls.io/repos/github/Psychopoulet/node-containerpattern/badge.svg?branch=master)](https://coveralls.io/github/Psychopoulet/node-containerpattern)
+[![Dependency status](https://david-dm.org/Psychopoulet/node-containerpattern/status.svg)](https://david-dm.org/Psychopoulet/node-containerpattern)
+[![Dev dependency status](https://david-dm.org/Psychopoulet/node-containerpattern/dev-status.svg)](https://david-dm.org/Psychopoulet/node-containerpattern?type=dev)
+[![Issues](https://img.shields.io/github/issues/Psychopoulet/node-containerpattern.svg)](https://github.com/Psychopoulet/node-containerpattern/issues)
+[![Pull requests](https://img.shields.io/github/issues-pr/Psychopoulet/node-containerpattern.svg)](https://github.com/Psychopoulet/node-containerpattern/pulls)
 
 ## Installation
 
