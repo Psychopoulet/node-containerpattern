@@ -5,10 +5,12 @@ declare module "node-containerpattern" {
 		// Map
 		public size: number;
 
-		protected _documentations: object;
-		protected _limits: object;
-		protected _skeletons: object;
-		protected _recursionSeparator: string;
+		public documentations: object;
+		public limits: object;
+		public mins: object;
+		public maxs: object;
+		public skeletons: object;
+		public recursionSeparator: string;
 
 		constructor(recursionSeparator?: string);
 
@@ -26,6 +28,7 @@ declare module "node-containerpattern" {
 		public clearData(): Container;
 		public clearDocumentations(): Container;
 		public clearLimits(): Container;
+		public clearMinsMaxs(): Container;
 		public clearSkeletons(): Container;
 		public delete(key: string): Container;
 		public document(key: string, value: string): Container;
@@ -33,6 +36,8 @@ declare module "node-containerpattern" {
 		public get(key: string): any;
 		public has(key: string): boolean;
 		public limit(key: string, limit: Array<string>): boolean;
+		public min(key: string, min: number): Container;
+		public max(key: string, max: number): Container;
 		public set(key: string, value: any): Container;
 		public skeleton(key: string, value: string): Container;
 
