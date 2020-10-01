@@ -2,8 +2,12 @@
 
 // deps
 
-	const assert = require("assert");
-	const Container = require(require("path").join(__dirname, "..", "lib", "main.js"));
+	// natives
+	const { strictEqual, deepStrictEqual } = require("assert");
+	const { join } = require("path");
+
+	// locals
+	const Container = require(join(__dirname, "..", "lib", "main.js"));
 
 // private
 
@@ -14,7 +18,7 @@
 describe("documentation", () => {
 
 	it("should check empty running", () => {
-		assert.strictEqual(Object.keys(container.documentation()).length, 0, "normal running has invalid size");
+		strictEqual(Object.keys(container.documentation()).length, 0, "normal running has invalid size");
 	});
 
 	it("should check normal running", () => {
@@ -41,38 +45,38 @@ describe("documentation", () => {
 				.set("testrecursivefloat.test", 1.1, "This is a recursive test")
 				.set("testrecursivefloat", { "test": 1.1 }, "This is a recursive test");
 
-		assert.strictEqual(Object.keys(container.documentation()).length, 13, "normal running has invalid size");
+		strictEqual(Object.keys(container.documentation()).length, 13, "normal running has invalid size");
 
 		// array
 
-		assert.deepStrictEqual(container.documentation().testemptyarray, {
+		deepStrictEqual(container.documentation().testemptyarray, {
 			"content": [],
 			"documentation": "This is an empty array",
 			"fullkey": "testemptyarray",
 			"type": "array"
 		}, "normal running has invalid return for \"testemptyarray\"");
 
-		assert.strictEqual(
+		strictEqual(
 			container.documentation().testnotemptyarray.fullkey, "testnotemptyarray",
 			"normal running has invalid fullkey for \"testnotemptyarray\""
 		);
 
-		assert.strictEqual(
+		strictEqual(
 			container.documentation().testnotemptyarray.type, "array",
 			"normal running has invalid type for \"testnotemptyarray\""
 		);
 
-		assert.strictEqual(
+		strictEqual(
 			container.documentation().testnotemptyarray.documentation, "",
 			"normal running has invalid documentation for \"testnotemptyarray\""
 		);
 
-		assert.deepStrictEqual(
+		deepStrictEqual(
 			container.documentation().testnotemptyarray.content, [ "test", "test" ],
 			"normal running has invalid content for \"testnotemptyarray\""
 		);
 
-		assert.deepStrictEqual(container.documentation().testnotemptyarray, {
+		deepStrictEqual(container.documentation().testnotemptyarray, {
 			"content": [ "test", "test" ],
 			"documentation": "",
 			"fullkey": "testnotemptyarray",
@@ -81,43 +85,43 @@ describe("documentation", () => {
 
 		// object
 
-		assert.deepStrictEqual(container.documentation().testemptyobject, {
+		deepStrictEqual(container.documentation().testemptyobject, {
 			"content": {},
 			"documentation": "",
 			"fullkey": "testemptyobject",
 			"type": "object"
 		}, "normal running has invalid return for \"testemptyobject\"");
 
-		assert.strictEqual(container.documentation().testnotemptyobject.type, "object", "normal running has invalid type for \"testnotemptyobject\"");
+		strictEqual(container.documentation().testnotemptyobject.type, "object", "normal running has invalid type for \"testnotemptyobject\"");
 
-		assert.strictEqual(
+		strictEqual(
 			container.documentation().testnotemptyobject.documentation, "",
 			"normal running has invalid documentation for \"testnotemptyobject\""
 		);
 
-		assert.strictEqual(
+		strictEqual(
 			Object.keys(container.documentation().testnotemptyobject.content).length, 2,
 			"normal running has invalid return for \"testnotemptyobject\""
 		);
 
-		assert.strictEqual(
+		strictEqual(
 			container.documentation().testnotemptyobject.fullkey, "testnotemptyobject",
 			"normal running has invalid fullkey for \"testnotemptyobject\""
 		);
 
-		assert.deepStrictEqual(container.documentation().testnotemptyobject.content.test, {
+		deepStrictEqual(container.documentation().testnotemptyobject.content.test, {
 			"documentation": "",
 			"fullkey": "testnotemptyobject.test",
 			"type": "string"
 		}, "normal running has invalid return for \"testnotemptyobject\"");
 
-		assert.deepStrictEqual(container.documentation().testnotinstanciedobject, {
+		deepStrictEqual(container.documentation().testnotinstanciedobject, {
 			"documentation": "",
 			"fullkey": "testnotinstanciedobject",
 			"type": "function"
 		}, "normal running has invalid return for \"testnotinstanciedobject\"");
 
-		assert.deepStrictEqual(container.documentation().testinstanciedobject, {
+		deepStrictEqual(container.documentation().testinstanciedobject, {
 			"content": {},
 			"documentation": "This is an instance of Object",
 			"fullkey": "testinstanciedobject",
@@ -126,37 +130,37 @@ describe("documentation", () => {
 
 		// others
 
-		assert.deepStrictEqual(container.documentation().teststring, {
+		deepStrictEqual(container.documentation().teststring, {
 			"documentation": "",
 			"fullkey": "teststring",
 			"type": "string"
 		}, "normal running has invalid return for \"teststring\"");
 
-		assert.deepStrictEqual(container.documentation().testboolean, {
+		deepStrictEqual(container.documentation().testboolean, {
 			"documentation": "",
 			"fullkey": "testboolean",
 			"type": "boolean"
 		}, "normal running has invalid return for \"testboolean\"");
 
-		assert.deepStrictEqual(container.documentation().testnumber, {
+		deepStrictEqual(container.documentation().testnumber, {
 			"documentation": "",
 			"fullkey": "testnumber",
 			"type": "integer"
 		}, "normal running has invalid return for \"testnumber\"");
 
-		assert.deepStrictEqual(container.documentation().testinteger, {
+		deepStrictEqual(container.documentation().testinteger, {
 			"documentation": "",
 			"fullkey": "testinteger",
 			"type": "integer"
 		}, "normal running has invalid return for \"testinteger\"");
 
-		assert.deepStrictEqual(container.documentation().testbase16, {
+		deepStrictEqual(container.documentation().testbase16, {
 			"documentation": "",
 			"fullkey": "testbase16",
 			"type": "integer"
 		}, "normal running has invalid return for \"testbase16\"");
 
-		assert.deepStrictEqual(container.documentation().testfloat, {
+		deepStrictEqual(container.documentation().testfloat, {
 			"documentation": "",
 			"fullkey": "testfloat",
 			"type": "float"
@@ -171,64 +175,64 @@ describe("documentation", () => {
 			.set("module.versions.0", 1)
 			.document("module.versions.0", "This is the first version");
 
-		assert.strictEqual(
+		strictEqual(
 			container.skeleton("module.versions.0", "integer") instanceof Container, true,
 			"normal recursive array running has invalid return"
 		);
 
-		assert.strictEqual("object", typeof container.documentation().module, "recursive array running has invalid type for \"module\"");
+		strictEqual("object", typeof container.documentation().module, "recursive array running has invalid type for \"module\"");
 
-			assert.strictEqual(
+			strictEqual(
 				container.documentation().module.fullkey, "module",
 				"recursive array running has invalid return for \"module.fullkey\""
 			);
 
-			assert.strictEqual(
+			strictEqual(
 				container.documentation().module.documentation, "",
 				"recursive array running has invalid return for \"module.documentation\""
 			);
 
-			assert.strictEqual(
+			strictEqual(
 				container.documentation().module.type, "object",
 				"recursive array running has invalid return for \"module.type\""
 			);
 
-			assert.strictEqual(
+			strictEqual(
 				typeof container.documentation().module.content, "object",
 				"recursive array running has invalid type for \"module.content\""
 			);
 
-				assert.strictEqual(
+				strictEqual(
 					typeof container.documentation().module.content.versions, "object",
 					"recursive array running has invalid type for \"module.content.versions\""
 				);
 
-					assert.strictEqual(
+					strictEqual(
 						container.documentation().module.content.versions.fullkey, "module.versions",
 						"recursive array running has invalid return for \"module.content.versions.fullkey\""
 					);
 
-					assert.strictEqual(
+					strictEqual(
 						container.documentation().module.content.versions.documentation, "",
 						"recursive array running has invalid return for \"module.content.versions.documentation\""
 					);
 
-					assert.strictEqual(
+					strictEqual(
 						container.documentation().module.content.versions.type, "object",
 						"recursive array running has invalid return for \"module.content.versions.type\""
 					);
 
-					assert.strictEqual(
+					strictEqual(
 						typeof container.documentation().module.content.versions.content, "object",
 						"recursive array running has invalid type for \"module.content.versions.content\""
 					);
 
-						assert.strictEqual(
+						strictEqual(
 							typeof container.documentation().module.content.versions.content[0], "object",
 							"recursive array running has invalid type for \"module.content.versions.content.0\""
 						);
 
-		assert.deepStrictEqual(
+		deepStrictEqual(
 			container.documentation().module.content.versions.content[0], {
 				"documentation": "This is the first version",
 				"fullkey": "module.versions.0",

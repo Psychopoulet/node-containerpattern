@@ -34,18 +34,30 @@ $ npm install node-containerpattern
 
   * ``` constructor(recursionSeparator: string = ".") ```
 
+  -- Attributes --
+
+  * ``` documentations: object ```
+  * ``` limits: object ```
+  * ``` mins: object ```
+  * ``` maxs: object ```
+  * ``` recursionSeparator: string ```
+  * ``` skeletons: object ```
+
   -- Methods --
 
   * ``` clear(): this ``` clearData & clearDocumentations & clearLimits & clearSkeletons
   * ``` clearData() : this ``` forget all the keys and there values and documentations (=> Map.clear)
   * ``` clearDocumentations() : this ``` forget all the skeletons
   * ``` clearLimits() : this ``` forget all the limits
+  * ``` clearMinsMaxs() : this ``` forget all the min & max limits
   * ``` clearSkeletons() : this ``` forget all the skeletons
   * ``` delete(key: string) : this ``` forget a key and its value
   * ``` document(key: string, documentation: string) : this ``` attach a documentation on the data. only visible if "set" method is applied with this key.
   * ``` documentation() : JSON object ``` generate a documentation for all the stored data
   * ``` get(key: string) : mixed ``` the value in association with this key (may be recursive)
   * ``` has(key: string) : bool ``` check if a key is used (may be recursive)
+  * ``` min(key: string, min: integer) : this ``` associate a key with a min value (min length for string & array) (MUST have a valid skeleton : [ "integer", "float", "number", "string", "array" ])
+  * ``` max(key: string, max: integer) : this ``` associate a key with a max value (max length for string & array) (MUST have a valid skeleton : [ "integer", "float", "number", "string", "array" ])
   * ``` limit(key: string, limit: Array<string>) : this ``` associate a key with a limit
   * ``` set(key: string, mixed value) : this ``` associate and remember a key with a value (may be recursive)
   * ``` skeleton(key: string, skeleton: string) : this ``` skeleton must be "array", "boolean", "email", "float", "integer", "ipv4", "ipv6", "number", "object", "string"
@@ -76,7 +88,9 @@ container
   .set("conf.usr.login", "login2")
   .set("object", new Object())
 
-  .limit("debug", [true, false]); // debug is now limited to 'true' or 'false'
+  .min("contact", 6) // min length : 6 (x@x.xx)
+  .limit("debug", [true, false]) // debug is now limited to 'true' or 'false'
+  .min("vat", 0).max("vat", 50); // cannot be less than 0% or more than 50%
 
 console.log(container.get("conf").usr.login);
 console.log(container.get("conf.usr.login"));

@@ -2,8 +2,12 @@
 
 // deps
 
-	const assert = require("assert");
-	const Container = require(require("path").join(__dirname, "..", "lib", "main.js"));
+	// natives
+	const { strictEqual, deepStrictEqual } = require("assert");
+	const { join } = require("path");
+
+	// locals
+	const Container = require(join(__dirname, "..", "lib", "main.js"));
 
 // private
 
@@ -19,8 +23,8 @@ describe("delete", () => {
 
 	it("should check normal running", () => {
 
-		assert.strictEqual(container.set("test", "test").delete("test") instanceof Container, true, "normal running has invalid return");
-		assert.strictEqual(container.set("test", "test").delete("test").size, 0, "normal running has invalid return");
+		strictEqual(container.set("test", "test").delete("test") instanceof Container, true, "normal running has invalid return");
+		strictEqual(container.set("test", "test").delete("test").size, 0, "normal running has invalid return");
 
 	});
 
@@ -31,10 +35,10 @@ describe("delete", () => {
 			"test2": "test2"
 		});
 
-		assert.strictEqual(container.delete("test.test") instanceof Container, true, "recursive running has invalid return");
-		assert.strictEqual(container.delete("test.test").size, 1, "recursive running has invalid return");
+		strictEqual(container.delete("test.test") instanceof Container, true, "recursive running has invalid return");
+		strictEqual(container.delete("test.test").size, 1, "recursive running has invalid return");
 
-		assert.deepStrictEqual(container.get("test"), {
+		deepStrictEqual(container.get("test"), {
 			"test2": "test2"
 		}, "recursive running has invalid return");
 
