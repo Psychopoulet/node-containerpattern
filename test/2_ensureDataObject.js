@@ -2,8 +2,12 @@
 
 // deps
 
-	const assert = require("assert");
-	const ensureDataObject = require(require("path").join(__dirname, "..", "lib", "ensureDataObject.js"));
+	// natives
+	const { strictEqual, deepStrictEqual } = require("assert");
+	const { join } = require("path");
+
+	// locals
+	const ensureDataObject = require(join(__dirname, "..", "lib", "ensureDataObject.js"));
 
 // tests
 
@@ -11,9 +15,9 @@ describe("ensureDataObject", () => {
 
 	it("should check object", () => {
 
-		assert.strictEqual(ensureDataObject("test", "string", "test"), "test", "checked data is invalid");
-		assert.deepStrictEqual(ensureDataObject("test", "object", { "test": "test" }), { "test": "test" }, "checked data is invalid");
-		assert.deepStrictEqual(ensureDataObject("test", "object", "{ \"test\": \"test\" }"), { "test": "test" }, "checked data is invalid");
+		strictEqual(ensureDataObject("test", "string", "test"), "test", "checked data is invalid");
+		deepStrictEqual(ensureDataObject("test", "object", { "test": "test" }), { "test": "test" }, "checked data is invalid");
+		deepStrictEqual(ensureDataObject("test", "object", "{ \"test\": \"test\" }"), { "test": "test" }, "checked data is invalid");
 
 	});
 

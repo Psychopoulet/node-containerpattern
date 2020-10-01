@@ -1,0 +1,192 @@
+"use strict";
+
+// deps
+
+	// natives
+	const { strictEqual, throws } = require("assert");
+	const { join } = require("path");
+
+	// locals
+	const Container = require(join(__dirname, "..", "lib", "main.js"));
+
+// private
+
+	const container = new Container();
+
+// tests
+
+describe("min", () => {
+
+	beforeEach(() => {
+
+		container.clear()
+			.skeleton("testinteger", "integer")
+			.skeleton("testfloat", "float")
+			.skeleton("testnumber", "number")
+			.skeleton("teststring", "string")
+			.skeleton("testarray", "array")
+			.skeleton("module", "object")
+				.skeleton("module.minversion", "integer")
+				.skeleton("module.versions", "array")
+					.skeleton("module.versions.0", "integer");
+
+	});
+
+	it("should check type value", () => {
+
+		throws(() => {
+			container.min();
+		}, ReferenceError, "check type value does not throw an error");
+
+		throws(() => {
+			container.min(false);
+		}, TypeError, "check type value does not throw an error");
+
+		throws(() => {
+			container.min("test");
+		}, ReferenceError, "check type value does not throw an error");
+
+		throws(() => {
+			container.min("test", Number);
+		}, TypeError, "check type value does not throw an error");
+
+	});
+
+	it("should check invalid skeleton", () => {
+
+		strictEqual(container.skeleton("test", "ipv4") instanceof Container, true, "normal running has invalid return");
+
+		throws(() => {
+			container.min("test", 1);
+		}, Error, "check value does not throw an error");
+
+	});
+
+	it("should check normal integer running", () => {
+
+		strictEqual(container.min("testinteger", 0) instanceof Container, true, "normal running has invalid return");
+
+		throws(() => {
+			container.set("testinteger", -1);
+		}, Error, "check value does not throw an error");
+
+		strictEqual(container.set("testinteger", 0) instanceof Container, true, "normal running has invalid return");
+		strictEqual(container.set("testinteger", 1) instanceof Container, true, "normal running has invalid return");
+
+	});
+
+	it("should check normal float running", () => {
+
+		strictEqual(container.min("testfloat", 0) instanceof Container, true, "normal running has invalid return");
+
+		throws(() => {
+			container.set("testfloat", -0.1);
+		}, Error, "check value does not throw an error");
+
+		strictEqual(container.set("testfloat", 0) instanceof Container, true, "normal running has invalid return");
+		strictEqual(container.set("testfloat", 0.1) instanceof Container, true, "normal running has invalid return");
+
+	});
+
+	it("should check normal number running", () => {
+
+		strictEqual(container.min("testnumber", 0) instanceof Container, true, "normal running has invalid return");
+
+		throws(() => {
+			container.set("testnumber", -0.1);
+		}, Error, "check value does not throw an error");
+
+		strictEqual(container.set("testnumber", 0) instanceof Container, true, "normal running has invalid return");
+		strictEqual(container.set("testnumber", 0.1) instanceof Container, true, "normal running has invalid return");
+
+	});
+
+	it("should check normal string running", () => {
+
+		strictEqual(container.min("teststring", 2) instanceof Container, true, "normal running has invalid return");
+
+		throws(() => {
+			container.set("teststring", "a");
+		}, Error, "check value does not throw an error");
+
+		strictEqual(container.set("teststring", "ab") instanceof Container, true, "normal running has invalid return");
+		strictEqual(container.set("teststring", "abcd") instanceof Container, true, "normal running has invalid return");
+
+	});
+
+	it("should check normal array running", () => {
+
+		strictEqual(container.min("testarray", 2) instanceof Container, true, "normal running has invalid return");
+
+		throws(() => {
+			container.set("testarray", [ "a" ]);
+		}, Error, "check value does not throw an error");
+
+		strictEqual(container.set("testarray", [ "a", "b" ]) instanceof Container, true, "normal running has invalid return");
+		strictEqual(container.set("testarray", [ "a", "b", "c", "d" ]) instanceof Container, true, "normal running has invalid return");
+
+	});
+
+	it("should check recursive running", () => {
+
+		strictEqual(
+			container.min("module.minversion", 0) instanceof Container, true,
+			"recursive running has invalid return"
+		);
+
+		throws(() => {
+			container.set("module.minversion", -1);
+		}, Error, "check value does not throw an error");
+
+		strictEqual(
+			container.set("module.minversion", 0) instanceof Container, true,
+			"recursive running has invalid return"
+		);
+
+		strictEqual(
+			container.set("module.minversion", 1) instanceof Container, true,
+			"recursive running has invalid return"
+		);
+
+		throws(() => {
+			container.set("module", { "minversion": -1 });
+		}, Error, "check value does not throw an error");
+
+		strictEqual(
+			container.set("module", { "minversion": 0 }) instanceof Container, true,
+			"recursive running has invalid return"
+		);
+
+		strictEqual(
+			container.set("module", { "minversion": 1 }) instanceof Container, true,
+			"recursive running has invalid return"
+		);
+
+	});
+
+	it("should check normal recursive array running", () => {
+
+		container.set("module.versions", [ 0, 1, 2, 3 ]);
+
+		strictEqual(
+			container.min("module.versions.0", 0) instanceof Container, true,
+			"normal recursive array running has invalid return"
+		);
+
+		throws(() => {
+			container.set("module.versions.0", -1);
+		}, Error, "normal recursive array running does not throw an error");
+
+		strictEqual(
+			container.set("module.versions.0", 0) instanceof Container, true,
+			"recursive running has invalid return"
+		);
+
+		strictEqual(
+			container.set("module.versions.0", 1) instanceof Container, true,
+			"recursive running has invalid return"
+		);
+
+	});
+
+});
