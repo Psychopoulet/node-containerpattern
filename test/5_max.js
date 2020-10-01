@@ -43,11 +43,27 @@ describe("max", () => {
 		}, TypeError, "check type value does not throw an error");
 
 		throws(() => {
-			container.max("test");
+			container.max("testinteger");
 		}, ReferenceError, "check type value does not throw an error");
 
 		throws(() => {
-			container.max("test", Number);
+			container.max("test", 1);
+		}, ReferenceError, "check type value does not throw an error");
+
+		throws(() => {
+			container.max("testfloat", false);
+		}, TypeError, "check type value does not throw an error");
+
+		throws(() => {
+			container.max("testinteger", 0.1);
+		}, TypeError, "check type value does not throw an error");
+
+		throws(() => {
+			container.max("teststring", 0.1);
+		}, TypeError, "check type value does not throw an error");
+
+		throws(() => {
+			container.max("testarray", 0.1);
 		}, TypeError, "check type value does not throw an error");
 
 	});

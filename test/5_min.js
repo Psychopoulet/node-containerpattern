@@ -43,11 +43,27 @@ describe("min", () => {
 		}, TypeError, "check type value does not throw an error");
 
 		throws(() => {
-			container.min("test");
+			container.min("testinteger");
 		}, ReferenceError, "check type value does not throw an error");
 
 		throws(() => {
-			container.min("test", Number);
+			container.min("test", 1);
+		}, ReferenceError, "check type value does not throw an error");
+
+		throws(() => {
+			container.min("testfloat", false);
+		}, TypeError, "check type value does not throw an error");
+
+		throws(() => {
+			container.min("testinteger", 0.1);
+		}, TypeError, "check type value does not throw an error");
+
+		throws(() => {
+			container.min("teststring", 0.1);
+		}, TypeError, "check type value does not throw an error");
+
+		throws(() => {
+			container.min("testarray", 0.1);
 		}, TypeError, "check type value does not throw an error");
 
 	});
