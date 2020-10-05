@@ -20,6 +20,7 @@ describe("max", () => {
 	beforeEach(() => {
 
 		container.clear()
+			.skeleton("testboolean", "boolean")
 			.skeleton("testinteger", "integer")
 			.skeleton("testfloat", "float")
 			.skeleton("testnumber", "number")
@@ -70,10 +71,8 @@ describe("max", () => {
 
 	it("should check invalid skeleton", () => {
 
-		strictEqual(container.skeleton("test", "ipv4") instanceof Container, true, "normal running has invalid return");
-
 		throws(() => {
-			container.max("test", 1);
+			container.max("testboolean", 1);
 		}, Error, "check value does not throw an error");
 
 	});
