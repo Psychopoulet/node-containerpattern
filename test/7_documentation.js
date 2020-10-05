@@ -1,3 +1,7 @@
+/*
+	eslint-disable max-lines
+*/
+
 "use strict";
 
 // deps
@@ -17,13 +21,55 @@
 
 describe("documentation", () => {
 
+	beforeEach(() => {
+		container.clear();
+	});
+
 	it("should check empty running", () => {
 		strictEqual(Object.keys(container.documentation()).length, 0, "normal running has invalid size");
 	});
 
+	it("should check data without doc", () => {
+		strictEqual(container.set("test", "test").documentation().test.documentation, "", "normal running has invalid size");
+	});
+
+	it("should check data with doc", () => {
+
+		strictEqual(
+			container.set("test", "test").document("test", "This is a test").documentation().test.documentation,
+			"This is a test",
+			"normal running has invalid size"
+		);
+
+	});
+
+	it("should check object data with doc", () => {
+
+		container.set("test.test", "test").document("test.test", "This is a test");
+
+		strictEqual(
+			container.documentation().test.documentation,
+			"",
+			"normal running has invalid size"
+		);
+
+		strictEqual(
+			container.documentation().test.documentation,
+			"",
+			"normal running has invalid test.documentation"
+		);
+
+		strictEqual(
+			container.documentation().test.content.test.documentation,
+			"This is a test",
+			"normal running has invalid test.documentation.test.documentation"
+		);
+
+	});
+
 	it("should check normal running", () => {
 
-		container.clear()
+		container
 			.set("testemptyarray", []).document("testemptyarray", "This is an empty array")
 			.set("testnotemptyarray", [ "test", "test" ])
 			.set("testemptyobject", {})
@@ -41,16 +87,29 @@ describe("documentation", () => {
 			.set("testbase16", 0xA5)
 			.set("testfloat", 1.1)
 
+			.skeleton("testemail", "email")
+				.set("testemail", "test@test.com")
+			.skeleton("testurl", "url")
+				.set("testurl", "https://www.google.com")
+			.skeleton("testipv4", "ipv4")
+				.set("testipv4", "127.0.0.1")
+			.skeleton("testipv6", "ipv6")
+				.set("testipv6", "0000:0000:0000:0000:0000:0000:0000:0001")
+
+			.skeleton("testrecursiveinteger.test", "integer")
+				.set("testrecursiveinteger.test", 1, "This is a recursive test")
+				.set("testrecursiveinteger", { "test": 1 }, "This is a recursive test")
+
 			.skeleton("testrecursivefloat.test", "float")
 				.set("testrecursivefloat.test", 1.1, "This is a recursive test")
 				.set("testrecursivefloat", { "test": 1.1 }, "This is a recursive test");
 
-		strictEqual(Object.keys(container.documentation()).length, 13, "normal running has invalid size");
+		strictEqual(Object.keys(container.documentation()).length, 18, "normal running has invalid size");
 
 		// array
 
 		deepStrictEqual(container.documentation().testemptyarray, {
-			"content": [],
+			"content": {},
 			"documentation": "This is an empty array",
 			"fullkey": "testemptyarray",
 			"type": "array"
@@ -72,12 +131,34 @@ describe("documentation", () => {
 		);
 
 		deepStrictEqual(
-			container.documentation().testnotemptyarray.content, [ "test", "test" ],
+			container.documentation().testnotemptyarray.content, {
+				"0": {
+					"documentation": "",
+					"fullkey": "testnotemptyarray.0",
+					"type": "string"
+				},
+				"1": {
+					"documentation": "",
+					"fullkey": "testnotemptyarray.1",
+					"type": "string"
+				}
+			},
 			"normal running has invalid content for \"testnotemptyarray\""
 		);
 
 		deepStrictEqual(container.documentation().testnotemptyarray, {
-			"content": [ "test", "test" ],
+			"content": {
+				"0": {
+					"documentation": "",
+					"fullkey": "testnotemptyarray.0",
+					"type": "string"
+				},
+				"1": {
+					"documentation": "",
+					"fullkey": "testnotemptyarray.1",
+					"type": "string"
+				}
+			},
 			"documentation": "",
 			"fullkey": "testnotemptyarray",
 			"type": "array"
@@ -168,77 +249,296 @@ describe("documentation", () => {
 
 	});
 
-	it("should check normal recursive array running", () => {
+	it("should check normal empty array running", () => {
 
-		container.clear()
-			.skeleton("module.versions.0", "integer")
-			.set("module.versions.0", 1)
-			.document("module.versions.0", "This is the first version");
+		container
+			.skeleton("module", "object")
+				.skeleton("module.versions", "array").set("module.versions", []);
 
 		strictEqual(
-			container.skeleton("module.versions.0", "integer") instanceof Container, true,
-			"normal recursive array running has invalid return"
+			container.documentation().module.fullkey, "module",
+			"recursive empty array running has invalid return for \"module.fullkey\""
 		);
 
-		strictEqual("object", typeof container.documentation().module, "recursive array running has invalid type for \"module\"");
+		strictEqual(
+			container.documentation().module.documentation, "",
+			"recursive empty array running has invalid return for \"module.documentation\""
+		);
+
+		strictEqual(
+			container.documentation().module.type, "object",
+			"recursive empty array running has invalid return for \"module.type\""
+		);
+
+		strictEqual(
+			typeof container.documentation().module.content, "object",
+			"recursive empty array running has invalid type for \"module.content\""
+		);
 
 			strictEqual(
-				container.documentation().module.fullkey, "module",
-				"recursive array running has invalid return for \"module.fullkey\""
-			);
-
-			strictEqual(
-				container.documentation().module.documentation, "",
-				"recursive array running has invalid return for \"module.documentation\""
-			);
-
-			strictEqual(
-				container.documentation().module.type, "object",
-				"recursive array running has invalid return for \"module.type\""
-			);
-
-			strictEqual(
-				typeof container.documentation().module.content, "object",
-				"recursive array running has invalid type for \"module.content\""
+				typeof container.documentation().module.content.versions, "object",
+				"recursive empty array running has invalid type for \"module.content.versions\""
 			);
 
 				strictEqual(
-					typeof container.documentation().module.content.versions, "object",
-					"recursive array running has invalid type for \"module.content.versions\""
+					container.documentation().module.content.versions.fullkey, "module.versions",
+					"recursive empty array running has invalid return for \"module.content.versions.fullkey\""
+				);
+
+				strictEqual(
+					container.documentation().module.content.versions.documentation, "",
+					"recursive empty array running has invalid return for \"module.content.versions.documentation\""
+				);
+
+				strictEqual(
+					container.documentation().module.content.versions.type, "array",
+					"recursive empty array running has invalid return for \"module.content.versions.type\""
+				);
+
+				strictEqual(
+					typeof container.documentation().module.content.versions.content, "object",
+					"recursive empty array running has invalid type for \"module.content.versions.content\""
+				);
+
+				strictEqual(
+					Object.keys(container.documentation().module.content.versions.content).length, 0,
+					"recursive empty array running has invalid type for \"module.content.versions.content\""
+				);
+
+	});
+
+	it("should check normal recursive array running", () => {
+
+		container
+			.skeleton("module", "object")
+				.skeleton("module.versions", "array")
+					.skeleton("module.versions.0", "integer")
+					.document("module.versions.0", "This is the first version");
+
+		container
+			.set("module.versions.0", 1);
+
+		strictEqual(
+			container.documentation().module.fullkey, "module",
+			"recursive array running has invalid return for \"module.fullkey\""
+		);
+
+		strictEqual(
+			container.documentation().module.documentation, "",
+			"recursive array running has invalid return for \"module.documentation\""
+		);
+
+		strictEqual(
+			container.documentation().module.type, "object",
+			"recursive array running has invalid return for \"module.type\""
+		);
+
+		strictEqual(
+			typeof container.documentation().module.content, "object",
+			"recursive array running has invalid type for \"module.content\""
+		);
+
+			strictEqual(
+				typeof container.documentation().module.content.versions, "object",
+				"recursive array running has invalid type for \"module.content.versions\""
+			);
+
+				strictEqual(
+					container.documentation().module.content.versions.fullkey, "module.versions",
+					"recursive array running has invalid return for \"module.content.versions.fullkey\""
+				);
+
+				strictEqual(
+					container.documentation().module.content.versions.documentation, "",
+					"recursive array running has invalid return for \"module.content.versions.documentation\""
+				);
+
+				strictEqual(
+					container.documentation().module.content.versions.type, "array",
+					"recursive array running has invalid return for \"module.content.versions.type\""
+				);
+
+				strictEqual(
+					typeof container.documentation().module.content.versions.content, "object",
+					"recursive array running has invalid type for \"module.content.versions.content\""
 				);
 
 					strictEqual(
-						container.documentation().module.content.versions.fullkey, "module.versions",
-						"recursive array running has invalid return for \"module.content.versions.fullkey\""
-					);
-
-					strictEqual(
-						container.documentation().module.content.versions.documentation, "",
-						"recursive array running has invalid return for \"module.content.versions.documentation\""
-					);
-
-					strictEqual(
-						container.documentation().module.content.versions.type, "object",
-						"recursive array running has invalid return for \"module.content.versions.type\""
-					);
-
-					strictEqual(
-						typeof container.documentation().module.content.versions.content, "object",
-						"recursive array running has invalid type for \"module.content.versions.content\""
+						typeof container.documentation().module.content.versions.content[0], "object",
+						"recursive array running has invalid type for \"module.content.versions.content.0\""
 					);
 
 						strictEqual(
-							typeof container.documentation().module.content.versions.content[0], "object",
-							"recursive array running has invalid type for \"module.content.versions.content.0\""
+							container.documentation().module.content.versions.content[0].fullkey, "module.versions.0",
+							"recursive array running has invalid type for \"module.content.versions.content.0.fullkey\""
 						);
 
-		deepStrictEqual(
-			container.documentation().module.content.versions.content[0], {
-				"documentation": "This is the first version",
-				"fullkey": "module.versions.0",
-				"type": "integer"
-			}, "recursive array running has invalid return for \"module.content.versions.content.0\""
+						strictEqual(
+							container.documentation().module.content.versions.content[0].documentation, "This is the first version",
+							"recursive array running has invalid type for \"module.content.versions.content.0.documentation\""
+						);
+
+						strictEqual(
+							container.documentation().module.content.versions.content[0].type, "integer",
+							"recursive array running has invalid type for \"module.content.versions.content.0.type\""
+						);
+
+	});
+
+	it("should check normal empty object running", () => {
+
+		container
+			.skeleton("module", "object")
+				.skeleton("module.version", "object").set("module.version", {});
+
+		strictEqual(
+			container.documentation().module.fullkey, "module",
+			"recursive empty array running has invalid return for \"module.fullkey\""
 		);
+
+		strictEqual(
+			container.documentation().module.documentation, "",
+			"recursive empty array running has invalid return for \"module.documentation\""
+		);
+
+		strictEqual(
+			container.documentation().module.type, "object",
+			"recursive empty array running has invalid return for \"module.type\""
+		);
+
+		strictEqual(
+			typeof container.documentation().module.content, "object",
+			"recursive empty array running has invalid type for \"module.content\""
+		);
+
+			strictEqual(
+				typeof container.documentation().module.content.version, "object",
+				"recursive empty array running has invalid type for \"module.content.version\""
+			);
+
+				strictEqual(
+					container.documentation().module.content.version.fullkey, "module.version",
+					"recursive empty array running has invalid return for \"module.content.version.fullkey\""
+				);
+
+				strictEqual(
+					container.documentation().module.content.version.documentation, "",
+					"recursive empty array running has invalid return for \"module.content.version.documentation\""
+				);
+
+				strictEqual(
+					container.documentation().module.content.version.type, "object",
+					"recursive empty array running has invalid return for \"module.content.version.type\""
+				);
+
+				strictEqual(
+					typeof container.documentation().module.content.version.content, "object",
+					"recursive empty array running has invalid type for \"module.content.version.content\""
+				);
+
+				strictEqual(
+					Object.keys(container.documentation().module.content.version.content).length, 0,
+					"recursive empty array running has invalid type for \"module.content.version.content\""
+				);
+
+	});
+
+	it("should check normal recursive array running", () => {
+
+		container
+			.skeleton("module", "object")
+				.skeleton("module.version", "object")
+					.skeleton("module.version.name", "string").document("module.version.name", "Version name")
+					.skeleton("module.version.code", "string").document("module.version.code", "Version code");
+
+		container
+			.set("module.version.name", "main")
+			.set("module.version.code", "0.0.1");
+
+		strictEqual(
+			container.documentation().module.fullkey, "module",
+			"recursive array running has invalid return for \"module.fullkey\""
+		);
+
+		strictEqual(
+			container.documentation().module.documentation, "",
+			"recursive array running has invalid return for \"module.documentation\""
+		);
+
+		strictEqual(
+			container.documentation().module.type, "object",
+			"recursive array running has invalid return for \"module.type\""
+		);
+
+		strictEqual(
+			typeof container.documentation().module.content, "object",
+			"recursive array running has invalid type for \"module.content\""
+		);
+
+			strictEqual(
+				typeof container.documentation().module.content.version, "object",
+				"recursive array running has invalid type for \"module.content.version\""
+			);
+
+				strictEqual(
+					container.documentation().module.content.version.fullkey, "module.version",
+					"recursive array running has invalid return for \"module.content.version.fullkey\""
+				);
+
+				strictEqual(
+					container.documentation().module.content.version.documentation, "",
+					"recursive array running has invalid return for \"module.content.version.documentation\""
+				);
+
+				strictEqual(
+					container.documentation().module.content.version.type, "object",
+					"recursive array running has invalid return for \"module.content.version.type\""
+				);
+
+				strictEqual(
+					typeof container.documentation().module.content.version.content, "object",
+					"recursive array running has invalid type for \"module.content.version.content\""
+				);
+
+					strictEqual(
+						typeof container.documentation().module.content.version.content.name, "object",
+						"recursive array running has invalid type for \"module.content.version.content.name\""
+					);
+
+						strictEqual(
+							container.documentation().module.content.version.content.name.fullkey, "module.version.name",
+							"recursive array running has invalid type for \"module.content.version.content.0.fullkey\""
+						);
+
+						strictEqual(
+							container.documentation().module.content.version.content.name.documentation, "Version name",
+							"recursive array running has invalid type for \"module.content.version.content.name.documentation\""
+						);
+
+						strictEqual(
+							container.documentation().module.content.version.content.name.type, "string",
+							"recursive array running has invalid type for \"module.content.version.content.name.type\""
+						);
+
+					strictEqual(
+						typeof container.documentation().module.content.version.content.code, "object",
+						"recursive array running has invalid type for \"module.content.version.content.code\""
+					);
+
+						strictEqual(
+							container.documentation().module.content.version.content.code.fullkey, "module.version.code",
+							"recursive array running has invalid type for \"module.content.version.content.0.fullkey\""
+						);
+
+						strictEqual(
+							container.documentation().module.content.version.content.code.documentation, "Version code",
+							"recursive array running has invalid type for \"module.content.version.content.code.documentation\""
+						);
+
+						strictEqual(
+							container.documentation().module.content.version.content.code.type, "string",
+							"recursive array running has invalid type for \"module.content.version.content.code.type\""
+						);
 
 	});
 

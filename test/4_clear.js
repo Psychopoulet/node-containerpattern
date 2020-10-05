@@ -19,7 +19,7 @@ describe("clear", () => {
 
 	it("should check normal running", () => {
 
-		strictEqual(container.skeleton("test", "string").set("test", "test", "This is a test").size, 1, "initialized data size is invalid");
+		strictEqual(container.skeleton("test", "string").set("test", "This is a test").size, 1, "initialized data size is invalid");
 		strictEqual(Object.keys(container.skeletons).length, 1, "initialized _skeletons size is invalid");
 		strictEqual(container.clearData() instanceof Container, true, "normal \"clearData\" running has invalid return");
 

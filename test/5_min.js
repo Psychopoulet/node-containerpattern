@@ -20,6 +20,7 @@ describe("min", () => {
 	beforeEach(() => {
 
 		container.clear()
+			.skeleton("testboolean", "boolean")
 			.skeleton("testinteger", "integer")
 			.skeleton("testfloat", "float")
 			.skeleton("testnumber", "number")
@@ -70,10 +71,8 @@ describe("min", () => {
 
 	it("should check invalid skeleton", () => {
 
-		strictEqual(container.skeleton("test", "ipv4") instanceof Container, true, "normal running has invalid return");
-
 		throws(() => {
-			container.min("test", 1);
+			container.min("testboolean", 1);
 		}, Error, "check value does not throw an error");
 
 	});

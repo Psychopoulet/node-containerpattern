@@ -28,6 +28,30 @@ describe("delete", () => {
 
 	});
 
+	it("should check normal running with additional data", () => {
+
+		strictEqual(
+			container
+				.document("test", "this is a test")
+				.limit("test", [ "test" ])
+				.skeleton("test", "string")
+				.min("test", 0)
+				.max("test", 10)
+				.regex("test", /^test$/)
+				.set("test", "test") instanceof Container, true, "normal running has invalid return"
+		);
+
+		strictEqual(container.delete("test") instanceof Container, true, "normal running has invalid return");
+
+		strictEqual(typeof container.documentations.test, "undefined", "normal running has invalid documentation");
+		strictEqual(typeof container.limits.test, "undefined", "normal running has invalid limit");
+		strictEqual(typeof container.skeletons.test, "undefined", "normal running has invalid skeleton");
+		strictEqual(typeof container.mins.test, "undefined", "normal running has invalid min");
+		strictEqual(typeof container.maxs.test, "undefined", "normal running has invalid max");
+		strictEqual(typeof container.regexs.test, "undefined", "normal running has invalid regex");
+
+	});
+
 	it("should check recursive running", () => {
 
 		container.set("test", {
