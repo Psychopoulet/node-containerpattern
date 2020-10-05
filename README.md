@@ -40,6 +40,7 @@ $ npm install node-containerpattern
   * ``` limits: object ```
   * ``` mins: object ```
   * ``` maxs: object ```
+  * ``` regexs: object ```
   * ``` recursionSeparator: string ```
   * ``` skeletons: object ```
 
@@ -56,8 +57,9 @@ $ npm install node-containerpattern
   * ``` documentation() : JSON object ``` generate a documentation for all the stored data
   * ``` get(key: string) : mixed ``` the value in association with this key (may be recursive)
   * ``` has(key: string) : bool ``` check if a key is used (may be recursive)
-  * ``` min(key: string, min: integer) : this ``` associate a key with a min value (min length for string & array) (MUST have a valid skeleton : [ "integer", "float", "number", "string", "array" ])
-  * ``` max(key: string, max: integer) : this ``` associate a key with a max value (max length for string & array) (MUST have a valid skeleton : [ "integer", "float", "number", "string", "array" ])
+  * ``` min(key: string, min: integer) : this ``` associate a key with a min value (min length for string & array) (MUST have a valid skeleton : [ "array", "email", "float", "integer", "ipv4", "ipv6", "number", "string", "url" ])
+  * ``` max(key: string, max: integer) : this ``` associate a key with a max value (max length for string & array) (MUST have a valid skeleton : same as min)
+  * ``` regex(key: string, regex: RegExp) : this ``` associate a key with a pattern (MUST have a valid skeleton : [ "email", "ipv4", "ipv6", "string", "url" ]) (useless with "email", "ipv4", "ipv6", & "url", tested with natives checkers. more usefull with "string")
   * ``` limit(key: string, limit: Array<string>) : this ``` associate a key with a limit
   * ``` set(key: string, mixed value) : this ``` associate and remember a key with a value (may be recursive)
   * ``` skeleton(key: string, skeleton: string) : this ``` skeleton must be "array", "boolean", "email", "float", "integer", "ipv4", "ipv6", "number", "object", "string"
