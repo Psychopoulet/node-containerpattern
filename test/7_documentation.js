@@ -87,6 +87,15 @@ describe("documentation", () => {
 			.set("testbase16", 0xA5)
 			.set("testfloat", 1.1)
 
+			.skeleton("testemail", "email")
+				.set("testemail", "test@test.com")
+			.skeleton("testurl", "url")
+				.set("testurl", "https://www.google.com")
+			.skeleton("testipv4", "ipv4")
+				.set("testipv4", "127.0.0.1")
+			.skeleton("testipv6", "ipv6")
+				.set("testipv6", "0000:0000:0000:0000:0000:0000:0000:0001")
+
 			.skeleton("testrecursiveinteger.test", "integer")
 				.set("testrecursiveinteger.test", 1, "This is a recursive test")
 				.set("testrecursiveinteger", { "test": 1 }, "This is a recursive test")
@@ -95,7 +104,7 @@ describe("documentation", () => {
 				.set("testrecursivefloat.test", 1.1, "This is a recursive test")
 				.set("testrecursivefloat", { "test": 1.1 }, "This is a recursive test");
 
-		strictEqual(Object.keys(container.documentation()).length, 14, "normal running has invalid size");
+		strictEqual(Object.keys(container.documentation()).length, 18, "normal running has invalid size");
 
 		// array
 
