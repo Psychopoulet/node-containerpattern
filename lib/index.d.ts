@@ -9,8 +9,9 @@ declare module "node-containerpattern" {
 		public limits: object;
 		public mins: object;
 		public maxs: object;
-		public skeletons: object;
 		public recursionSeparator: string;
+		public regexs: object;
+		public skeletons: object;
 
 		constructor(recursionSeparator?: string);
 
@@ -29,6 +30,7 @@ declare module "node-containerpattern" {
 		public clearDocumentations(): Container;
 		public clearLimits(): Container;
 		public clearMinsMaxs(): Container;
+		public clearRegexs(): Container;
 		public clearSkeletons(): Container;
 		public delete(key: string): Container;
 		public document(key: string, value: string): Container;
@@ -38,6 +40,7 @@ declare module "node-containerpattern" {
 		public limit(key: string, limit: Array<string>): boolean;
 		public min(key: string, min: number): Container;
 		public max(key: string, max: number): Container;
+		public regex(key: string, regex: string): Container;
 		public set(key: string, value: any): Container;
 		public skeleton(key: string, value: string): Container;
 
