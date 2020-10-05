@@ -1,3 +1,7 @@
+/*
+	eslint-disable max-statements
+*/
+
 "use strict";
 
 // deps
@@ -86,6 +90,41 @@ describe("validators", () => {
 		strictEqual(Validators.isIPV6("1080::8:800:200C:417A"), true, "isIPV6 result test is invalid");
 		strictEqual(Validators.isIPV6("::A00:1"), true, "isIPV6 result test is invalid");
 		strictEqual(Validators.isIPV6("::1"), true, "isIPV6 result test is invalid");
+	});
+
+	it("should check isUrl", () => {
+
+		strictEqual(Validators.isUrl(), false, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl(null), false, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl(0), false, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl(""), false, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("test"), false, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("htt://www.google.com"), false, "isUrl result test is invalid");
+
+		strictEqual(Validators.isUrl("example.com"), true, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("www.example.com"), true, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("255.255.255.255"), true, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("http://255.255.255.255"), true, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("http://www.example.com:8008"), true, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("://www.google.com"), true, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("://www.google.com"), true, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("ftp://s.tv"), true, "isUrl result test is invalid");
+
+		strictEqual(Validators.isUrl("http://www.a.tv"), true, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("http://a.tv"), true, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("https://a.tv"), true, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("https://a.a.tv"), true, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("https://www.a.a.tv"), true, "isUrl result test is invalid");
+
+		strictEqual(Validators.isUrl("http://www.example.com"), true, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("https://example.com"), true, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("https://blog.example.com"), true, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("https://www.blog.example.com"), true, "isUrl result test is invalid");
+
+		strictEqual(Validators.isUrl("https://example.com/product"), true, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("https://example.com?id=1&page=2"), true, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("https://example.com#up"), true, "isUrl result test is invalid");
+
 	});
 
 	it("should check isObject", () => {
