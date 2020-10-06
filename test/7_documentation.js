@@ -82,7 +82,7 @@ describe("documentation", () => {
 
 			.set("teststring", "string")
 			.set("testboolean", false)
-			.set("testnumber", 1)
+			.set("testnumber", 1.2)
 			.set("testinteger", 1)
 			.set("testbase16", 0xA5)
 			.set("testfloat", 1.1)
@@ -145,7 +145,8 @@ describe("documentation", () => {
 					"limits": null,
 					"min": null,
 					"max": null,
-					"type": "string"
+					"type": "string",
+					"value": "test"
 				},
 				"1": {
 					"documentation": "",
@@ -153,7 +154,8 @@ describe("documentation", () => {
 					"limits": null,
 					"min": null,
 					"max": null,
-					"type": "string"
+					"type": "string",
+					"value": "test"
 				}
 			},
 			"normal running has invalid content for \"testnotemptyarray\""
@@ -167,6 +169,7 @@ describe("documentation", () => {
 					"limits": null,
 					"min": null,
 					"max": null,
+					"value": "test",
 					"type": "string"
 				},
 				"1": {
@@ -175,7 +178,8 @@ describe("documentation", () => {
 					"limits": null,
 					"min": null,
 					"max": null,
-					"type": "string"
+					"type": "string",
+					"value": "test"
 				}
 			},
 			"documentation": "",
@@ -221,7 +225,8 @@ describe("documentation", () => {
 			"limits": null,
 			"min": null,
 			"max": null,
-			"type": "string"
+			"type": "string",
+			"value": "test"
 		}, "normal running has invalid return for \"testnotemptyobject\"");
 
 		deepStrictEqual(container.documentation().testnotinstanciedobject, {
@@ -251,7 +256,8 @@ describe("documentation", () => {
 			"limits": null,
 			"min": null,
 			"max": null,
-			"type": "string"
+			"type": "string",
+			"value": "string"
 		}, "normal running has invalid return for \"teststring\"");
 
 		deepStrictEqual(container.documentation().testboolean, {
@@ -260,7 +266,8 @@ describe("documentation", () => {
 			"limits": null,
 			"min": null,
 			"max": null,
-			"type": "boolean"
+			"type": "boolean",
+			"value": false
 		}, "normal running has invalid return for \"testboolean\"");
 
 		deepStrictEqual(container.documentation().testnumber, {
@@ -269,7 +276,8 @@ describe("documentation", () => {
 			"limits": null,
 			"min": null,
 			"max": null,
-			"type": "integer"
+			"type": "float",
+			"value": 1.2
 		}, "normal running has invalid return for \"testnumber\"");
 
 		deepStrictEqual(container.documentation().testinteger, {
@@ -278,7 +286,8 @@ describe("documentation", () => {
 			"limits": null,
 			"min": null,
 			"max": null,
-			"type": "integer"
+			"type": "integer",
+			"value": 1
 		}, "normal running has invalid return for \"testinteger\"");
 
 		deepStrictEqual(container.documentation().testbase16, {
@@ -287,7 +296,8 @@ describe("documentation", () => {
 			"limits": null,
 			"min": null,
 			"max": null,
-			"type": "integer"
+			"type": "integer",
+			"value": 165
 		}, "normal running has invalid return for \"testbase16\"");
 
 		deepStrictEqual(container.documentation().testfloat, {
@@ -296,7 +306,8 @@ describe("documentation", () => {
 			"limits": null,
 			"min": null,
 			"max": null,
-			"type": "float"
+			"type": "float",
+			"value": 1.1
 		}, "normal running has invalid return for \"testfloat\"");
 
 	});
