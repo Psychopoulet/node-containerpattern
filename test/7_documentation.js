@@ -12,6 +12,7 @@
 
 	// locals
 	const Container = require(join(__dirname, "..", "lib", "main.js"));
+	const stringifyRegex = require(join(__dirname, "..", "lib", "stringifyRegex.js"));
 	const { patternEmail, patternUrl, patternIPV4, patternIPV6 } = require(join(__dirname, "..", "lib", "patterns.js"));
 
 // private
@@ -19,13 +20,6 @@
 	// attributes
 
 		const container = new Container();
-
-// consts
-
-	const patternEmailStringified = String(patternEmail);
-	const patternUrlStringified = String(patternUrl);
-	const patternIPV4Stringified = String(patternIPV4);
-	const patternIPV6Stringified = String(patternIPV6);
 
 // tests
 
@@ -39,271 +33,143 @@ describe("documentation", () => {
 		strictEqual(Object.keys(container.documentation()).length, 0, "normal running has invalid size");
 	});
 
-	it("should check data without doc", () => {
-		strictEqual(container.set("test", "test").documentation().test.documentation, "", "normal running has invalid size");
+	it("should check limits", () => {
+
+		container
+			.limit("teststring", [ "test 1", "test 2" ])
+			.set("teststring", "test 1");
+
+		deepStrictEqual(container.documentation().teststring, {
+			"documentation": "",
+			"fullkey": "teststring",
+			"limits": [ "test 1", "test 2" ],
+			"min": null,
+			"max": null,
+			"regex": null,
+			"type": "string",
+			"value": "test 1"
+		}, "normal running has invalid return for \"limits\"");
+
 	});
 
-	it("should check data with doc", () => {
+	it("should check not typed running", () => {
 
-		strictEqual(
-			container.set("test", "test").document("test", "This is a test").documentation().test.documentation,
-			"This is a test",
-			"normal running has invalid size"
-		);
-
-	});
-
-	it("should check object data with doc", () => {
-
-		container.set("test.test", "test").document("test.test", "This is a test");
+		container
+			.set("teststring", "string")
+			.set("testboolean", false)
+			.set("testinteger", 1)
+			.set("testbase16", 0xA5)
+			.set("testnumber", 1.2)
+			.set("testfloat", 1.1)
+			.set("testemptyarray", [])
+			.set("testemptyobject", {})
+			.set("testfunction", () => {
+				// nothing to do here
+			});
 
 		deepStrictEqual(container.documentation(), {
-			"test": {
+			"teststring": {
 				"documentation": "",
-				"fullkey": "test",
+				"fullkey": "teststring",
+				"limits": null,
+				"min": null,
+				"max": null,
+				"regex": null,
+				"type": "string",
+				"value": "string"
+			},
+			"testboolean": {
+				"documentation": "",
+				"fullkey": "testboolean",
+				"limits": null,
+				"min": null,
+				"max": null,
+				"regex": null,
+				"type": "boolean",
+				"value": false
+			},
+			"testinteger": {
+				"documentation": "",
+				"fullkey": "testinteger",
+				"limits": null,
+				"min": null,
+				"max": null,
+				"regex": null,
+				"type": "integer",
+				"value": 1
+			},
+			"testbase16": {
+				"documentation": "",
+				"fullkey": "testbase16",
+				"limits": null,
+				"min": null,
+				"max": null,
+				"regex": null,
+				"type": "integer",
+				"value": 165
+			},
+			"testnumber": {
+				"documentation": "",
+				"fullkey": "testnumber",
+				"limits": null,
+				"min": null,
+				"max": null,
+				"regex": null,
+				"type": "float",
+				"value": 1.2
+			},
+			"testfloat": {
+				"documentation": "",
+				"fullkey": "testfloat",
+				"limits": null,
+				"min": null,
+				"max": null,
+				"regex": null,
+				"type": "float",
+				"value": 1.1
+			},
+			"testemptyarray": {
+				"documentation": "",
+				"fullkey": "testemptyarray",
+				"limits": null,
+				"min": 0,
+				"max": null,
+				"regex": null,
+				"type": "array",
+				"content": {}
+			},
+			"testemptyobject": {
+				"documentation": "",
+				"fullkey": "testemptyobject",
 				"limits": null,
 				"min": null,
 				"max": null,
 				"regex": null,
 				"type": "object",
-				"content": {
-					"test": {
-						"documentation": "This is a test",
-						"fullkey": "test.test",
-						"limits": null,
-						"min": null,
-						"max": null,
-						"regex": null,
-						"type": "string",
-						"value": "test"
-					}
-				}
+				"content": {}
+			},
+			"testfunction": {
+				"documentation": "",
+				"fullkey": "testfunction",
+				"limits": null,
+				"min": null,
+				"max": null,
+				"regex": null,
+				"type": "function"
 			}
-		}, "normal running has invalid return for \"testemptyobject\"");
+		}, "normal running has invalid return for \"not typed\"");
 
 	});
 
 	it("should check normal running", () => {
 
 		container
-			.set("testemptyarray", []).document("testemptyarray", "This is an empty array")
-			.set("testnotemptyarray", [ "test", "test" ]).document("testnotemptyarray", "This is a not empty array")
-			.set("testemptyobject", {}).document("testemptyobject", "This is an empty object")
-			.set("testnotemptyobject", {
-				"test": "test",
-				"array": [ "test1", "test2" ]
-			}).document("testnotemptyobject", "This is a not empty object")
-			.set("testnotinstanciedobject", Object)
-			.set("testinstanciedobject", {}).document("testinstanciedobject", "This is an instance of Object")
-
 			.set("teststring", "string").document("teststring", "This is a string")
 			.set("testboolean", false).document("testboolean", "This is a boolean")
 			.set("testnumber", 1.2).document("testnumber", "This is a number")
 			.set("testinteger", 1).document("testinteger", "This is an integer")
 			.set("testbase16", 0xA5).document("testbase16", "This is a base16")
-			.set("testfloat", 1.1).document("testfloat", "This is a float")
-
-			.skeleton("testlimits", "string")
-				.limit("testlimits", [ "test1", "test2" ])
-				.set("testlimits", "test1")
-
-			.skeleton("testemail", "email")
-				.set("testemail", "test@test.com")
-				.document("testemail", "This is an email")
-			.skeleton("testurl", "url")
-				.set("testurl", "https://www.google.com")
-				.document("testurl", "This is an url")
-			.skeleton("testipv4", "ipv4")
-				.set("testipv4", "127.0.0.1")
-				.document("testipv4", "This is an ipv4")
-			.skeleton("testipv6", "ipv6")
-				.set("testipv6", "0000:0000:0000:0000:0000:0000:0000:0001")
-				.document("testipv6", "This is an ipv6")
-
-			.skeleton("testrecursiveinteger.test", "integer")
-				.set("testrecursiveinteger.test", 1, "This is a recursive test")
-				.set("testrecursiveinteger", { "test": 1 }, "This is a recursive test")
-
-			.skeleton("testrecursivefloat.test", "float")
-				.set("testrecursivefloat.test", 1.1, "This is a recursive test")
-				.set("testrecursivefloat", { "test": 1.1 }, "This is a recursive test");
-
-		strictEqual(Object.keys(container.documentation()).length, 19, "normal running has invalid size");
-
-		// array
-
-		deepStrictEqual(container.documentation().testemptyarray, {
-			"documentation": "This is an empty array",
-			"fullkey": "testemptyarray",
-			"limits": null,
-			"min": null,
-			"max": null,
-			"regex": null,
-			"type": "array",
-			"content": {}
-		}, "normal running has invalid return for \"testemptyarray\"");
-
-		deepStrictEqual(container.documentation().testnotemptyarray, {
-			"documentation": "This is a not empty array",
-			"fullkey": "testnotemptyarray",
-			"limits": null,
-			"min": null,
-			"max": null,
-			"regex": null,
-			"type": "array",
-			"content": {
-				"0": {
-					"documentation": "",
-					"fullkey": "testnotemptyarray.0",
-					"limits": null,
-					"min": null,
-					"max": null,
-					"regex": null,
-					"type": "string",
-					"value": "test"
-				},
-				"1": {
-					"documentation": "",
-					"fullkey": "testnotemptyarray.1",
-					"limits": null,
-					"min": null,
-					"max": null,
-					"regex": null,
-					"type": "string",
-					"value": "test"
-				}
-			}
-		}, "normal running has invalid return for \"testnotemptyarray\"");
-
-		// object
-
-		deepStrictEqual(container.documentation().testemptyobject, {
-			"documentation": "This is an empty object",
-			"fullkey": "testemptyobject",
-			"limits": null,
-			"min": null,
-			"max": null,
-			"regex": null,
-			"type": "object",
-			"content": {}
-		}, "normal running has invalid return for \"testemptyobject\"");
-
-		deepStrictEqual(container.documentation().testnotinstanciedobject, {
-			"documentation": "",
-			"fullkey": "testnotinstanciedobject",
-			"limits": null,
-			"min": null,
-			"max": null,
-			"regex": null,
-			"type": "function"
-		}, "normal running has invalid return for \"testnotinstanciedobject\"");
-
-		deepStrictEqual(container.documentation().testnotemptyobject, {
-			"documentation": "This is a not empty object",
-			"fullkey": "testnotemptyobject",
-			"limits": null,
-			"min": null,
-			"max": null,
-			"regex": null,
-			"type": "object",
-			"content": {
-				"array": {
-					"documentation": "",
-					"fullkey": "testnotemptyobject.array",
-					"limits": null,
-					"max": null,
-					"min": null,
-					"regex": null,
-					"type": "array",
-					"content": {
-						"0": {
-							"documentation": "",
-							"fullkey": "testnotemptyobject.array.0",
-							"limits": null,
-							"max": null,
-							"min": null,
-							"regex": null,
-							"type": "string",
-							"value": "test1"
-						},
-						"1": {
-							"documentation": "",
-							"fullkey": "testnotemptyobject.array.1",
-							"limits": null,
-							"max": null,
-							"min": null,
-							"regex": null,
-							"type": "string",
-							"value": "test2"
-						}
-					}
-				},
-				"test": {
-					"documentation": "",
-					"fullkey": "testnotemptyobject.test",
-					"limits": null,
-					"max": null,
-					"min": null,
-					"regex": null,
-					"type": "string",
-					"value": "test"
-				}
-			}
-		}, "normal running has invalid return for \"testnotemptyobject\"");
-
-		// ipv4
-
-		deepStrictEqual(container.documentation().testipv4, {
-			"documentation": "This is an ipv4",
-			"fullkey": "testipv4",
-			"limits": null,
-			"min": 7,
-			"max": 15,
-			"regex": patternIPV4Stringified,
-			"type": "ipv4",
-			"value": "127.0.0.1"
-		}, "normal running has invalid return for \"testipv4\"");
-
-		// ipv6
-
-		deepStrictEqual(container.documentation().testipv6, {
-			"documentation": "This is an ipv6",
-			"fullkey": "testipv6",
-			"limits": null,
-			"min": 7,
-			"max": 39,
-			"regex": patternIPV6Stringified,
-			"type": "ipv6",
-			"value": "0000:0000:0000:0000:0000:0000:0000:0001"
-		}, "normal running has invalid return for \"testipv6\"");
-
-		// email
-
-		deepStrictEqual(container.documentation().testemail, {
-			"documentation": "This is an email",
-			"fullkey": "testemail",
-			"limits": null,
-			"min": 6,
-			"max": null,
-			"regex": patternEmailStringified,
-			"type": "email",
-			"value": "test@test.com"
-		}, "normal running has invalid return for \"testemail\"");
-
-		// url
-
-		deepStrictEqual(container.documentation().testurl, {
-			"documentation": "This is an url",
-			"fullkey": "testurl",
-			"limits": null,
-			"min": 8,
-			"max": null,
-			"regex": patternUrlStringified,
-			"type": "url",
-			"value": "https://www.google.com"
-		}, "normal running has invalid return for \"testurl\"");
-
-		// others
+			.set("testfloat", 1.1).document("testfloat", "This is a float");
 
 		deepStrictEqual(container.documentation().teststring, {
 			"documentation": "This is a string",
@@ -370,6 +236,236 @@ describe("documentation", () => {
 			"type": "float",
 			"value": 1.1
 		}, "normal running has invalid return for \"testfloat\"");
+
+	});
+
+	it("should check specific running", () => {
+
+		container
+
+			.skeleton("testemail", "email")
+				.set("testemail", "test@test.com")
+				.document("testemail", "This is an email")
+
+			.skeleton("testurl", "url")
+				.set("testurl", "https://www.google.com")
+				.document("testurl", "This is an url")
+
+			.skeleton("testipv4", "ipv4")
+				.set("testipv4", "127.0.0.1")
+				.document("testipv4", "This is an ipv4")
+
+			.skeleton("testipv6", "ipv6")
+				.set("testipv6", "0000:0000:0000:0000:0000:0000:0000:0001")
+				.document("testipv6", "This is an ipv6");
+
+		// ipv4
+
+		deepStrictEqual(container.documentation().testipv4, {
+			"documentation": "This is an ipv4",
+			"fullkey": "testipv4",
+			"limits": null,
+			"min": 7,
+			"max": 15,
+			"regex": stringifyRegex(patternIPV4),
+			"type": "ipv4",
+			"value": "127.0.0.1"
+		}, "normal running has invalid return for \"testipv4\"");
+
+		// ipv6
+
+		deepStrictEqual(container.documentation().testipv6, {
+			"documentation": "This is an ipv6",
+			"fullkey": "testipv6",
+			"limits": null,
+			"min": 7,
+			"max": 39,
+			"regex": stringifyRegex(patternIPV6),
+			"type": "ipv6",
+			"value": "0000:0000:0000:0000:0000:0000:0000:0001"
+		}, "normal running has invalid return for \"testipv6\"");
+
+		// email
+
+		deepStrictEqual(container.documentation().testemail, {
+			"documentation": "This is an email",
+			"fullkey": "testemail",
+			"limits": null,
+			"min": 6,
+			"max": null,
+			"regex": stringifyRegex(patternEmail),
+			"type": "email",
+			"value": "test@test.com"
+		}, "normal running has invalid return for \"testemail\"");
+
+		// url
+
+		deepStrictEqual(container.documentation().testurl, {
+			"documentation": "This is an url",
+			"fullkey": "testurl",
+			"limits": null,
+			"min": 8,
+			"max": null,
+			"regex": stringifyRegex(patternUrl),
+			"type": "url",
+			"value": "https://www.google.com"
+		}, "normal running has invalid return for \"testurl\"");
+
+	});
+
+	it("should check array running", () => {
+
+		container
+
+			.skeleton("testemptyarray", "array")
+				.document("testemptyarray", "This is an empty array")
+				.set("testemptyarray", [])
+
+			.skeleton("testnotemptyarray", "array")
+				.document("testnotemptyarray", "This is a not empty array")
+				.set("testnotemptyarray", [ "test", "test" ]);
+
+		deepStrictEqual(container.documentation().testemptyarray, {
+			"documentation": "This is an empty array",
+			"fullkey": "testemptyarray",
+			"limits": null,
+			"min": 0,
+			"max": null,
+			"regex": null,
+			"type": "array",
+			"content": {}
+		}, "normal running has invalid return for \"testemptyarray\"");
+
+		deepStrictEqual(container.documentation().testnotemptyarray, {
+			"documentation": "This is a not empty array",
+			"fullkey": "testnotemptyarray",
+			"limits": null,
+			"min": 0,
+			"max": null,
+			"regex": null,
+			"type": "array",
+			"content": {
+				"0": {
+					"documentation": "",
+					"fullkey": "testnotemptyarray.0",
+					"limits": null,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"type": "string",
+					"value": "test"
+				},
+				"1": {
+					"documentation": "",
+					"fullkey": "testnotemptyarray.1",
+					"limits": null,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"type": "string",
+					"value": "test"
+				}
+			}
+		}, "normal running has invalid return for \"testnotemptyarray\"");
+
+	});
+
+	it("should check object running", () => {
+
+		container
+
+			.skeleton("testemptyobject", "object")
+				.set("testemptyobject", {})
+				.document("testemptyobject", "This is an empty object")
+
+			.skeleton("testnotemptyobject", "object")
+				.set("testnotemptyobject", {
+					"test": "test",
+					"array": [ "test1", "test2" ]
+				})
+				.document("testnotemptyobject", "This is a not empty object")
+
+			.set("testnotinstanciedobject", Object)
+
+			.skeleton("testinstanciedobject", "object")
+				.set("testinstanciedobject", {})
+				.document("testinstanciedobject", "This is an instance of Object");
+
+		// object
+
+		deepStrictEqual(container.documentation().testemptyobject, {
+			"documentation": "This is an empty object",
+			"fullkey": "testemptyobject",
+			"limits": null,
+			"min": null,
+			"max": null,
+			"regex": null,
+			"type": "object",
+			"content": {}
+		}, "normal running has invalid return for \"testemptyobject\"");
+
+		deepStrictEqual(container.documentation().testnotinstanciedobject, {
+			"documentation": "",
+			"fullkey": "testnotinstanciedobject",
+			"limits": null,
+			"min": null,
+			"max": null,
+			"regex": null,
+			"type": "function"
+		}, "normal running has invalid return for \"testnotinstanciedobject\"");
+
+		deepStrictEqual(container.documentation().testnotemptyobject, {
+			"documentation": "This is a not empty object",
+			"fullkey": "testnotemptyobject",
+			"limits": null,
+			"min": null,
+			"max": null,
+			"regex": null,
+			"type": "object",
+			"content": {
+				"array": {
+					"documentation": "",
+					"fullkey": "testnotemptyobject.array",
+					"limits": null,
+					"max": null,
+					"min": 0,
+					"regex": null,
+					"type": "array",
+					"content": {
+						"0": {
+							"documentation": "",
+							"fullkey": "testnotemptyobject.array.0",
+							"limits": null,
+							"max": null,
+							"min": null,
+							"regex": null,
+							"type": "string",
+							"value": "test1"
+						},
+						"1": {
+							"documentation": "",
+							"fullkey": "testnotemptyobject.array.1",
+							"limits": null,
+							"max": null,
+							"min": null,
+							"regex": null,
+							"type": "string",
+							"value": "test2"
+						}
+					}
+				},
+				"test": {
+					"documentation": "",
+					"fullkey": "testnotemptyobject.test",
+					"limits": null,
+					"max": null,
+					"min": null,
+					"regex": null,
+					"type": "string",
+					"value": "test"
+				}
+			}
+		}, "normal running has invalid return for \"testnotemptyobject\"");
 
 	});
 
