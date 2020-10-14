@@ -48,23 +48,29 @@ describe("documentation", () => {
 
 		container.set("test.test", "test").document("test.test", "This is a test");
 
-		strictEqual(
-			container.documentation().test.documentation,
-			"",
-			"normal running has invalid size"
-		);
-
-		strictEqual(
-			container.documentation().test.documentation,
-			"",
-			"normal running has invalid test.documentation"
-		);
-
-		strictEqual(
-			container.documentation().test.content.test.documentation,
-			"This is a test",
-			"normal running has invalid test.documentation.test.documentation"
-		);
+		deepStrictEqual(container.documentation(), {
+			"test": {
+				"documentation": "",
+				"fullkey": "test",
+				"limits": null,
+				"min": null,
+				"max": null,
+				"regex": null,
+				"type": "object",
+				"content": {
+					"test": {
+						"documentation": "This is a test",
+						"fullkey": "test.test",
+						"limits": null,
+						"min": null,
+						"max": null,
+						"regex": null,
+						"type": "string",
+						"value": "test"
+					}
+				}
+			}
+		}, "normal running has invalid return for \"testemptyobject\"");
 
 	});
 
@@ -72,21 +78,21 @@ describe("documentation", () => {
 
 		container
 			.set("testemptyarray", []).document("testemptyarray", "This is an empty array")
-			.set("testnotemptyarray", [ "test", "test" ])
-			.set("testemptyobject", {})
+			.set("testnotemptyarray", [ "test", "test" ]).document("testnotemptyarray", "This is a not empty array")
+			.set("testemptyobject", {}).document("testemptyobject", "This is an empty object")
 			.set("testnotemptyobject", {
 				"test": "test",
 				"array": [ "test1", "test2" ]
-			})
+			}).document("testnotemptyobject", "This is a not empty object")
 			.set("testnotinstanciedobject", Object)
 			.set("testinstanciedobject", {}).document("testinstanciedobject", "This is an instance of Object")
 
-			.set("teststring", "string")
-			.set("testboolean", false)
-			.set("testnumber", 1.2)
-			.set("testinteger", 1)
-			.set("testbase16", 0xA5)
-			.set("testfloat", 1.1)
+			.set("teststring", "string").document("teststring", "This is a string")
+			.set("testboolean", false).document("testboolean", "This is a boolean")
+			.set("testnumber", 1.2).document("testnumber", "This is a number")
+			.set("testinteger", 1).document("testinteger", "This is an integer")
+			.set("testbase16", 0xA5).document("testbase16", "This is a base16")
+			.set("testfloat", 1.1).document("testfloat", "This is a float")
 
 			.skeleton("testlimits", "string")
 				.limit("testlimits", [ "test1", "test2" ])
@@ -94,12 +100,16 @@ describe("documentation", () => {
 
 			.skeleton("testemail", "email")
 				.set("testemail", "test@test.com")
+				.document("testemail", "This is an email")
 			.skeleton("testurl", "url")
 				.set("testurl", "https://www.google.com")
+				.document("testurl", "This is an url")
 			.skeleton("testipv4", "ipv4")
 				.set("testipv4", "127.0.0.1")
+				.document("testipv4", "This is an ipv4")
 			.skeleton("testipv6", "ipv6")
 				.set("testipv6", "0000:0000:0000:0000:0000:0000:0000:0001")
+				.document("testipv6", "This is an ipv6")
 
 			.skeleton("testrecursiveinteger.test", "integer")
 				.set("testrecursiveinteger.test", 1, "This is a recursive test")
@@ -114,105 +124,88 @@ describe("documentation", () => {
 		// array
 
 		deepStrictEqual(container.documentation().testemptyarray, {
-			"content": {},
 			"documentation": "This is an empty array",
 			"fullkey": "testemptyarray",
 			"limits": null,
 			"min": null,
 			"max": null,
 			"regex": null,
-			"type": "array"
+			"type": "array",
+			"content": {}
 		}, "normal running has invalid return for \"testemptyarray\"");
 
-		strictEqual(
-			container.documentation().testnotemptyarray.fullkey, "testnotemptyarray",
-			"normal running has invalid fullkey for \"testnotemptyarray\""
-		);
-
-		strictEqual(
-			container.documentation().testnotemptyarray.type, "array",
-			"normal running has invalid type for \"testnotemptyarray\""
-		);
-
-		strictEqual(
-			container.documentation().testnotemptyarray.documentation, "",
-			"normal running has invalid documentation for \"testnotemptyarray\""
-		);
-
-		deepStrictEqual(
-			container.documentation().testnotemptyarray.content, {
-				"0": {
-					"documentation": "",
-					"fullkey": "testnotemptyarray.0",
-					"limits": null,
-					"min": null,
-					"max": null,
-					"regex": null,
-					"type": "string",
-					"value": "test"
-				},
-				"1": {
-					"documentation": "",
-					"fullkey": "testnotemptyarray.1",
-					"limits": null,
-					"min": null,
-					"max": null,
-					"regex": null,
-					"type": "string",
-					"value": "test"
-				}
-			},
-			"normal running has invalid content for \"testnotemptyarray\""
-		);
-
 		deepStrictEqual(container.documentation().testnotemptyarray, {
-			"content": {
-				"0": {
-					"documentation": "",
-					"fullkey": "testnotemptyarray.0",
-					"limits": null,
-					"min": null,
-					"max": null,
-					"regex": null,
-					"value": "test",
-					"type": "string"
-				},
-				"1": {
-					"documentation": "",
-					"fullkey": "testnotemptyarray.1",
-					"limits": null,
-					"min": null,
-					"max": null,
-					"regex": null,
-					"type": "string",
-					"value": "test"
-				}
-			},
-			"documentation": "",
+			"documentation": "This is a not empty array",
 			"fullkey": "testnotemptyarray",
 			"limits": null,
 			"min": null,
 			"max": null,
 			"regex": null,
-			"type": "array"
+			"type": "array",
+			"content": {
+				"0": {
+					"documentation": "",
+					"fullkey": "testnotemptyarray.0",
+					"limits": null,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"type": "string",
+					"value": "test"
+				},
+				"1": {
+					"documentation": "",
+					"fullkey": "testnotemptyarray.1",
+					"limits": null,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"type": "string",
+					"value": "test"
+				}
+			}
 		}, "normal running has invalid return for \"testnotemptyarray\"");
 
 		// object
 
 		deepStrictEqual(container.documentation().testemptyobject, {
-			"content": {},
-			"documentation": "",
+			"documentation": "This is an empty object",
 			"fullkey": "testemptyobject",
 			"limits": null,
 			"min": null,
 			"max": null,
 			"regex": null,
-			"type": "object"
+			"type": "object",
+			"content": {}
 		}, "normal running has invalid return for \"testemptyobject\"");
 
+		deepStrictEqual(container.documentation().testnotinstanciedobject, {
+			"documentation": "",
+			"fullkey": "testnotinstanciedobject",
+			"limits": null,
+			"min": null,
+			"max": null,
+			"regex": null,
+			"type": "function"
+		}, "normal running has invalid return for \"testnotinstanciedobject\"");
+
 		deepStrictEqual(container.documentation().testnotemptyobject, {
+			"documentation": "This is a not empty object",
+			"fullkey": "testnotemptyobject",
+			"limits": null,
+			"min": null,
+			"max": null,
+			"regex": null,
+			"type": "object",
 			"content": {
 				"array": {
+					"documentation": "",
+					"fullkey": "testnotemptyobject.array",
+					"limits": null,
+					"max": null,
+					"min": null,
+					"regex": null,
+					"type": "array",
 					"content": {
 						"0": {
 							"documentation": "",
@@ -234,14 +227,7 @@ describe("documentation", () => {
 							"type": "string",
 							"value": "test2"
 						}
-					},
-					"documentation": "",
-					"fullkey": "testnotemptyobject.array",
-					"limits": null,
-					"max": null,
-					"min": null,
-					"regex": null,
-					"type": "array"
+					}
 				},
 				"test": {
 					"documentation": "",
@@ -253,30 +239,13 @@ describe("documentation", () => {
 					"type": "string",
 					"value": "test"
 				}
-			},
-			"documentation": "",
-			"fullkey": "testnotemptyobject",
-			"limits": null,
-			"min": null,
-			"max": null,
-			"regex": null,
-			"type": "object"
+			}
 		}, "normal running has invalid return for \"testnotemptyobject\"");
-
-		deepStrictEqual(container.documentation().testnotinstanciedobject, {
-			"documentation": "",
-			"fullkey": "testnotinstanciedobject",
-			"limits": null,
-			"min": null,
-			"max": null,
-			"regex": null,
-			"type": "function"
-		}, "normal running has invalid return for \"testnotinstanciedobject\"");
 
 		// ipv4
 
 		deepStrictEqual(container.documentation().testipv4, {
-			"documentation": "",
+			"documentation": "This is an ipv4",
 			"fullkey": "testipv4",
 			"limits": null,
 			"min": 7,
@@ -289,7 +258,7 @@ describe("documentation", () => {
 		// ipv6
 
 		deepStrictEqual(container.documentation().testipv6, {
-			"documentation": "",
+			"documentation": "This is an ipv6",
 			"fullkey": "testipv6",
 			"limits": null,
 			"min": 7,
@@ -302,7 +271,7 @@ describe("documentation", () => {
 		// email
 
 		deepStrictEqual(container.documentation().testemail, {
-			"documentation": "",
+			"documentation": "This is an email",
 			"fullkey": "testemail",
 			"limits": null,
 			"min": 6,
@@ -315,7 +284,7 @@ describe("documentation", () => {
 		// url
 
 		deepStrictEqual(container.documentation().testurl, {
-			"documentation": "",
+			"documentation": "This is an url",
 			"fullkey": "testurl",
 			"limits": null,
 			"min": 8,
@@ -328,7 +297,7 @@ describe("documentation", () => {
 		// others
 
 		deepStrictEqual(container.documentation().teststring, {
-			"documentation": "",
+			"documentation": "This is a string",
 			"fullkey": "teststring",
 			"limits": null,
 			"min": null,
@@ -339,7 +308,7 @@ describe("documentation", () => {
 		}, "normal running has invalid return for \"teststring\"");
 
 		deepStrictEqual(container.documentation().testboolean, {
-			"documentation": "",
+			"documentation": "This is a boolean",
 			"fullkey": "testboolean",
 			"limits": null,
 			"min": null,
@@ -350,7 +319,7 @@ describe("documentation", () => {
 		}, "normal running has invalid return for \"testboolean\"");
 
 		deepStrictEqual(container.documentation().testnumber, {
-			"documentation": "",
+			"documentation": "This is a number",
 			"fullkey": "testnumber",
 			"limits": null,
 			"min": null,
@@ -361,7 +330,7 @@ describe("documentation", () => {
 		}, "normal running has invalid return for \"testnumber\"");
 
 		deepStrictEqual(container.documentation().testinteger, {
-			"documentation": "",
+			"documentation": "This is an integer",
 			"fullkey": "testinteger",
 			"limits": null,
 			"min": null,
@@ -372,7 +341,7 @@ describe("documentation", () => {
 		}, "normal running has invalid return for \"testinteger\"");
 
 		deepStrictEqual(container.documentation().testbase16, {
-			"documentation": "",
+			"documentation": "This is a base16",
 			"fullkey": "testbase16",
 			"limits": null,
 			"min": null,
@@ -383,7 +352,7 @@ describe("documentation", () => {
 		}, "normal running has invalid return for \"testbase16\"");
 
 		deepStrictEqual(container.documentation().testfloat, {
-			"documentation": "",
+			"documentation": "This is a float",
 			"fullkey": "testfloat",
 			"limits": null,
 			"min": null,
@@ -399,87 +368,30 @@ describe("documentation", () => {
 
 		container
 			.skeleton("module", "object")
-				.skeleton("module.versions", "array").set("module.versions", []);
+				.skeleton("module.versions", "array")
+				.set("module.versions", []);
 
-		strictEqual(
-			container.documentation().module.documentation, "",
-			"recursive empty array running has invalid return for \"module.documentation\""
-		);
-
-		strictEqual(
-			container.documentation().module.fullkey, "module",
-			"recursive empty array running has invalid return for \"module.fullkey\""
-		);
-
-		strictEqual(
-			container.documentation().module.min, null,
-			"recursive array running has invalid return for \"module.min\""
-		);
-
-		strictEqual(
-			container.documentation().module.max, null,
-			"recursive array running has invalid return for \"module.max\""
-		);
-
-		strictEqual(
-			container.documentation().module.limits, null,
-			"recursive array running has invalid return for \"module.max\""
-		);
-
-		strictEqual(
-			container.documentation().module.type, "object",
-			"recursive empty array running has invalid return for \"module.type\""
-		);
-
-		strictEqual(
-			typeof container.documentation().module.content, "object",
-			"recursive empty array running has invalid type for \"module.content\""
-		);
-
-			strictEqual(
-				typeof container.documentation().module.content.versions, "object",
-				"recursive empty array running has invalid type for \"module.content.versions\""
-			);
-
-				strictEqual(
-					container.documentation().module.content.versions.documentation, "",
-					"recursive empty array running has invalid return for \"module.content.versions.documentation\""
-				);
-
-				strictEqual(
-					container.documentation().module.content.versions.fullkey, "module.versions",
-					"recursive empty array running has invalid return for \"module.content.versions.fullkey\""
-				);
-
-				strictEqual(
-					container.documentation().module.content.versions.min, 0,
-					"recursive array running has invalid return for \"module.content.versions.min\""
-				);
-
-				strictEqual(
-					container.documentation().module.content.versions.max, null,
-					"recursive array running has invalid return for \"module.content.versions.max\""
-				);
-
-				strictEqual(
-					container.documentation().module.content.versions.limits, null,
-					"recursive array running has invalid return for \"module.content.versions.max\""
-				);
-
-				strictEqual(
-					container.documentation().module.content.versions.type, "array",
-					"recursive empty array running has invalid return for \"module.content.versions.type\""
-				);
-
-				strictEqual(
-					typeof container.documentation().module.content.versions.content, "object",
-					"recursive empty array running has invalid type for \"module.content.versions.content\""
-				);
-
-				strictEqual(
-					Object.keys(container.documentation().module.content.versions.content).length, 0,
-					"recursive empty array running has invalid type for \"module.content.versions.content\""
-				);
+		deepStrictEqual(container.documentation().module, {
+			"documentation": "",
+			"fullkey": "module",
+			"limits": null,
+			"min": null,
+			"max": null,
+			"regex": null,
+			"type": "object",
+			"content": {
+				"versions": {
+					"documentation": "",
+					"fullkey": "module.versions",
+					"limits": null,
+					"min": 0,
+					"max": null,
+					"regex": null,
+					"type": "array",
+					"content": {}
+				}
+			}
+		}, "normal running has invalid return for \"empty array\"");
 
 	});
 
@@ -489,90 +401,41 @@ describe("documentation", () => {
 			.skeleton("module", "object")
 				.skeleton("module.versions", "array")
 					.skeleton("module.versions.0", "integer")
-					.document("module.versions.0", "This is the first version");
+					.document("module.versions.0", "This is the first version")
+					.set("module.versions.0", 1);
 
-		container
-			.set("module.versions.0", 1);
-
-		strictEqual(
-			container.documentation().module.fullkey, "module",
-			"recursive array running has invalid return for \"module.fullkey\""
-		);
-
-		strictEqual(
-			container.documentation().module.documentation, "",
-			"recursive array running has invalid return for \"module.documentation\""
-		);
-
-		strictEqual(
-			container.documentation().module.min, null,
-			"recursive array running has invalid return for \"module.min\""
-		);
-
-		strictEqual(
-			container.documentation().module.max, null,
-			"recursive array running has invalid return for \"module.max\""
-		);
-
-		strictEqual(
-			container.documentation().module.limits, null,
-			"recursive array running has invalid return for \"module.max\""
-		);
-
-		strictEqual(
-			container.documentation().module.type, "object",
-			"recursive array running has invalid return for \"module.type\""
-		);
-
-		strictEqual(
-			typeof container.documentation().module.content, "object",
-			"recursive array running has invalid type for \"module.content\""
-		);
-
-			strictEqual(
-				typeof container.documentation().module.content.versions, "object",
-				"recursive array running has invalid type for \"module.content.versions\""
-			);
-
-				strictEqual(
-					container.documentation().module.content.versions.fullkey, "module.versions",
-					"recursive array running has invalid return for \"module.content.versions.fullkey\""
-				);
-
-				strictEqual(
-					container.documentation().module.content.versions.documentation, "",
-					"recursive array running has invalid return for \"module.content.versions.documentation\""
-				);
-
-				strictEqual(
-					container.documentation().module.content.versions.type, "array",
-					"recursive array running has invalid return for \"module.content.versions.type\""
-				);
-
-				strictEqual(
-					typeof container.documentation().module.content.versions.content, "object",
-					"recursive array running has invalid type for \"module.content.versions.content\""
-				);
-
-					strictEqual(
-						typeof container.documentation().module.content.versions.content[0], "object",
-						"recursive array running has invalid type for \"module.content.versions.content.0\""
-					);
-
-						strictEqual(
-							container.documentation().module.content.versions.content[0].fullkey, "module.versions.0",
-							"recursive array running has invalid type for \"module.content.versions.content.0.fullkey\""
-						);
-
-						strictEqual(
-							container.documentation().module.content.versions.content[0].documentation, "This is the first version",
-							"recursive array running has invalid type for \"module.content.versions.content.0.documentation\""
-						);
-
-						strictEqual(
-							container.documentation().module.content.versions.content[0].type, "integer",
-							"recursive array running has invalid type for \"module.content.versions.content.0.type\""
-						);
+		deepStrictEqual(container.documentation().module, {
+			"documentation": "",
+			"fullkey": "module",
+			"limits": null,
+			"min": null,
+			"max": null,
+			"regex": null,
+			"type": "object",
+			"content": {
+				"versions": {
+					"documentation": "",
+					"fullkey": "module.versions",
+					"limits": null,
+					"min": 0,
+					"max": null,
+					"regex": null,
+					"type": "array",
+					"content": {
+						"0": {
+							"documentation": "This is the first version",
+							"fullkey": "module.versions.0",
+							"limits": null,
+							"min": null,
+							"max": null,
+							"regex": null,
+							"type": "integer",
+							"value": 1
+						}
+					}
+				}
+			}
+		}, "normal running has invalid return for \"recursive array\"");
 
 	});
 
@@ -580,156 +443,89 @@ describe("documentation", () => {
 
 		container
 			.skeleton("module", "object")
-				.skeleton("module.version", "object").set("module.version", {});
+				.skeleton("module.version", "object")
+				.set("module.version", {});
 
-		strictEqual(
-			container.documentation().module.fullkey, "module",
-			"recursive empty array running has invalid return for \"module.fullkey\""
-		);
-
-		strictEqual(
-			container.documentation().module.documentation, "",
-			"recursive empty array running has invalid return for \"module.documentation\""
-		);
-
-		strictEqual(
-			container.documentation().module.type, "object",
-			"recursive empty array running has invalid return for \"module.type\""
-		);
-
-		strictEqual(
-			typeof container.documentation().module.content, "object",
-			"recursive empty array running has invalid type for \"module.content\""
-		);
-
-			strictEqual(
-				typeof container.documentation().module.content.version, "object",
-				"recursive empty array running has invalid type for \"module.content.version\""
-			);
-
-				strictEqual(
-					container.documentation().module.content.version.fullkey, "module.version",
-					"recursive empty array running has invalid return for \"module.content.version.fullkey\""
-				);
-
-				strictEqual(
-					container.documentation().module.content.version.documentation, "",
-					"recursive empty array running has invalid return for \"module.content.version.documentation\""
-				);
-
-				strictEqual(
-					container.documentation().module.content.version.type, "object",
-					"recursive empty array running has invalid return for \"module.content.version.type\""
-				);
-
-				strictEqual(
-					typeof container.documentation().module.content.version.content, "object",
-					"recursive empty array running has invalid type for \"module.content.version.content\""
-				);
-
-				strictEqual(
-					Object.keys(container.documentation().module.content.version.content).length, 0,
-					"recursive empty array running has invalid type for \"module.content.version.content\""
-				);
+		deepStrictEqual(container.documentation().module, {
+			"documentation": "",
+			"fullkey": "module",
+			"limits": null,
+			"min": null,
+			"max": null,
+			"regex": null,
+			"type": "object",
+			"content": {
+				"version": {
+					"documentation": "",
+					"fullkey": "module.version",
+					"limits": null,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"type": "object",
+					"content": {}
+				}
+			}
+		}, "normal running has invalid return for \"empty object\"");
 
 	});
 
-	it("should check normal recursive array running", () => {
+	it("should check normal recursive object running", () => {
 
 		container
 			.skeleton("module", "object")
 				.skeleton("module.version", "object")
-					.skeleton("module.version.name", "string").document("module.version.name", "Version name")
-					.skeleton("module.version.code", "string").document("module.version.code", "Version code");
 
-		container
-			.set("module.version.name", "main")
-			.set("module.version.code", "0.0.1");
+					.skeleton("module.version.name", "string")
+					.document("module.version.name", "Version name")
+					.set("module.version.name", "main")
 
-		strictEqual(
-			container.documentation().module.fullkey, "module",
-			"recursive array running has invalid return for \"module.fullkey\""
-		);
+					.skeleton("module.version.code", "string")
+					.document("module.version.code", "Version code")
+					.set("module.version.code", "0.0.1");
 
-		strictEqual(
-			container.documentation().module.documentation, "",
-			"recursive array running has invalid return for \"module.documentation\""
-		);
-
-		strictEqual(
-			container.documentation().module.type, "object",
-			"recursive array running has invalid return for \"module.type\""
-		);
-
-		strictEqual(
-			typeof container.documentation().module.content, "object",
-			"recursive array running has invalid type for \"module.content\""
-		);
-
-			strictEqual(
-				typeof container.documentation().module.content.version, "object",
-				"recursive array running has invalid type for \"module.content.version\""
-			);
-
-				strictEqual(
-					container.documentation().module.content.version.fullkey, "module.version",
-					"recursive array running has invalid return for \"module.content.version.fullkey\""
-				);
-
-				strictEqual(
-					container.documentation().module.content.version.documentation, "",
-					"recursive array running has invalid return for \"module.content.version.documentation\""
-				);
-
-				strictEqual(
-					container.documentation().module.content.version.type, "object",
-					"recursive array running has invalid return for \"module.content.version.type\""
-				);
-
-				strictEqual(
-					typeof container.documentation().module.content.version.content, "object",
-					"recursive array running has invalid type for \"module.content.version.content\""
-				);
-
-					strictEqual(
-						typeof container.documentation().module.content.version.content.name, "object",
-						"recursive array running has invalid type for \"module.content.version.content.name\""
-					);
-
-						strictEqual(
-							container.documentation().module.content.version.content.name.fullkey, "module.version.name",
-							"recursive array running has invalid type for \"module.content.version.content.0.fullkey\""
-						);
-
-						strictEqual(
-							container.documentation().module.content.version.content.name.documentation, "Version name",
-							"recursive array running has invalid type for \"module.content.version.content.name.documentation\""
-						);
-
-						strictEqual(
-							container.documentation().module.content.version.content.name.type, "string",
-							"recursive array running has invalid type for \"module.content.version.content.name.type\""
-						);
-
-					strictEqual(
-						typeof container.documentation().module.content.version.content.code, "object",
-						"recursive array running has invalid type for \"module.content.version.content.code\""
-					);
-
-						strictEqual(
-							container.documentation().module.content.version.content.code.fullkey, "module.version.code",
-							"recursive array running has invalid type for \"module.content.version.content.0.fullkey\""
-						);
-
-						strictEqual(
-							container.documentation().module.content.version.content.code.documentation, "Version code",
-							"recursive array running has invalid type for \"module.content.version.content.code.documentation\""
-						);
-
-						strictEqual(
-							container.documentation().module.content.version.content.code.type, "string",
-							"recursive array running has invalid type for \"module.content.version.content.code.type\""
-						);
+		deepStrictEqual(container.documentation().module, {
+			"documentation": "",
+			"fullkey": "module",
+			"limits": null,
+			"min": null,
+			"max": null,
+			"regex": null,
+			"type": "object",
+			"content": {
+				"version": {
+					"documentation": "",
+					"fullkey": "module.version",
+					"limits": null,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"type": "object",
+					"content": {
+						"name": {
+							"documentation": "Version name",
+							"fullkey": "module.version.name",
+							"limits": null,
+							"min": 0,
+							"max": null,
+							"regex": null,
+							"type": "string",
+							"value": "main"
+						},
+						"code": {
+							"documentation": "Version code",
+							"fullkey": "module.version.code",
+							"limits": null,
+							"min": 0,
+							"max": null,
+							"regex": null,
+							"type": "string",
+							"value": "0.0.1"
+						}
+					}
+				}
+			}
+		}, "normal running has invalid return for \"recursive object\"");
 
 	});
 
