@@ -12,6 +12,7 @@
 
 	// locals
 	const Container = require(join(__dirname, "..", "lib", "main.js"));
+	const { patternEmail, patternUrl, patternIPV4, patternIPV6 } = require(join(__dirname, "..", "lib", "patterns.js"));
 
 // private
 
@@ -119,6 +120,7 @@ describe("documentation", () => {
 			"limits": null,
 			"min": null,
 			"max": null,
+			"regex": null,
 			"type": "array"
 		}, "normal running has invalid return for \"testemptyarray\"");
 
@@ -145,6 +147,7 @@ describe("documentation", () => {
 					"limits": null,
 					"min": null,
 					"max": null,
+					"regex": null,
 					"type": "string",
 					"value": "test"
 				},
@@ -154,6 +157,7 @@ describe("documentation", () => {
 					"limits": null,
 					"min": null,
 					"max": null,
+					"regex": null,
 					"type": "string",
 					"value": "test"
 				}
@@ -169,6 +173,7 @@ describe("documentation", () => {
 					"limits": null,
 					"min": null,
 					"max": null,
+					"regex": null,
 					"value": "test",
 					"type": "string"
 				},
@@ -178,6 +183,7 @@ describe("documentation", () => {
 					"limits": null,
 					"min": null,
 					"max": null,
+					"regex": null,
 					"type": "string",
 					"value": "test"
 				}
@@ -187,6 +193,7 @@ describe("documentation", () => {
 			"limits": null,
 			"min": null,
 			"max": null,
+			"regex": null,
 			"type": "array"
 		}, "normal running has invalid return for \"testnotemptyarray\"");
 
@@ -199,34 +206,61 @@ describe("documentation", () => {
 			"limits": null,
 			"min": null,
 			"max": null,
+			"regex": null,
 			"type": "object"
 		}, "normal running has invalid return for \"testemptyobject\"");
 
-		strictEqual(container.documentation().testnotemptyobject.type, "object", "normal running has invalid type for \"testnotemptyobject\"");
-
-		strictEqual(
-			container.documentation().testnotemptyobject.documentation, "",
-			"normal running has invalid documentation for \"testnotemptyobject\""
-		);
-
-		strictEqual(
-			Object.keys(container.documentation().testnotemptyobject.content).length, 2,
-			"normal running has invalid return for \"testnotemptyobject\""
-		);
-
-		strictEqual(
-			container.documentation().testnotemptyobject.fullkey, "testnotemptyobject",
-			"normal running has invalid fullkey for \"testnotemptyobject\""
-		);
-
-		deepStrictEqual(container.documentation().testnotemptyobject.content.test, {
+		deepStrictEqual(container.documentation().testnotemptyobject, {
+			"content": {
+				"array": {
+					"content": {
+						"0": {
+							"documentation": "",
+							"fullkey": "testnotemptyobject.array.0",
+							"limits": null,
+							"max": null,
+							"min": null,
+							"regex": null,
+							"type": "string",
+							"value": "test1"
+						},
+						"1": {
+							"documentation": "",
+							"fullkey": "testnotemptyobject.array.1",
+							"limits": null,
+							"max": null,
+							"min": null,
+							"regex": null,
+							"type": "string",
+							"value": "test2"
+						}
+					},
+					"documentation": "",
+					"fullkey": "testnotemptyobject.array",
+					"limits": null,
+					"max": null,
+					"min": null,
+					"regex": null,
+					"type": "array"
+				},
+				"test": {
+					"documentation": "",
+					"fullkey": "testnotemptyobject.test",
+					"limits": null,
+					"max": null,
+					"min": null,
+					"regex": null,
+					"type": "string",
+					"value": "test"
+				}
+			},
 			"documentation": "",
-			"fullkey": "testnotemptyobject.test",
+			"fullkey": "testnotemptyobject",
 			"limits": null,
 			"min": null,
 			"max": null,
-			"type": "string",
-			"value": "test"
+			"regex": null,
+			"type": "object"
 		}, "normal running has invalid return for \"testnotemptyobject\"");
 
 		deepStrictEqual(container.documentation().testnotinstanciedobject, {
@@ -235,18 +269,61 @@ describe("documentation", () => {
 			"limits": null,
 			"min": null,
 			"max": null,
+			"regex": null,
 			"type": "function"
 		}, "normal running has invalid return for \"testnotinstanciedobject\"");
 
-		deepStrictEqual(container.documentation().testinstanciedobject, {
-			"content": {},
-			"documentation": "This is an instance of Object",
-			"fullkey": "testinstanciedobject",
+		// ipv4
+
+		deepStrictEqual(container.documentation().testipv4, {
+			"documentation": "",
+			"fullkey": "testipv4",
 			"limits": null,
-			"min": null,
+			"min": 7,
+			"max": 15,
+			"regex": patternIPV4,
+			"type": "ipv4",
+			"value": "127.0.0.1"
+		}, "normal running has invalid return for \"testipv4\"");
+
+		// ipv6
+
+		deepStrictEqual(container.documentation().testipv6, {
+			"documentation": "",
+			"fullkey": "testipv6",
+			"limits": null,
+			"min": 7,
+			"max": 39,
+			"regex": patternIPV6,
+			"type": "ipv6",
+			"value": "0000:0000:0000:0000:0000:0000:0000:0001"
+		}, "normal running has invalid return for \"testipv6\"");
+
+		// email
+
+		deepStrictEqual(container.documentation().testemail, {
+			"documentation": "",
+			"fullkey": "testemail",
+			"limits": null,
+			"min": 6,
 			"max": null,
-			"type": "object"
-		}, "normal running has invalid return for \"testinstanciedobject\"");
+			"regex": patternEmail,
+			"type": "email",
+			"value": "test@test.com"
+		}, "normal running has invalid return for \"testemail\"");
+
+		// url
+
+		deepStrictEqual(container.documentation().testurl, {
+			"documentation": "",
+			"fullkey": "testurl",
+			"limits": null,
+			"min": 8,
+			"max": null,
+			"regex": patternUrl,
+			"type": "url",
+			"value": "https://www.google.com"
+		}, "normal running has invalid return for \"testurl\"");
 
 		// others
 
@@ -256,6 +333,7 @@ describe("documentation", () => {
 			"limits": null,
 			"min": null,
 			"max": null,
+			"regex": null,
 			"type": "string",
 			"value": "string"
 		}, "normal running has invalid return for \"teststring\"");
@@ -266,6 +344,7 @@ describe("documentation", () => {
 			"limits": null,
 			"min": null,
 			"max": null,
+			"regex": null,
 			"type": "boolean",
 			"value": false
 		}, "normal running has invalid return for \"testboolean\"");
@@ -276,6 +355,7 @@ describe("documentation", () => {
 			"limits": null,
 			"min": null,
 			"max": null,
+			"regex": null,
 			"type": "float",
 			"value": 1.2
 		}, "normal running has invalid return for \"testnumber\"");
@@ -286,6 +366,7 @@ describe("documentation", () => {
 			"limits": null,
 			"min": null,
 			"max": null,
+			"regex": null,
 			"type": "integer",
 			"value": 1
 		}, "normal running has invalid return for \"testinteger\"");
@@ -296,6 +377,7 @@ describe("documentation", () => {
 			"limits": null,
 			"min": null,
 			"max": null,
+			"regex": null,
 			"type": "integer",
 			"value": 165
 		}, "normal running has invalid return for \"testbase16\"");
@@ -306,6 +388,7 @@ describe("documentation", () => {
 			"limits": null,
 			"min": null,
 			"max": null,
+			"regex": null,
 			"type": "float",
 			"value": 1.1
 		}, "normal running has invalid return for \"testfloat\"");

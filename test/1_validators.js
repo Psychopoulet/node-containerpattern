@@ -76,6 +76,9 @@ describe("validators", () => {
 		strictEqual(Validators.isIPV4(0), false, "isIPV4 result test is invalid");
 		strictEqual(Validators.isIPV4(""), false, "isIPV4 result test is invalid");
 		strictEqual(Validators.isIPV4("test"), false, "isIPV4 result test is invalid");
+		strictEqual(Validators.isIPV4("255.255.255.256"), false, "isIPV4 result test is invalid");
+		strictEqual(Validators.isIPV4("0.0.0.e"), false, "isIPV4 result test is invalid");
+		strictEqual(Validators.isIPV4("0.0.0.0"), true, "isIPV4 result test is invalid");
 		strictEqual(Validators.isIPV4("127.0.0.1"), true, "isIPV4 result test is invalid");
 	});
 
