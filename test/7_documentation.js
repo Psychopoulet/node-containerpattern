@@ -16,7 +16,16 @@
 
 // private
 
-	const container = new Container();
+	// attributes
+
+		const container = new Container();
+
+// consts
+
+	const patternEmailStringified = String(patternEmail);
+	const patternUrlStringified = String(patternUrl);
+	const patternIPV4Stringified = String(patternIPV4);
+	const patternIPV6Stringified = String(patternIPV6);
 
 // tests
 
@@ -250,7 +259,7 @@ describe("documentation", () => {
 			"limits": null,
 			"min": 7,
 			"max": 15,
-			"regex": patternIPV4,
+			"regex": patternIPV4Stringified,
 			"type": "ipv4",
 			"value": "127.0.0.1"
 		}, "normal running has invalid return for \"testipv4\"");
@@ -263,7 +272,7 @@ describe("documentation", () => {
 			"limits": null,
 			"min": 7,
 			"max": 39,
-			"regex": patternIPV6,
+			"regex": patternIPV6Stringified,
 			"type": "ipv6",
 			"value": "0000:0000:0000:0000:0000:0000:0000:0001"
 		}, "normal running has invalid return for \"testipv6\"");
@@ -276,7 +285,7 @@ describe("documentation", () => {
 			"limits": null,
 			"min": 6,
 			"max": null,
-			"regex": patternEmail,
+			"regex": patternEmailStringified,
 			"type": "email",
 			"value": "test@test.com"
 		}, "normal running has invalid return for \"testemail\"");
@@ -289,7 +298,7 @@ describe("documentation", () => {
 			"limits": null,
 			"min": 8,
 			"max": null,
-			"regex": patternUrl,
+			"regex": patternUrlStringified,
 			"type": "url",
 			"value": "https://www.google.com"
 		}, "normal running has invalid return for \"testurl\"");
