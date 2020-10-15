@@ -1,5 +1,7 @@
 declare module "node-containerpattern" {
 
+	type tType = "array" | "boolean" | "color" | "email" | "float" | "ipv4" | "ipv6" | "integer" | "object" | "string" | "url";
+
 	class Container {
 
 		// Map
@@ -40,9 +42,9 @@ declare module "node-containerpattern" {
 		public limit(key: string, limit: Array<string>): boolean;
 		public min(key: string, min: number): Container;
 		public max(key: string, max: number): Container;
-		public regex(key: string, regex: string): Container;
+		public regex(key: string, regex: RegExp): Container;
 		public set(key: string, value: any): Container;
-		public skeleton(key: string, value: string): Container;
+		public skeleton(key: string, value: tType): Container;
 
 	}
 

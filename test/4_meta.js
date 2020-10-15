@@ -203,13 +203,13 @@ describe("meta", () => {
 		it("should check normal running", () => {
 			strictEqual(container.skeleton("testskeletonarray", "Array") instanceof Container, true, "normal running has invalid return");
 			strictEqual(container.skeleton("testskeletonarray", "array") instanceof Container, true, "normal running has invalid return");
+			strictEqual(container.skeleton("testskeletoncolor", "color") instanceof Container, true, "normal running has invalid return");
 			strictEqual(container.skeleton("testskeletonboolean", "boolean") instanceof Container, true, "normal running has invalid return");
 			strictEqual(container.skeleton("testskeletonemail", "email") instanceof Container, true, "normal running has invalid return");
 			strictEqual(container.skeleton("testskeletonfloat", "float") instanceof Container, true, "normal running has invalid return");
 			strictEqual(container.skeleton("testskeletoninteger", "integer") instanceof Container, true, "normal running has invalid return");
 			strictEqual(container.skeleton("testskeletonipv4", "ipv4") instanceof Container, true, "normal running has invalid return");
 			strictEqual(container.skeleton("testskeletonipv6", "ipv6") instanceof Container, true, "normal running has invalid return");
-			strictEqual(container.skeleton("testskeletonnumber", "number") instanceof Container, true, "normal running has invalid return");
 			strictEqual(container.skeleton("testskeletonobject", "object") instanceof Container, true, "normal running has invalid return");
 			strictEqual(container.skeleton("testskeletonstring", "string") instanceof Container, true, "normal running has invalid return");
 			strictEqual(container.skeleton("testskeletonurl", "url") instanceof Container, true, "normal running has invalid return");

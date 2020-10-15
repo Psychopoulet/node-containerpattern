@@ -20,12 +20,16 @@ describe("min", () => {
 	beforeEach(() => {
 
 		container.clear()
-			.skeleton("testboolean", "boolean")
-			.skeleton("testinteger", "integer")
-			.skeleton("testfloat", "float")
-			.skeleton("testnumber", "number")
-			.skeleton("teststring", "string")
 			.skeleton("testarray", "array")
+			.skeleton("testboolean", "boolean")
+			.skeleton("testcolor", "color")
+			.skeleton("testemail", "email")
+			.skeleton("testfloat", "float")
+			.skeleton("testinteger", "integer")
+			.skeleton("testipv4", "ipv4")
+			.skeleton("testipv6", "ipv6")
+			.skeleton("teststring", "string")
+			.skeleton("testurl", "url")
 			.skeleton("module", "object")
 				.skeleton("module.minversion", "integer")
 				.skeleton("module.versions", "array")
@@ -103,19 +107,6 @@ describe("min", () => {
 
 	});
 
-	it("should check normal number running", () => {
-
-		strictEqual(container.min("testnumber", 0) instanceof Container, true, "normal running has invalid return");
-
-		throws(() => {
-			container.set("testnumber", -0.1);
-		}, Error, "check value does not throw an error");
-
-		strictEqual(container.set("testnumber", 0) instanceof Container, true, "normal running has invalid return");
-		strictEqual(container.set("testnumber", 0.1) instanceof Container, true, "normal running has invalid return");
-
-	});
-
 	it("should check normal string running", () => {
 
 		strictEqual(container.min("teststring", 2) instanceof Container, true, "normal running has invalid return");
@@ -126,6 +117,36 @@ describe("min", () => {
 
 		strictEqual(container.set("teststring", "ab") instanceof Container, true, "normal running has invalid return");
 		strictEqual(container.set("teststring", "abcd") instanceof Container, true, "normal running has invalid return");
+
+	});
+
+	it("should check normal testcolor running", () => {
+
+		strictEqual(container.min("testcolor", 2) instanceof Container, true, "normal running has invalid return");
+
+	});
+
+	it("should check normal testemail running", () => {
+
+		strictEqual(container.min("testemail", 2) instanceof Container, true, "normal running has invalid return");
+
+	});
+
+	it("should check normal testipv4 running", () => {
+
+		strictEqual(container.min("testipv4", 2) instanceof Container, true, "normal running has invalid return");
+
+	});
+
+	it("should check normal testipv6 running", () => {
+
+		strictEqual(container.min("testipv6", 2) instanceof Container, true, "normal running has invalid return");
+
+	});
+
+	it("should check normal testurl running", () => {
+
+		strictEqual(container.min("testurl", 2) instanceof Container, true, "normal running has invalid return");
 
 	});
 

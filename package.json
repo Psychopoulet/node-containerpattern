@@ -1,6 +1,6 @@
 {
   "name": "node-containerpattern",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "description": "A 'Container pattern' object for a clean global use of data.",
   "main": "lib/main.js",
   "typings": "lib/index.d.ts",
