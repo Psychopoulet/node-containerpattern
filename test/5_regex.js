@@ -60,6 +60,30 @@ describe("regex", () => {
 
 	});
 
+	it("should check normal string running", () => {
+
+		strictEqual(container.skeleton("test", "string").regex("test", /^test$/) instanceof Container, true, "normal running has invalid return");
+
+		throws(() => {
+			container.set("test", "value");
+		}, Error, "check value does not throw an error");
+
+		strictEqual(container.set("test", "test") instanceof Container, true, "normal running has invalid return");
+
+	});
+
+	it("should check normal color running", () => {
+
+		strictEqual(container.skeleton("test", "color").regex("test", /^test$/) instanceof Container, true, "normal running has invalid return");
+
+		throws(() => {
+			container.set("test", "value");
+		}, Error, "check value does not throw an error");
+
+		strictEqual(container.set("test", "#fff") instanceof Container, true, "normal running has invalid return");
+
+	});
+
 	it("should check normal email running", () => {
 
 		strictEqual(container.skeleton("test", "email").regex("test", /^test$/) instanceof Container, true, "normal running has invalid return");
@@ -72,15 +96,39 @@ describe("regex", () => {
 
 	});
 
-	it("should check normal string running", () => {
+	it("should check normal ipv4 running", () => {
 
-		strictEqual(container.skeleton("test", "string").regex("test", /^test$/) instanceof Container, true, "normal running has invalid return");
+		strictEqual(container.skeleton("test", "ipv4").regex("test", /^test$/) instanceof Container, true, "normal running has invalid return");
 
 		throws(() => {
 			container.set("test", "value");
 		}, Error, "check value does not throw an error");
 
-		strictEqual(container.set("test", "test") instanceof Container, true, "normal running has invalid return");
+		strictEqual(container.set("test", "127.0.0.1") instanceof Container, true, "normal running has invalid return");
+
+	});
+
+	it("should check normal ipv6 running", () => {
+
+		strictEqual(container.skeleton("test", "ipv6").regex("test", /^test$/) instanceof Container, true, "normal running has invalid return");
+
+		throws(() => {
+			container.set("test", "value");
+		}, Error, "check value does not throw an error");
+
+		strictEqual(container.set("test", "0000:0000:0000:0000:0000:0000:0000:fff1") instanceof Container, true, "normal running has invalid return");
+
+	});
+
+	it("should check normal url running", () => {
+
+		strictEqual(container.skeleton("test", "url").regex("test", /^test$/) instanceof Container, true, "normal running has invalid return");
+
+		throws(() => {
+			container.set("test", "value");
+		}, Error, "check value does not throw an error");
+
+		strictEqual(container.set("test", "http://test.tv") instanceof Container, true, "normal running has invalid return");
 
 	});
 

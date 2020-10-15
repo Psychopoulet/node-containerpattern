@@ -30,6 +30,10 @@ $ npm install node-containerpattern
 
   [check the official 'Map' object documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
 
+  -- Types & interfaces --
+
+  tType = "array" | "boolean" | "color" | "email" | "float" | "ipv4" | "ipv6" | "integer" | "object" | "string" | "url"
+
   -- Constructor --
 
   * ``` constructor(recursionSeparator: string = ".") ```
@@ -57,17 +61,17 @@ $ npm install node-containerpattern
   * ``` documentation() : JSON object ``` generate a documentation for all the stored data
   * ``` get(key: string) : mixed ``` the value in association with this key (may be recursive)
   * ``` has(key: string) : bool ``` check if a key is used (may be recursive)
-  * ``` min(key: string, min: integer) : this ``` associate a key with a min value (min length for string & array) (MUST have a valid skeleton : [ "array", "email", "float", "integer", "ipv4", "ipv6", "number", "string", "url" ])
+  * ``` min(key: string, min: integer) : this ``` associate a key with a min value (min length for string & array) (MUST have a valid skeleton : [ "array", "color", "email", "float", "ipv4", "ipv6, "integer", "string", "url" ])
   * ``` max(key: string, max: integer) : this ``` associate a key with a max value (max length for string & array) (MUST have a valid skeleton : same as min)
-  * ``` regex(key: string, regex: RegExp) : this ``` associate a key with a pattern (MUST have a valid skeleton : [ "email", "ipv4", "ipv6", "string", "url" ]) (useless with "email", "ipv4", "ipv6", & "url", tested with natives checkers. more usefull with "string")
+  * ``` regex(key: string, regex: RegExp) : this ``` associate a key with a pattern (MUST have a valid skeleton : [ "color", "email", "ipv4", "ipv6", "string", "url" ]) (useless with "color", "email", "ipv4", "ipv6", & "url", tested with natives checkers. more usefull with "string")
   * ``` limit(key: string, limit: Array<string>) : this ``` associate a key with a limit
   * ``` set(key: string, mixed value) : this ``` associate and remember a key with a value (may be recursive)
-  * ``` skeleton(key: string, skeleton: string) : this ``` skeleton must be "array", "boolean", "email", "float", "integer", "ipv4", "ipv6", "number", "object", "string"
+  * ``` skeleton(key: string, skeleton: tType) : this ```
 
   -- notes --
 
   * if the skeleton is an 'array' or an 'object', and value data is a string, JSON.parse is apply before throw any error
-  * if the skeleton is an 'email', value must be a string. it can be empty, but must be a valid address if not
+  * if the skeleton is an 'color', 'email', 'ipv4', 'ipv6', 'url', value must be a string. it can be empty, but must be a valid address if not
 
 ## Examples
 

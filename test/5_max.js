@@ -20,12 +20,16 @@ describe("max", () => {
 	beforeEach(() => {
 
 		container.clear()
-			.skeleton("testboolean", "boolean")
-			.skeleton("testinteger", "integer")
-			.skeleton("testfloat", "float")
-			.skeleton("testnumber", "number")
-			.skeleton("teststring", "string")
 			.skeleton("testarray", "array")
+			.skeleton("testboolean", "boolean")
+			.skeleton("testcolor", "color")
+			.skeleton("testemail", "email")
+			.skeleton("testfloat", "float")
+			.skeleton("testinteger", "integer")
+			.skeleton("testipv4", "ipv4")
+			.skeleton("testipv6", "ipv6")
+			.skeleton("teststring", "string")
+			.skeleton("testurl", "url")
 			.skeleton("module", "object")
 				.skeleton("module.maxversion", "integer")
 				.skeleton("module.versions", "array")
@@ -103,19 +107,6 @@ describe("max", () => {
 
 	});
 
-	it("should check normal number running", () => {
-
-		strictEqual(container.max("testnumber", 0.1) instanceof Container, true, "normal running has invalid return");
-
-		throws(() => {
-			container.set("testnumber", 0.2);
-		}, Error, "check value does not throw an error");
-
-		strictEqual(container.set("testnumber", 0) instanceof Container, true, "normal running has invalid return");
-		strictEqual(container.set("testnumber", 0.1) instanceof Container, true, "normal running has invalid return");
-
-	});
-
 	it("should check normal string running", () => {
 
 		strictEqual(container.max("teststring", 2) instanceof Container, true, "normal running has invalid return");
@@ -126,6 +117,36 @@ describe("max", () => {
 
 		strictEqual(container.set("teststring", "a") instanceof Container, true, "normal running has invalid return");
 		strictEqual(container.set("teststring", "ab") instanceof Container, true, "normal running has invalid return");
+
+	});
+
+	it("should check normal testcolor running", () => {
+
+		strictEqual(container.max("testcolor", 2) instanceof Container, true, "normal running has invalid return");
+
+	});
+
+	it("should check normal testemail running", () => {
+
+		strictEqual(container.max("testemail", 2) instanceof Container, true, "normal running has invalid return");
+
+	});
+
+	it("should check normal testipv4 running", () => {
+
+		strictEqual(container.max("testipv4", 2) instanceof Container, true, "normal running has invalid return");
+
+	});
+
+	it("should check normal testipv6 running", () => {
+
+		strictEqual(container.max("testipv6", 2) instanceof Container, true, "normal running has invalid return");
+
+	});
+
+	it("should check normal testurl running", () => {
+
+		strictEqual(container.max("testurl", 2) instanceof Container, true, "normal running has invalid return");
 
 	});
 

@@ -29,12 +29,13 @@ describe("set", () => {
 
 				.skeleton("testskeletonarray", "array")
 				.skeleton("testskeletonboolean", "boolean")
+				.skeleton("testskeletoncolor", "color")
 				.skeleton("testskeletonemail", "email")
 				.skeleton("testskeletonfloat", "float")
 				.skeleton("testskeletoninteger", "integer")
 				.skeleton("testskeletonipv4", "ipv4")
 				.skeleton("testskeletonipv6", "ipv6")
-				.skeleton("testskeletonnumber", "number")
+				.skeleton("testskeletonurl", "url")
 				.skeleton("testskeletonobject", "object")
 				.skeleton("testskeletonbooleans", "object")
 					.skeleton("testskeletonbooleans.recursive", "boolean")
@@ -138,17 +139,8 @@ describe("set", () => {
 		);
 
 		throws(() => {
-			container.set("testskeletonnumber", []);
-		}, Error, "check type value \"testskeletonnumber\" does not throw an error");
-
-		strictEqual(
-			typeof container.set("testskeletonnumber", 1).get("testskeletonnumber"), "number",
-			"check type value \"testskeletonnumber\" has invalid return"
-		);
-
-		throws(() => {
 			container.set("testskeletoninteger", []);
-		}, Error, "check type value \"testskeletonnumber\" does not throw an error");
+		}, Error, "check type value \"testskeletoninteger\" does not throw an error");
 
 		strictEqual(
 			typeof container.set("testskeletoninteger", 1).get("testskeletoninteger"), "number",
@@ -157,7 +149,7 @@ describe("set", () => {
 
 		throws(() => {
 			container.set("testskeletonfloat", []);
-		}, Error, "check type value \"testskeletonnumber\" does not throw an error");
+		}, Error, "check type value \"testskeletonfloat\" does not throw an error");
 
 		strictEqual(
 			typeof container.set("testskeletonfloat", 1.1).get("testskeletonfloat"), "number",
@@ -380,6 +372,42 @@ describe("set", () => {
 
 		});
 
+		describe("color", () => {
+
+			before(() => {
+				container.clearData();
+			});
+
+			after(() => {
+				container.clearData();
+			});
+
+			it("should check normal running with skeleton", () => {
+
+				doesNotThrow(() => {
+					container.set("testskeletoncolor", "");
+				}, Error, "empty running with skeleton throws an error");
+
+				throws(() => {
+					container.set("testskeletoncolor", 5);
+				}, Error, "wrong running with skeleton does not throw an error");
+
+				throws(() => {
+					container.set("testskeletoncolor", "test");
+				}, Error, "wrong running with skeleton does not throw an error");
+
+				doesNotThrow(() => {
+					container.set("testskeletoncolor", "#ffffff");
+				}, Error, "normal running with skeleton throws an error");
+
+				strictEqual(container.get("testskeletoncolor"), "#ffffff", "normal running has invalid return");
+
+				strictEqual(container.size, 1, "normal running has invalid return");
+
+			});
+
+		});
+
 		describe("email", () => {
 
 			before(() => {
@@ -488,7 +516,43 @@ describe("set", () => {
 
 		});
 
-		describe("number", () => {
+		describe("url", () => {
+
+			before(() => {
+				container.clearData();
+			});
+
+			after(() => {
+				container.clearData();
+			});
+
+			it("should check normal running with skeleton", () => {
+
+				doesNotThrow(() => {
+					container.set("testskeletonurl", "");
+				}, Error, "empty running with skeleton throws an error");
+
+				throws(() => {
+					container.set("testskeletonurl", 5);
+				}, Error, "wrong running with skeleton does not throw an error");
+
+				throws(() => {
+					container.set("testskeletonurl", "test");
+				}, Error, "wrong running with skeleton does not throw an error");
+
+				doesNotThrow(() => {
+					container.set("testskeletonurl", "http://localhost:8080");
+				}, Error, "normal running with skeleton throws an error");
+
+				strictEqual(container.get("testskeletonurl"), "http://localhost:8080", "normal running has invalid return");
+
+				strictEqual(container.size, 1, "normal running has invalid return");
+
+			});
+
+		});
+
+		describe("float", () => {
 
 			before(() => {
 				container.clearData();
@@ -496,22 +560,6 @@ describe("set", () => {
 
 			afterEach(() => {
 				container.clearData();
-			});
-
-			it("should check normal running with number skeleton", () => {
-
-				doesNotThrow(() => {
-					container.set("testskeletonnumber", 5.5);
-				}, Error, "normal running with number skeleton throws an error");
-
-				doesNotThrow(() => {
-					container.set("testskeletonnumber", "5.5");
-				}, Error, "normal running with number skeleton throws an error");
-
-				strictEqual(container.get("testskeletonnumber"), 5.5, "normal running with number has invalid return");
-
-				strictEqual(container.size, 1, "normal running with number has invalid size");
-
 			});
 
 			it("should check normal running with float skeleton", () => {

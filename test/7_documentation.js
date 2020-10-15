@@ -59,7 +59,6 @@ describe("documentation", () => {
 			.set("testboolean", false)
 			.set("testinteger", 1)
 			.set("testbase16", 0xA5)
-			.set("testnumber", 1.2)
 			.set("testfloat", 1.1)
 			.set("testemptyarray", [])
 			.set("testemptyobject", {})
@@ -107,16 +106,6 @@ describe("documentation", () => {
 				"regex": null,
 				"type": "integer",
 				"value": 165
-			},
-			"testnumber": {
-				"documentation": "",
-				"fullkey": "testnumber",
-				"limits": null,
-				"min": null,
-				"max": null,
-				"regex": null,
-				"type": "float",
-				"value": 1.2
 			},
 			"testfloat": {
 				"documentation": "",
@@ -166,7 +155,6 @@ describe("documentation", () => {
 		container
 			.set("teststring", "string").document("teststring", "This is a string")
 			.set("testboolean", false).document("testboolean", "This is a boolean")
-			.set("testnumber", 1.2).document("testnumber", "This is a number")
 			.set("testinteger", 1).document("testinteger", "This is an integer")
 			.set("testbase16", 0xA5).document("testbase16", "This is a base16")
 			.set("testfloat", 1.1).document("testfloat", "This is a float");
@@ -192,17 +180,6 @@ describe("documentation", () => {
 			"type": "boolean",
 			"value": false
 		}, "normal running has invalid return for \"testboolean\"");
-
-		deepStrictEqual(container.documentation().testnumber, {
-			"documentation": "This is a number",
-			"fullkey": "testnumber",
-			"limits": null,
-			"min": null,
-			"max": null,
-			"regex": null,
-			"type": "float",
-			"value": 1.2
-		}, "normal running has invalid return for \"testnumber\"");
 
 		deepStrictEqual(container.documentation().testinteger, {
 			"documentation": "This is an integer",

@@ -61,6 +61,17 @@ describe("validators", () => {
 		strictEqual(Validators.isNotEmptyString("test"), true, "isNotEmptyString result test is invalid");
 	});
 
+	it("should check isColor", () => {
+		strictEqual(Validators.isColor(), false, "isColor result test is invalid");
+		strictEqual(Validators.isColor(null), false, "isColor result test is invalid");
+		strictEqual(Validators.isColor(0), false, "isColor result test is invalid");
+		strictEqual(Validators.isColor(""), false, "isColor result test is invalid");
+		strictEqual(Validators.isColor("test"), false, "isColor result test is invalid");
+		strictEqual(Validators.isColor("#000"), true, "isColor result test is invalid");
+		strictEqual(Validators.isColor("#ffffff"), true, "isColor result test is invalid");
+		strictEqual(Validators.isColor("#FFFFFF"), true, "isColor result test is invalid");
+	});
+
 	it("should check isEmail", () => {
 		strictEqual(Validators.isEmail(), false, "isEmail result test is invalid");
 		strictEqual(Validators.isEmail(null), false, "isEmail result test is invalid");
@@ -103,14 +114,17 @@ describe("validators", () => {
 		strictEqual(Validators.isUrl(""), false, "isUrl result test is invalid");
 		strictEqual(Validators.isUrl("test"), false, "isUrl result test is invalid");
 		strictEqual(Validators.isUrl("htt://www.google.com"), false, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("ftpss://localhost.fr:8080"), false, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("://localhost.fr:8080"), false, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("://www.google.com"), false, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("example.com"), false, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("www.example.com"), false, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("255.255.255.255"), false, "isUrl result test is invalid");
 
-		strictEqual(Validators.isUrl("example.com"), true, "isUrl result test is invalid");
-		strictEqual(Validators.isUrl("www.example.com"), true, "isUrl result test is invalid");
-		strictEqual(Validators.isUrl("255.255.255.255"), true, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("http://localhost.fr:8080"), true, "isUrl result test is invalid");
+		strictEqual(Validators.isUrl("ftp://localhost.fr:8080"), true, "isUrl result test is invalid");
 		strictEqual(Validators.isUrl("http://255.255.255.255"), true, "isUrl result test is invalid");
 		strictEqual(Validators.isUrl("http://www.example.com:8008"), true, "isUrl result test is invalid");
-		strictEqual(Validators.isUrl("://www.google.com"), true, "isUrl result test is invalid");
-		strictEqual(Validators.isUrl("://www.google.com"), true, "isUrl result test is invalid");
 		strictEqual(Validators.isUrl("ftp://s.tv"), true, "isUrl result test is invalid");
 
 		strictEqual(Validators.isUrl("http://www.a.tv"), true, "isUrl result test is invalid");
