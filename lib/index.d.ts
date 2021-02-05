@@ -39,7 +39,7 @@ declare module "node-containerpattern" {
 		public documentation(): object;
 		public get(key: string): any;
 		public has(key: string): boolean;
-		public limit(key: string, limit: Array<string>): boolean;
+		public limit(key: string, limit: Array<any>): boolean;
 		public min(key: string, min: number): Container;
 		public max(key: string, max: number): Container;
 		public regex(key: string, regex: RegExp): Container;
