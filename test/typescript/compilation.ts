@@ -1,7 +1,17 @@
 /// <reference path="../../lib/index.d.ts" />
 
-import Container = require("../../lib/main.js");
-const container = new Container();
+"use strict";
+
+// deps
+
+  // locals
+  import Container = require("../../lib/main.js");
+
+// consts
+
+  const container: Container = new Container();
+
+// module
 
 container
   .skeleton("contact", "email").document("contact", "Contact address")
@@ -35,7 +45,7 @@ for (let value of container.values()) {
   console.log(value);
 }
 
-container.forEach((value, key) => {
+container.forEach((value, key: string): void => {
   console.log("container[" + key + "] = " + value);
 });
 

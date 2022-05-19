@@ -26,7 +26,7 @@ describe("compilation typescript", () => {
 
 	it("should compile typescript file", (done) => {
 
-		exec("npx tsc " + join(__dirname, "typescript", "compilation.ts"), {
+		exec("npx tsc " + join(__dirname, "typescript", "compilation.ts") + " --downlevelIteration", {
 			"cwd": join(__dirname, ".."),
 			"windowsHide": true
 		}, (err) => {
