@@ -26,7 +26,7 @@ describe("compilation typescript", () => {
 
 	it("should compile typescript file", (done) => {
 
-		exec("npx tsc " + join(__dirname, "typescript", "compilation.ts") + " --downlevelIteration", {
+		exec("npx tsc " + join(__dirname, "typescript", "compilation.ts") + " --downlevelIteration --esModuleInterop", {
 			"cwd": join(__dirname, ".."),
 			"windowsHide": true
 		}, (err) => {
@@ -34,5 +34,16 @@ describe("compilation typescript", () => {
 		});
 
 	}).timeout(MAX_TIMEOUT);
+
+	it("should exec compiled typescript file", (done) => {
+
+		exec("node " + join(__dirname, "typescript", "compilation.js"), {
+			"cwd": join(__dirname, ".."),
+			"windowsHide": true
+		}, (err) => {
+			return err ? done(err) : done();
+		});
+
+	});
 
 });
