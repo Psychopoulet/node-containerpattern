@@ -23,8 +23,15 @@ describe("delete", () => {
 
 	it("should check normal running", () => {
 
-		strictEqual(container.set("test", "test").delete("test") instanceof Container, true, "normal running has invalid return");
-		strictEqual(container.set("test", "test").delete("test").size, 0, "normal running has invalid return");
+		strictEqual(container.set("test", "test").delete("test"), true, "normal running has invalid return");
+		strictEqual(container.size, 0, "normal running has invalid return");
+
+	});
+
+	it("should check normal running with inexistant delete", () => {
+
+		strictEqual(container.delete("test"), false, "normal running has invalid return");
+		strictEqual(container.size, 0, "normal running has invalid return");
 
 	});
 
@@ -41,7 +48,8 @@ describe("delete", () => {
 				.set("test", "test") instanceof Container, true, "normal running has invalid return"
 		);
 
-		strictEqual(container.delete("test") instanceof Container, true, "normal running has invalid return");
+		strictEqual(container.delete("test"), true, "normal running has invalid return");
+		strictEqual(container.size, 0, "recursive running has invalid return");
 
 		strictEqual(typeof container.documentations.test, "undefined", "normal running has invalid documentation");
 		strictEqual(typeof container.limits.test, "undefined", "normal running has invalid limit");
@@ -59,8 +67,8 @@ describe("delete", () => {
 			"test2": "test2"
 		});
 
-		strictEqual(container.delete("test.test") instanceof Container, true, "recursive running has invalid return");
-		strictEqual(container.delete("test.test").size, 1, "recursive running has invalid return");
+		strictEqual(container.delete("test.test"), true, "recursive running has invalid return");
+		strictEqual(container.size, 1, "recursive running has invalid return");
 
 		deepStrictEqual(container.get("test"), {
 			"test2": "test2"
