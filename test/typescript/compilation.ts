@@ -5,7 +5,7 @@
 // deps
 
 	// locals
-	import Container from "../../lib/main.js";
+	import Container = require("node-containerpattern");
 
 // consts
 
