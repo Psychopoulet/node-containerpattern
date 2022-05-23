@@ -34,9 +34,7 @@ try {
 	console.log(container.get("conf.usr.login"));
 	console.log(container.get("object"));
 	console.log(container.get("conf"));
-
-	container.delete("object");
-
+	console.log(container.delete("object")); // must be "true"
 	console.log(container.has("object"));
 	console.log(container.size);
 
