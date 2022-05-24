@@ -43,8 +43,6 @@ $ npm install node-containerpattern
 
 [check the TypeScript compilation tests](https://github.com/Psychopoulet/node-containerpattern/blob/master/test/typescript/compilation.ts)
 
-```
-
 ## Tests
 
 ```bash
