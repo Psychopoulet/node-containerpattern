@@ -99,7 +99,9 @@ describe("get", () => {
 
 	it("should check normal recursive array running", () => {
 
-		container.clear()
+		container.clear();
+
+		container
 			.skeleton("module.versions.0", "string").set("module.versions.0", 1)
 			.skeleton("module.versions.1", "integer").set("module.versions.1", "2");
 

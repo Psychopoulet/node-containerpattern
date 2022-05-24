@@ -63,7 +63,11 @@ describe("has", () => {
 
 	it("should check normal recursive array running", () => {
 
-		container.clear().skeleton("module.versions.0", "string").set("module.versions.0", 1);
+		container.clear();
+
+		container
+			.skeleton("module.versions.0", "string")
+			.set("module.versions.0", 1);
 
 		strictEqual(container.has("module.versions.0"), true, "normal recursive array running has invalid return");
 		strictEqual(container.has("module.versions.1"), false, "normal recursive array running has invalid return");

@@ -19,8 +19,9 @@ describe("regex", () => {
 
 	beforeEach(() => {
 
-		container.clear()
-			.skeleton("test", "string").regex("test", /^test$/);
+		container.clear();
+
+		container.skeleton("test", "string").regex("test", /^test$/);
 
 	});
 
@@ -47,7 +48,11 @@ describe("regex", () => {
 	it("should check without skeleton", () => {
 
 		throws(() => {
-			container.clear().regex("test", /^test$/);
+
+			container.clear();
+
+			container.regex("test", /^test$/);
+
 		}, Error, "check value does not throw an error");
 
 	});

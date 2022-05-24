@@ -19,7 +19,9 @@ describe("min", () => {
 
 	beforeEach(() => {
 
-		container.clear()
+		container.clear();
+
+		container
 			.skeleton("testarray", "array")
 			.skeleton("testboolean", "boolean")
 			.skeleton("testcolor", "color")

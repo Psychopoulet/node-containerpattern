@@ -25,8 +25,9 @@ describe("set", () => {
 
 		doesNotThrow(() => {
 
-			container.clear()
+			container.clear();
 
+			container
 				.skeleton("testskeletonarray", "array")
 				.skeleton("testskeletonboolean", "boolean")
 				.skeleton("testskeletoncolor", "color")

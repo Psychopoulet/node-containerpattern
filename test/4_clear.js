@@ -31,7 +31,7 @@ describe("clear", () => {
 		strictEqual(container.size, 0, "cleaned data size is invalid");
 		strictEqual(Object.keys(container.skeletons).length, 0, "cleaned _skeletons size is invalid");
 
-		strictEqual(container.clear() instanceof Container, true, "normal \"clear\" running has invalid return");
+		container.clear();
 
 		strictEqual(container.size, 0, "cleaned data size is invalid");
 		strictEqual(Object.keys(container.skeletons).length, 0, "cleaned _skeletons size is invalid");

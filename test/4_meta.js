@@ -151,7 +151,8 @@ describe("meta", () => {
 
 		it("should check normal recursive array running", () => {
 
-			container.clear().set("module.authors", [ "Sébastien VIDAL" ]);
+			container.clear();
+			container.set("module.authors", [ "Sébastien VIDAL" ]);
 
 			strictEqual(
 				container.limit("module.authors.0", [ "Sébastien VIDAL" ]) instanceof Container, true,
@@ -226,7 +227,8 @@ describe("meta", () => {
 
 		it("should check normal recursive array running", () => {
 
-			container.clear().set("module.versions", [ 1 ]);
+			container.clear();
+			container.set("module.versions", [ 1 ]);
 
 			strictEqual(
 				container.skeleton("module.versions.0", "integer") instanceof Container, true,
