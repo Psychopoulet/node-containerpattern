@@ -4,6 +4,24 @@ declare module "node-containerpattern" {
 
 	type tType = "array" | "boolean" | "color" | "email" | "float" | "ipv4" | "ipv6" | "integer" | "object" | "string" | "url";
 
+	interface iDocumentation {
+		"fullkey": string;
+		"type": tType;
+		"documentation"?: string;
+		"limits"?: Array<any>;
+		"min"?: number;
+		"max"?: number;
+		"regex"?: string;
+	}
+
+	interface iBasicDocumentation extends iDocumentation {
+		"value": string | number;
+	}
+
+	interface iComplexDocumentation extends iDocumentation {
+		"content": { [ key: string ]: iBasicDocumentation | iComplexDocumentation } // Array are decomposed by numeric keys, transformed into string
+	}
+
 	class Container extends Map {
 
 		// Map
@@ -33,7 +51,7 @@ declare module "node-containerpattern" {
 		public clearSkeletons(): this; // forget all the skeletons
 		// public delete(key: string): boolean; // forget a key and its value
 		public document(key: string, value: string): this; // attach a documentation on the data. only visible if "set" method is applied with this key
-		public documentation(): object; // generate a documentation for all the stored data
+		public documentation(): { [ key: string ]: iBasicDocumentation | iComplexDocumentation }; // generate a documentation for all the stored data
 		// public get(key: string): any; // the value in association with this key (may be recursive)
 		// public has(key: string): boolean; // check if a key is used (may be recursive)
 		public limit(key: string, limit: Array<any>): this; // associate a key with a limit
