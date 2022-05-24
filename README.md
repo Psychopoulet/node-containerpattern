@@ -36,7 +36,6 @@ $ npm install node-containerpattern
 
 ### Notes
 
-  * "clear" & "delete" have a return type changed
   * if the skeleton is an 'array' or an 'object', and value data is a string, JSON.parse is apply before throw any error
   * if the skeleton is an 'color', 'email', 'ipv4', 'ipv6', 'url', value must be a string. it can be empty, but must be a valid address if not
 
