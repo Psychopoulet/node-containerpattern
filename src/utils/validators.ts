@@ -3,92 +3,85 @@
 // deps
 
 	// natives
-	import { join } from "path";
 	import { isIPv4, isIPv6 } from "net";
 
 	// locals
-	const { patternColor, patternEmail, patternUrl } = require(join(__dirname, "patterns.js"));
+	import { patternColor, patternEmail, patternUrl } from "./patterns";
 
 // module
 
-class Validators {
+export function isDefined (obj: any): boolean {
+	return "undefined" !== typeof obj;
+};
 
-	static isDefined (obj) {
-		return "undefined" !== typeof obj;
+	export function isNumber (obj: any): boolean {
+		return isDefined(obj) && "number" === typeof obj;
 	}
 
-		static isNumber (obj) {
-			return Validators.isDefined(obj) && "number" === typeof obj;
+		export function isInteger (obj: any): boolean {
+			return isNumber(obj) && Number.isInteger(obj);
 		}
 
-			static isInteger (obj) {
-				return Validators.isNumber(obj) && Number.isInteger(obj);
-			}
+	export function isString (obj: any): boolean {
+		return isDefined(obj) && "string" === typeof obj;
+	}
 
-		static isString (obj) {
-			return Validators.isDefined(obj) && "string" === typeof obj;
+		export function isEmptyString (obj: any): boolean {
+			return isString(obj) && "" === obj.trim();
 		}
 
-			static isEmptyString (obj) {
-				return Validators.isString(obj) && "" === obj.trim();
-			}
-
-			static isNotEmptyString (obj) {
-				return Validators.isString(obj) && "" !== obj.trim();
-			}
-
-				static isColor (obj) {
-					return Validators.isNotEmptyString(obj) && patternColor.test(obj);
-				}
-
-				static isEmail (obj) {
-					return Validators.isNotEmptyString(obj) && patternEmail.test(obj);
-				}
-
-				static isIPV4 (obj) {
-					return Validators.isNotEmptyString(obj) && isIPv4(obj);
-				}
-
-				static isIPV6 (obj) {
-					return Validators.isNotEmptyString(obj) && isIPv6(obj);
-				}
-
-				static isUrl (obj) {
-					return Validators.isNotEmptyString(obj) && patternUrl.test(obj);
-				}
-
-		static isObject (obj) {
-			return Validators.isDefined(obj) && null !== obj && "object" === typeof obj;
+		export function isNotEmptyString (obj: any): boolean {
+			return isString(obj) && "" !== obj.trim();
 		}
 
-			static isRegExp (obj) {
-				return Validators.isObject(obj) && obj instanceof RegExp;
+			export function isColor (obj: any): boolean {
+				return isNotEmptyString(obj) && patternColor.test(obj);
 			}
 
-			static isArray (obj) {
-				return Validators.isObject(obj) && obj instanceof Array;
+			export function isEmail (obj: any): boolean {
+				return isNotEmptyString(obj) && patternEmail.test(obj);
 			}
 
-				static isEmptyArray (obj) {
-					return Validators.isArray(obj) && !obj.length;
-				}
-
-				static isNotEmptyArray (obj) {
-					return Validators.isArray(obj) && 0 < obj.length;
-				}
-
-				static inArray (searchIn, obj) {
-					return Validators.isNotEmptyArray(searchIn) && Validators.isDefined(obj) && searchIn.includes(obj);
-				}
-
-			static isPlainObject (obj) {
-				return Validators.isObject(obj) && Object === obj.constructor;
+			export function isIPV4 (obj: any): boolean {
+				return isNotEmptyString(obj) && isIPv4(obj);
 			}
 
-				static isEmptyPlainObject (obj) {
-					return Validators.isPlainObject(obj) && !Object.keys(obj).length;
-				}
+			export function isIPV6 (obj: any): boolean {
+				return isNotEmptyString(obj) && isIPv6(obj);
+			}
 
-}
+			export function isUrl (obj: any): boolean {
+				return isNotEmptyString(obj) && patternUrl.test(obj);
+			}
 
-module.exports = Validators;
+	export function isObject (obj: any): boolean {
+		return isDefined(obj) && null !== obj && "object" === typeof obj;
+	}
+
+		export function isRegExp (obj: any): boolean {
+			return isObject(obj) && obj instanceof RegExp;
+		}
+
+		export function isArray (obj: any): boolean {
+			return isObject(obj) && obj instanceof Array;
+		}
+
+			export function isEmptyArray (obj: any): boolean {
+				return isArray(obj) && !obj.length;
+			}
+
+			export function isNotEmptyArray (obj: any): boolean {
+				return isArray(obj) && 0 < obj.length;
+			}
+
+			export function inArray (searchIn, obj: any): boolean {
+				return isNotEmptyArray(searchIn) && isDefined(obj) && searchIn.includes(obj);
+			}
+
+		export function isPlainObject (obj: any): boolean {
+			return isObject(obj) && Object === obj.constructor;
+		}
+
+			export function isEmptyPlainObject (obj: any): boolean {
+				return isPlainObject(obj) && !Object.keys(obj).length;
+			}

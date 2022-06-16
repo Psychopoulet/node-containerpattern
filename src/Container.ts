@@ -7,15 +7,15 @@
 
 	// locals
 
-	const {
+	import {
 		isDefined,
 		isString, isEmptyString, isNotEmptyString,
 		isObject, isRegExp, isPlainObject, isEmptyPlainObject, isArray, isEmptyArray, inArray,
 		isNumber, isInteger
-	} = require(join(__dirname, "validators"));
+	} from "./utils/validators";
 
 	import getTypeValue from "./utils/getTypeValue";
-	const ensureKey = require(join(__dirname, "ensureKey.js"));
+	import ensureKey from "./utils/ensureKey";
 	const ensureDataArray = require(join(__dirname, "ensureDataArray.js"));
 	const ensureDataObject = require(join(__dirname, "ensureDataObject.js"));
 	const ensureDataSpecific = require(join(__dirname, "ensureDataSpecific.js"));
@@ -25,13 +25,13 @@
 
 // types & interfaces
 
-	import { tValidSkeleton } from "./utils/_interfaces";
+	import { tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton } from "./utils/_interfaces";
 
 // consts
 
 	const VALID_SKELETONS: Array<tValidSkeleton> = [ "array", "boolean", "color", "email", "float", "ipv4", "ipv6", "integer", "object", "string", "url" ];
-	const MIN_MAX_SKELETONS: Array<string> = [ "array", "color", "email", "float", "ipv4", "ipv6", "integer", "string", "url" ];
-	const REGEX_SKELETONS: Array<string> = [ "color", "email", "ipv4", "ipv6", "string", "url" ];
+	const MIN_MAX_SKELETONS: Array<tMinMaxValidSkeleton> = [ "array", "color", "email", "float", "ipv4", "ipv6", "integer", "string", "url" ];
+	const REGEX_SKELETONS: Array<tRegexValidSkeleton> = [ "color", "email", "ipv4", "ipv6", "string", "url" ];
 
 // module
 
