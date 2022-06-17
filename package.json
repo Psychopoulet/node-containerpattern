@@ -3,20 +3,20 @@
   "version": "1.6.0",
   "description": "A 'Container pattern' object for a clean global use of data.",
 
-  "typings": "./lib/commonjs/index.d.cts",
+  "typings": "./lib/commonjs/main.d.cts",
   "main": "./lib/commonjs/main.cjs",
 
   "exports": {
 	".": {
 
 	  "import": {
-		  "types": "./lib/esm/index.d.mts",
-		  "default": "./lib/esm/index.mjs"
+		  "types": "./lib/esm/main.d.mts",
+		  "default": "./lib/esm/main.mjs"
 	  },
 
 	  "require": {
-		  "types": "./lib/commonjs/index.d.cts",
-		  "default": "./lib/commonjs/index.cjs"
+		  "types": "./lib/commonjs/main.d.cts",
+		  "default": "./lib/commonjs/main.cjs"
 	  }
 
 	}
