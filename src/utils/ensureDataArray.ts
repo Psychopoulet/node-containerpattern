@@ -2,29 +2,29 @@
 
 // deps
 
-	// natives
-	import { join } from "path";
-
 	// locals
-	const { isArray, isString } = require(join(__dirname, "validators"));
+	import { isArray, isString } from "./validators";
+
+// types & interfaces
+
+	import { tValidSkeleton } from "./_interfaces";
 
 // module
 
-module.exports = function ensureDataArray (key, skeleton, value) {
+export default function ensureDataArray (key: string, skeleton: tValidSkeleton, value: Array<any> | string): Array<any> {
 
-	let result = value;
+	if ("array" === skeleton && !isArray(value)) {
 
-		if ("array" === skeleton && !isArray(value)) {
-
-			if (!isString(value) || "[" !== value[0] || "]" !== value[value.length - 1]) {
-				throw new TypeError("The \"" + key + "\" data does not correspond to the skeleton");
-			}
-			else {
-				result = JSON.parse(value);
-			}
-
+		if (!isString(value) || "[" !== value[0] || "]" !== value[value.length - 1]) {
+			throw new TypeError("The \"" + key + "\" data does not correspond to the skeleton");
+		}
+		else {
+			return JSON.parse(value as string);
 		}
 
-	return result;
+	}
+	else {
+		return value as Array<any>;
+	}
 
 };

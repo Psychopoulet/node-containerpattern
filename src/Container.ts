@@ -2,9 +2,6 @@
 
 // deps
 
-	// natives
-	import { join } from "path";
-
 	// locals
 
 	import {
@@ -16,16 +13,20 @@
 
 	import getTypeValue from "./utils/getTypeValue";
 	import ensureKey from "./utils/ensureKey";
-	const ensureDataArray = require(join(__dirname, "ensureDataArray.js"));
-	const ensureDataObject = require(join(__dirname, "ensureDataObject.js"));
-	const ensureDataSpecific = require(join(__dirname, "ensureDataSpecific.js"));
-	const ensureDataBasic = require(join(__dirname, "ensureDataBasic.js"));
-	const stringifyRegex = require(join(__dirname, "stringifyRegex.js"));
-	const { patternColor, patternEmail, patternUrl, patternIPV4, patternIPV6 } = require(join(__dirname, "patterns.js"));
+	import ensureDataArray from "./utils/ensureDataArray";
+	import ensureDataBasic from "./utils/ensureDataBasic";
+	import ensureDataObject from "./utils/ensureDataObject";
+	import ensureDataSpecific from "./utils/ensureDataSpecific";
+	import stringifyRegex from "./utils/stringifyRegex";
+	import  { patternColor, patternEmail, patternUrl, patternIPV4, patternIPV6 } from "./utils/patterns";
 
 // types & interfaces
 
-	import { tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton } from "./utils/_interfaces";
+	import {
+		tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton,
+		tValidType,
+		iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue
+	} from "./utils/_interfaces";
 
 // consts
 
@@ -40,8 +41,6 @@ export default class NodeContainerPattern extends Map {
 	// attributes
 
 		// public
-
-		public size: number;
 
 		public documentations: { [key:string]: any };
 		public limits: { [key:string]: Array<string | number> };
@@ -94,7 +93,7 @@ export default class NodeContainerPattern extends Map {
 				}
 				else if (inArray([ "array", "string" ], skeleton)) {
 
-					const result = "array" === skeleton ? ensureDataArray(key, skeleton, value) : ensureDataBasic(key, skeleton, value);
+					const result: Array<any> | string = "array" === skeleton ? ensureDataArray(key, skeleton, value) : ensureDataBasic(key, skeleton, value) as string;
 
 					if (isNumber(this.mins[key]) && result.length < this.mins[key]) {
 
@@ -110,7 +109,7 @@ export default class NodeContainerPattern extends Map {
 						);
 
 					}
-					else if ("string" === skeleton && isDefined(this.regexs[key]) && !this.regexs[key].test(result)) {
+					else if ("string" === skeleton && isDefined(this.regexs[key]) && !this.regexs[key].test(result as string)) {
 
 						throw new Error(
 							"The \"" + key + "\" data (" + result + ") does not match with its pattern (" + this.regexs[key] + ")"
@@ -124,7 +123,7 @@ export default class NodeContainerPattern extends Map {
 				}
 				else if (inArray([ "integer", "float" ], skeleton)) {
 
-					const result = ensureDataBasic(key, skeleton, value);
+					const result: number = ensureDataBasic(key, skeleton, value) as number;
 
 					if (isNumber(this.mins[key]) && result < this.mins[key]) {
 
@@ -156,7 +155,7 @@ export default class NodeContainerPattern extends Map {
 
 		}
 
-		private _ensureDataRecursive (key: string, value: any): any {
+		private _ensureDataRecursive (key: string, value: { [key:string]: any }): { [key:string]: any } {
 
 			for (const i in value) {
 
@@ -172,16 +171,16 @@ export default class NodeContainerPattern extends Map {
 
 		}
 
-		private _createBaseObject (parentKey, _parentValue, keys: Array<string>, value: any): any {
+		private _createBaseObject (parentKey: string, _parentValue: any, keys: Array<string>, value: any): any {
 
-			const parentValue = this._ensureData(parentKey, _parentValue);
+			const parentValue: any = this._ensureData(parentKey, _parentValue);
 
-				const key = keys.shift();
+				const key: string = keys.shift() as string;
 
 				if (keys.length) {
 
-					const nextKey = parentKey + this.recursionSeparator + key;
-					const defaultValue = isDefined(this.skeletons[nextKey]) && "array" === this.skeletons[nextKey] ? [] : {};
+					const nextKey: string = parentKey + this.recursionSeparator + key;
+					const defaultValue: {} | [] = isDefined(this.skeletons[nextKey]) && "array" === this.skeletons[nextKey] ? [] : {};
 
 					parentValue[key] = this._createBaseObject(
 						parentKey + this.recursionSeparator + key,
@@ -199,15 +198,15 @@ export default class NodeContainerPattern extends Map {
 
 		}
 
-		private _extractDocumentation (previousKeys, object) {
+		private _extractDocumentation (previousKeys: string, object: any): { [key:string]: any } {
 
-			const result = {};
+			const result: { [key:string]: any } = {};
 
-			const toExtract = [];
+			const toExtract: Array<any> = [];
 
 			if (isPlainObject(object)) {
 
-				Object.keys(object).forEach((key) => {
+				Object.keys(object).forEach((key): void => {
 
 					toExtract.push({
 						key,
@@ -219,7 +218,7 @@ export default class NodeContainerPattern extends Map {
 			}
 			else if (this === object || isArray(object)) {
 
-				object.forEach((value, key) => {
+				object.forEach((value: any, key: number): void => {
 
 					toExtract.push({
 						key,
@@ -230,13 +229,13 @@ export default class NodeContainerPattern extends Map {
 
 			}
 
-			toExtract.forEach(({ value, key }) => {
+			toExtract.forEach(({ value, key }): void => {
 
-				const fullKey = !isEmptyString(previousKeys) ? previousKeys + this.recursionSeparator + key : key;
+				const fullKey: string = !isEmptyString(previousKeys) ? previousKeys + this.recursionSeparator + key : key;
 
-				const type = isNotEmptyString(this.skeletons[fullKey]) ? this.skeletons[fullKey] : getTypeValue(value);
+				const type: tValidType = isNotEmptyString(this.skeletons[fullKey]) ? this.skeletons[fullKey] as tValidSkeleton : getTypeValue(value);
 
-				const documentation = {
+				const documentation: iDocumentationFunction | iDocumentationObjectOrArray | iDocumentationValue = {
 					"fullkey": fullKey,
 					type
 				};
@@ -265,13 +264,13 @@ export default class NodeContainerPattern extends Map {
 				}
 
 				if ("array" === type) {
-					documentation.content = isEmptyArray(value) ? {} : this._extractDocumentation(fullKey, value);
+					(documentation as iDocumentationObjectOrArray).content = isEmptyArray(value) ? {} : this._extractDocumentation(fullKey, value);
 				}
 				else if ("object" === type) {
-					documentation.content = isEmptyPlainObject(value) ? {} : this._extractDocumentation(fullKey, value);
+					(documentation as iDocumentationObjectOrArray).content = isEmptyPlainObject(value) ? {} : this._extractDocumentation(fullKey, value);
 				}
 				else if ("function" !== type) {
-					documentation.value = value;
+					(documentation as iDocumentationValue).value = value;
 				}
 
 				result[key] = documentation;
@@ -327,17 +326,17 @@ export default class NodeContainerPattern extends Map {
 		}
 
 		// forget a key and its value
-		public delete (_key): boolean {
+		public delete (_key: string): boolean {
 
-			const key = ensureKey(_key);
+			const key: string = ensureKey(_key);
 
 			if (this.has(key)) {
 
 				if (-1 < key.indexOf(this.recursionSeparator)) {
 
-					const keys = key.split(this.recursionSeparator);
-					const lastKey = keys.pop();
-					const parentKey = keys.join(this.recursionSeparator);
+					const keys: Array<string> = key.split(this.recursionSeparator);
+					const lastKey: string = keys.pop() as string;
+					const parentKey: string = keys.join(this.recursionSeparator);
 
 					const parent = this.get(parentKey);
 
@@ -384,9 +383,9 @@ export default class NodeContainerPattern extends Map {
 		}
 
 		// attach a documentation on the data. only visible if "set" method is applied with this key
-		public document (_key, documentation): this {
+		public document (_key: string, documentation: string): this {
 
-			const key = ensureKey(_key);
+			const key: string = ensureKey(_key);
 
 			if (!isDefined(documentation)) {
 				throw new ReferenceError("The \"" + key + "\" data has not any \"documentation\" attribute");
@@ -407,25 +406,25 @@ export default class NodeContainerPattern extends Map {
 		}
 
 		// generate a documentation for all the stored data
-		public documentation () {
+		public documentation (): { [key:string]: any } {
 			return this._extractDocumentation("", this);
 		}
 
 		// the value in association with this key (may be recursive)
-		public get (_key): any {
+		public get (_key: string): any {
 
-			const key = ensureKey(_key);
+			const key: string = ensureKey(_key);
 
 			if (!this.has(key)) {
 				throw new Error("Unknown key \"" + key + "\"");
 			}
 			else if (-1 < key.indexOf(this.recursionSeparator)) {
 
-				const keys = key.split(this.recursionSeparator);
+				const keys: Array<string> = key.split(this.recursionSeparator);
 
 				let value = this.get(keys[0]);
 
-					for (let i = 1; i < keys.length; ++i) {
+					for (let i: number = 1; i < keys.length; ++i) {
 						value = value[keys[i]];
 					}
 
@@ -439,25 +438,25 @@ export default class NodeContainerPattern extends Map {
 		}
 
 		// check if a key is used (may be recursive)
-		public has (_key): boolean {
+		public has (_key: string): boolean {
 
-			const key = ensureKey(_key);
+			const key: string = ensureKey(_key);
 
 			if (-1 >= key.indexOf(this.recursionSeparator)) {
 				return super.has(key);
 			}
 			else {
 
-				const keys = key.split(this.recursionSeparator);
+				const keys: Array<string> = key.split(this.recursionSeparator);
 
 				if (!super.has(keys[0])) {
 					return false;
 				}
 				else {
 
-					let exists = false;
+					let exists: boolean = false;
 
-						for (let i = 1, value = super.get(keys[0]); i < keys.length; ++i) {
+						for (let i: number = 1, value = super.get(keys[0]); i < keys.length; ++i) {
 
 							if (!isObject(value) || !isDefined(value[keys[i]])) {
 								break;
@@ -481,9 +480,9 @@ export default class NodeContainerPattern extends Map {
 		}
 
 		// associate a key with a limit
-		public limit (_key, limit): this {
+		public limit (_key: string, limit: Array<any>): this {
 
-			const key = ensureKey(_key);
+			const key: string = ensureKey(_key);
 
 			if (!isDefined(limit)) {
 				throw new ReferenceError("The \"" + key + "\" data has not any \"limit\" attribute");
@@ -502,9 +501,9 @@ export default class NodeContainerPattern extends Map {
 
 		// associate a key with a min value (min length for string & array)
 		// (MUST have a valid skeleton : [ "array", "color", "email", "float", "ipv4", "ipv6, "integer", "string", "url" ])
-		public min (_key, min): this {
+		public min (_key: string, min: number): this {
 
-			const key = ensureKey(_key);
+			const key: string = ensureKey(_key);
 
 			if (!isDefined(min)) {
 				throw new ReferenceError("The \"" + key + "\" data has not any \"min\" attribute");
@@ -513,7 +512,7 @@ export default class NodeContainerPattern extends Map {
 			else if (!isNotEmptyString(this.skeletons[key])) {
 				throw new ReferenceError("The \"" + key + "\" data has not any skeleton");
 			}
-			else if (!MIN_MAX_SKELETONS.includes(this.skeletons[key])) {
+			else if (!MIN_MAX_SKELETONS.includes(this.skeletons[key] as tMinMaxValidSkeleton)) {
 
 				throw new RangeError(
 					"The \"" + key + "\" data \"" + this.skeletons[key] + "\" skeleton is not in [ \"" + MIN_MAX_SKELETONS.join("\", \"") + "\" ]"
@@ -537,9 +536,9 @@ export default class NodeContainerPattern extends Map {
 
 		// associate a key with a max value (max length for string & array)
 		// (MUST have a valid skeleton)
-		public max (_key, max): this {
+		public max (_key: string, max: number): this {
 
-			const key = ensureKey(_key);
+			const key: string = ensureKey(_key);
 
 			if (!isDefined(max)) {
 				throw new ReferenceError("The \"" + key + "\" data has not any \"max\" attribute");
@@ -548,7 +547,7 @@ export default class NodeContainerPattern extends Map {
 			else if (!isNotEmptyString(this.skeletons[key])) {
 				throw new ReferenceError("The \"" + key + "\" data has not any skeleton");
 			}
-			else if (!MIN_MAX_SKELETONS.includes(this.skeletons[key])) {
+			else if (!MIN_MAX_SKELETONS.includes(this.skeletons[key] as tMinMaxValidSkeleton)) {
 
 				throw new RangeError(
 					"The \"" + key + "\" data \"" + this.skeletons[key] + "\" skeleton is not in [ \"" + MIN_MAX_SKELETONS.join("\", \"") + "\" ]"
@@ -573,9 +572,9 @@ export default class NodeContainerPattern extends Map {
 		// associate a key with a pattern
 		// (MUST have a valid skeleton : [ "color", "email", "ipv4", "ipv6", "string", "url" ])
 		// (useless with "color", "email", "ipv4", "ipv6", & "url", tested with natives checkers. more usefull with "string")
-		public regex (_key, regex): this {
+		public regex (_key: string, regex: RegExp): this {
 
-			const key = ensureKey(_key);
+			const key: string = ensureKey(_key);
 
 			if (!isDefined(regex)) {
 				throw new ReferenceError("The \"" + key + "\" data has not any \"regex\" attribute");
@@ -587,7 +586,7 @@ export default class NodeContainerPattern extends Map {
 			else if (!isNotEmptyString(this.skeletons[key])) {
 				throw new ReferenceError("The \"" + key + "\" data has not any skeleton");
 			}
-			else if (!REGEX_SKELETONS.includes(this.skeletons[key])) {
+			else if (!REGEX_SKELETONS.includes(this.skeletons[key] as tRegexValidSkeleton)) {
 
 				throw new RangeError(
 					"The \"" + key + "\" data \"" + this.skeletons[key] + "\" skeleton is not in [ \"" + REGEX_SKELETONS.join("\", \"") + "\" ]"
@@ -606,21 +605,21 @@ export default class NodeContainerPattern extends Map {
 		}
 
 		// associate and remember a key with a value (may be recursive)
-		public set (_key, _value): this {
+		public set (_key: string, _value: any): this {
 
-			const key = ensureKey(_key);
-			const value = this._ensureData(key, _value);
+			const key: string = ensureKey(_key);
+			const value: any = this._ensureData(key, _value);
 
 			// check key recursivity
 			if (-1 < key.indexOf(this.recursionSeparator)) {
 
-				const keys = key.split(this.recursionSeparator);
+				const keys: Array<string> = key.split(this.recursionSeparator);
 
 				// if no more constraints, set
 				if (!isPlainObject(value) || isEmptyPlainObject(value)) {
 
-					const firstKey = keys.shift();
-					const defaultParentValue = isDefined(this.skeletons[firstKey]) && "array" === this.skeletons[firstKey] ? [] : {};
+					const firstKey: string = keys.shift() as string;
+					const defaultParentValue: {} | [] = isDefined(this.skeletons[firstKey]) && "array" === this.skeletons[firstKey] ? [] : {};
 
 					super.set(firstKey,
 						this._createBaseObject(firstKey,
@@ -634,8 +633,8 @@ export default class NodeContainerPattern extends Map {
 				// check content recursivity
 				else {
 
-					const firstKey = keys.shift();
-					const defaultParentValue = isDefined(this.skeletons[firstKey]) && "array" === this.skeletons[firstKey] ? [] : {};
+					const firstKey: string = keys.shift() as string;
+					const defaultParentValue: {} | [] = isDefined(this.skeletons[firstKey]) && "array" === this.skeletons[firstKey] ? [] : {};
 
 					super.set(firstKey,
 						this._createBaseObject(firstKey,
@@ -666,9 +665,9 @@ export default class NodeContainerPattern extends Map {
 
 		// associate a key with a skeleton
 		// (MUST have a valid skeleton : [ "array", "boolean", "color", "email", "float", "ipv4", "ipv6, "integer", "object", "string", "url" ])
-		public skeleton (_key, _skeleton): this {
+		public skeleton (_key: string, _skeleton: tValidSkeleton): this {
 
-			const key = ensureKey(_key);
+			const key: string = ensureKey(_key);
 
 			if (!isDefined(_skeleton)) {
 				throw new ReferenceError("The \"" + key + "\" data has not any \"skeleton\" attribute");
@@ -682,7 +681,7 @@ export default class NodeContainerPattern extends Map {
 
 			else {
 
-				const skeleton = _skeleton.trim().toLowerCase();
+				const skeleton: tValidSkeleton = _skeleton.trim().toLowerCase() as tValidSkeleton;
 
 				if (!inArray(VALID_SKELETONS, skeleton)) {
 

@@ -2,15 +2,16 @@
 
 // deps
 
-	// natives
-	import { join } from "path";
-
 	// locals
-	const { isArray, isInteger, isObject, isNumber } = require(join(__dirname, "validators"));
+	import { isArray, isInteger, isObject, isNumber } from "./validators";
+
+// types & interfaces
+
+	import { tValidType } from "./_interfaces";
 
 // module
 
-export default function getTypeValue (value: any): string {
+export default function getTypeValue (value: any): tValidType {
 
 	if (isArray(value)) {
 		return "array";
@@ -25,7 +26,7 @@ export default function getTypeValue (value: any): string {
 		return "float";
 	}
 	else {
-		return typeof value;
+		return typeof value as "boolean" | "string" | "function";
 	}
 
 };

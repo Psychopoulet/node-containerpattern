@@ -2,15 +2,16 @@
 
 // deps
 
-	// natives
-	import { join } from "path";
-
 	// locals
-	const { isNumber, isInteger } = require(join(__dirname, "validators"));
+	import { isNumber, isInteger } from "./validators";
+
+// types & interfaces
+
+	import { tValidSkeleton } from "./_interfaces";
 
 // module
 
-module.exports = function ensureDataBasic (key, skeleton, value) {
+export default function ensureDataBasic (key: string, skeleton: tValidSkeleton, value: string | number | boolean): string | number | boolean {
 
 	if ("string" === skeleton) {
 		return String(value);
@@ -25,7 +26,7 @@ module.exports = function ensureDataBasic (key, skeleton, value) {
 		}
 		else {
 
-			const parsed = parseFloat(value);
+			const parsed: number = parseFloat(value as string);
 
 			if (isNaN(parsed)) {
 				throw new TypeError("The \"" + key + "\" data does not correspond to the skeleton");
@@ -39,7 +40,7 @@ module.exports = function ensureDataBasic (key, skeleton, value) {
 	}
 	else if ("integer" === skeleton && !isInteger(value)) {
 
-		const parsed = parseInt(value, 10);
+		const parsed: number = parseInt(value as string, 10);
 
 		if (isNaN(parsed)) {
 			throw new TypeError("The \"" + key + "\" data does not correspond to the skeleton");

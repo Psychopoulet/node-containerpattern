@@ -1,5 +1,10 @@
 "use strict";
 
-import Container from "./Container"
+// deps
+
+	// locals
+	import Container from "./Container";
+
+// module
 
 export = Container;

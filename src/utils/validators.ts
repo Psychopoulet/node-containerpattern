@@ -74,8 +74,8 @@ export function isDefined (obj: any): boolean {
 				return isArray(obj) && 0 < obj.length;
 			}
 
-			export function inArray (searchIn, obj: any): boolean {
-				return isNotEmptyArray(searchIn) && isDefined(obj) && searchIn.includes(obj);
+			export function inArray (searchIn: any, obj: any): boolean {
+				return isNotEmptyArray(searchIn) && isDefined(obj) && (searchIn as Array<any>).includes(obj);
 			}
 
 		export function isPlainObject (obj: any): boolean {

@@ -2,29 +2,29 @@
 
 // deps
 
-	// natives
-	import { join } from "path";
-
 	// locals
-	const { isPlainObject, isString } = require(join(__dirname, "validators"));
+	import { isPlainObject, isString } from "./validators";
+
+// types & interfaces
+
+	import { tValidSkeleton } from "./_interfaces";
 
 // module
 
-module.exports = function ensureDataObject (key, skeleton, value) {
+export default function ensureDataObject (key: string, skeleton: tValidSkeleton, value: { [key:string]: any } | string): { [key:string]: any } {
 
-	let result = value;
+	if ("object" === skeleton && !isPlainObject(value)) {
 
-		if ("object" === skeleton && !isPlainObject(value)) {
-
-			if (!isString(value) || "{" !== value[0] || "}" !== value[value.length - 1]) {
-				throw new TypeError("The \"" + key + "\" data does not correspond to the skeleton");
-			}
-			else {
-				result = JSON.parse(value);
-			}
-
+		if (!isString(value) || "{" !== (value as string)[0] || "}" !== (value as string)[(value as string).length - 1]) {
+			throw new TypeError("The \"" + key + "\" data does not correspond to the skeleton");
+		}
+		else {
+			return JSON.parse(value as string);
 		}
 
-	return result;
+	}
+	else {
+		return value as { [key:string]: any };
+	}
 
 };
