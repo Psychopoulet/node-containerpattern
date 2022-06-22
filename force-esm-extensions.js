@@ -52,6 +52,9 @@
 					else if (file.endsWith(".js")) {
 						return rename(FILE, FILE.replace(".js", ".mjs"));
 					}
+					else if (file.endsWith(".d.ts")) {
+						return rename(FILE, FILE.replace(".d.ts", ".d.mts"));
+					}
 					else {
 						return Promise.resolve();
 					}
