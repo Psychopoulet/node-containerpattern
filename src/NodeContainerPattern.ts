@@ -28,6 +28,12 @@
 		iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue
 	} from "./utils/_interfaces";
 
+	export {
+		tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton,
+		tValidType,
+		iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue
+	};
+
 // consts
 
 	const VALID_SKELETONS: Array<tValidSkeleton> = [ "array", "boolean", "color", "email", "float", "ipv4", "ipv6", "integer", "object", "string", "url" ];

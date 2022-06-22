@@ -3,25 +3,20 @@
 // deps
 
 	// locals
-	import Container from "./Container";
-	import  { patternColor, patternEmail, patternUrl, patternIPV4, patternIPV6 } from "./utils/patterns";
-
-// types & interfaces
-
-	import {
+	import NodeContainerPattern, {
 		tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton,
 		tValidType,
 		iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue
-	} from "./utils/_interfaces";
+	} from "./NodeContainerPattern";
+
+// types & interfaces
+
+	export {
+		tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton,
+		tValidType,
+		iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue
+	};
 
 // module
 
-export {
-	tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton,
-	tValidType,
-	iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue
-};
-
-export { patternColor, patternEmail, patternUrl, patternIPV4, patternIPV6 };
-
-export default Container;
+export default NodeContainerPattern;

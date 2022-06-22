@@ -3,22 +3,19 @@
   "version": "1.6.0",
   "description": "A 'Container pattern' object for a clean global use of data.",
 
-  "typings": "./lib/commonjs/main.d.cts",
-  "main": "./lib/commonjs/main.cjs",
+  "typings": "./lib/cjs/main.d.cts",
+  "main": "./lib/cjs/main.cjs",
 
   "exports": {
 	".": {
-
-	  "import": {
-		  "types": "./lib/esm/main.d.mts",
-		  "default": "./lib/esm/main.mjs"
-	  },
-
-	  "require": {
-		  "types": "./lib/commonjs/main.d.cts",
-		  "default": "./lib/commonjs/main.cjs"
-	  }
-
+		"require": {
+			"types": "./lib/cjs/main.d.cts",
+			"default": "./lib/cjs/main.cjs"
+		},
+		"import": {
+			"types": "./lib/esm/main.d.mts",
+			"default": "./lib/esm/main.mjs"
+		}
 	}
 },
 
@@ -26,9 +23,7 @@
 
     "check-updates": "npx check-version-modules",
 
-    "compile": "npm run compile-commonjs && npm run compile-esm",
-    "compile-commonjs": "node ./compile.js -- --module commonjs",
-    "compile-esm": "node ./compile.js -- --module es2022",
+    "compile": "npx tsc --project \"./tsconfig-cjs.json\" && npx tsc --project \"./tsconfig-esm.json\"",
 
     "unit-tests": "npx nyc --reporter=html --reporter=text mocha",
     "tests": "npm run-script lint && npm run-script check-updates && npm run-script unit-tests",
@@ -39,6 +34,7 @@
   "files": [
     "/lib"
   ],
+
   "husky": {
     "hooks": {
       "pre-commit": "npm run-script lint",
@@ -69,15 +65,15 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@types/node": "17.0.35",
+    "@types/node": "18.0.0",
     "check-version-modules": "1.3.5",
     "coveralls": "3.1.1",
-    "eslint": "8.16.0",
+    "eslint": "8.18.0",
     "fs-extra": "10.1.0",
     "husky": "8.0.1",
     "mocha": "10.0.0",
     "nyc": "15.1.0",
-    "typescript": "4.6.4"
+    "typescript": "4.7.4"
   },
   "homepage": "https://github.com/Psychopoulet/node-containerpattern#readme",
   "engines": {

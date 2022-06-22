@@ -3,8 +3,8 @@
 // deps
 
 	// locals
-	import Container from "./Container";
+	import NodeContainerPattern from "./NodeContainerPattern";
 
 // module
 
-export = Container;
+export = NodeContainerPattern;

@@ -32,8 +32,7 @@ describe("compilation typescript", () => {
 				"npx tsc", // executer
 				join(__dirname, "typescript", "compilation.ts"),
 				"--target es6",
-				"--module CommonJS",
-				"--downlevelIteration" // specific for this package
+				"--module commonjs"
 			];
 
 			exec(args.join(" "), {
@@ -59,7 +58,7 @@ describe("compilation typescript", () => {
 
 				const { name } = require(join(__dirname, "..", "package.json"));
 
-				writeFile(join(__dirname, "typescript", "compilation.js"), content.replace(name, "../../lib/main.js"), "utf-8", (err) => {
+				writeFile(join(__dirname, "typescript", "compilation.js"), content.replace(name, "../../lib/cjs/main.js"), "utf-8", (err) => {
 					return err ? reject(err) : resolve();
 				});
 
