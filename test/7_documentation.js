@@ -11,9 +11,9 @@
 	const { join } = require("path");
 
 	// locals
-	const Container = require(join(__dirname, "..", "lib", "main.js"));
-	const stringifyRegex = require(join(__dirname, "..", "lib", "stringifyRegex.js"));
-	const { patternEmail, patternUrl, patternIPV4, patternIPV6 } = require(join(__dirname, "..", "lib", "patterns.js"));
+	const Container = require(join(__dirname, "..", "lib", "cjs", "main.cjs"));
+	const stringifyRegex = require(join(__dirname, "..", "lib", "cjs", "utils", "stringifyRegex.js")).default;
+	const { patternEmail, patternUrl, patternIPV4, patternIPV6 } = require(join(__dirname, "..", "lib", "cjs", "utils", "patterns.js"));
 
 // private
 

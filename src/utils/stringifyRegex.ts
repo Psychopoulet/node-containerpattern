@@ -2,19 +2,16 @@
 
 // deps
 
-	// natives
-	const { join } = require("path");
-
 	// locals
-	const { isString, isRegExp } = require(join(__dirname, "validators"));
+	import { isString, isRegExp } from "./validators";
 
 // module
 
-module.exports = function stringifyRegex (regex) {
+export default function stringifyRegex (regex: RegExp | string): string {
 
 	if (isString(regex) || isRegExp(regex)) {
 
-		let stringified = isString(regex) ? regex : String(regex);
+		let stringified: string = isString(regex) ? regex as string : String(regex);
 
 		if (stringified.length && stringified.startsWith("/")) {
 			stringified = stringified.slice(1, stringified.length);
@@ -28,7 +25,7 @@ module.exports = function stringifyRegex (regex) {
 
 	}
 	else {
-		return null;
+		return "";
 	}
 
 };

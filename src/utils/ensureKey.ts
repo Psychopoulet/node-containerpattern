@@ -2,15 +2,12 @@
 
 // deps
 
-	// natives
-	const { join } = require("path");
-
 	// locals
-	const { isDefined, isString, isEmptyString } = require(join(__dirname, "validators"));
+	import { isDefined, isString, isEmptyString } from "./validators";
 
 // module
 
-module.exports = function ensureKey (key) {
+export default function ensureKey (key: any): string {
 
 	if (!isDefined(key)) {
 		throw new ReferenceError("The key does not exist");

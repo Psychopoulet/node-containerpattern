@@ -11,7 +11,7 @@
 	const { join } = require("path");
 
 	// locals
-	const Container = require(join(__dirname, "..", "lib", "main.js"));
+	const Container = require(join(__dirname, "..", "lib", "cjs", "main.cjs"));
 
 // private
 
