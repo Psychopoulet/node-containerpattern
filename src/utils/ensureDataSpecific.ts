@@ -2,15 +2,16 @@
 
 // deps
 
-	// natives
-	const { join } = require("path");
-
 	// locals
-	const { isColor, isEmail, isEmptyString, isIPV4, isIPV6, isUrl } = require(join(__dirname, "validators"));
+	import { isColor, isEmail, isEmptyString, isIPV4, isIPV6, isUrl } from "./validators";
+
+// types & interfaces
+
+	import { tValidSkeleton } from "./_interfaces";
 
 // module
 
-module.exports = function ensureDataSpecific (key, skeleton, value) {
+export default function ensureDataSpecific (key: string, skeleton: tValidSkeleton, value: string): string {
 
 	if (isEmptyString(value)) {
 		return "";
@@ -20,7 +21,7 @@ module.exports = function ensureDataSpecific (key, skeleton, value) {
 	}
 	else {
 
-		const data = value.trim().toLowerCase();
+		const data: string = value.trim().toLowerCase();
 
 		if ("color" === skeleton && !isColor(data)) {
 			throw new TypeError("The \"" + key + "\" data does not correspond to the \"color\" skeleton");

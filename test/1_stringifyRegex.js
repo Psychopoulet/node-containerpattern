@@ -11,7 +11,7 @@
 	const { join } = require("path");
 
 	// locals
-	const stringifyRegex = require(join(__dirname, "..", "lib", "stringifyRegex.js"));
+	const stringifyRegex = require(join(__dirname, "..", "lib", "cjs", "utils", "stringifyRegex.js")).default;
 
 // tests
 
@@ -19,13 +19,13 @@ describe("stringifyRegex", () => {
 
 	it("should check with nothing", () => {
 
-		strictEqual(stringifyRegex(), null, "stringifyRegex result test is invalid");
+		strictEqual(stringifyRegex(), "", "stringifyRegex result test is invalid");
 
 	});
 
 	it("should check with boolean", () => {
 
-		strictEqual(stringifyRegex(true), null, "stringifyRegex result test is invalid");
+		strictEqual(stringifyRegex(true), "", "stringifyRegex result test is invalid");
 
 	});
 

@@ -1,11 +1,11 @@
-/// <reference path="../../lib/index.d.ts" />
+/// <reference path="../../lib/cjs/main.d.cts" />
 
 "use strict";
 
 // deps
 
 	// locals
-	import Container = require("node-containerpattern");
+	import Container = require("../../lib/cjs/main.cjs");
 
 // consts
 
