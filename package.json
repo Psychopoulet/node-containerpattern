@@ -1,6 +1,6 @@
 {
   "name": "node-containerpattern",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "A 'Container pattern' object for a clean global use of data.",
 
   "type": "commonjs",
@@ -72,6 +72,6 @@
   },
   "homepage": "https://github.com/Psychopoulet/node-containerpattern#readme",
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">=12.0.0"
   }
 }
