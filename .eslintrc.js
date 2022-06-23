@@ -1,7 +1,10 @@
+"use strict";
+
 module.exports = {
     "extends": "eslint:recommended",
     "parserOptions": {
-        "ecmaVersion": 2018
+        "sourceType": "module",
+        "ecmaVersion": 2022
     },
     "env": {
         "es6": true,
