@@ -7,7 +7,7 @@
 	const { join } = require("path");
 
 	// locals
-	const ensureDataArray = require(join(__dirname, "..", "lib", "ensureDataArray.js"));
+	const ensureDataArray = require(join(__dirname, "..", "lib", "cjs", "utils", "ensureDataArray.js")).default;
 
 // tests
 

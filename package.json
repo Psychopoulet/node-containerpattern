@@ -3,6 +3,7 @@
   "version": "1.6.0",
   "description": "A 'Container pattern' object for a clean global use of data.",
 
+  "type": "commonjs",
   "typings": "./lib/cjs/main.d.cts",
   "main": "./lib/cjs/main.cjs",
 
@@ -11,10 +12,6 @@
       "require": {
         "types": "./lib/cjs/main.d.cts",
         "default": "./lib/cjs/main.cjs"
-      },
-      "import": {
-        "types": "./lib/esm/main.d.mts",
-        "default": "./lib/esm/main.mjs"
       }
     }
   },
@@ -23,7 +20,7 @@
 
     "check-updates": "npx check-version-modules",
 
-    "compile": "npx tsc --project \"./tsconfig-cjs.json\" && npx tsc --project \"./tsconfig-esm.json\" && node force-esm-extensions.js",
+    "compile": "npx tsc --project \"./tsconfig-cjs.json\"",
 
     "unit-tests": "npx nyc --reporter=html --reporter=text mocha",
     "tests": "npm run-script lint && npm run-script check-updates && npm run-script unit-tests",

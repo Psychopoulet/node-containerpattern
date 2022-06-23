@@ -11,7 +11,7 @@
 	const { join } = require("path");
 
 	// locals
-	const Validators = require(join(__dirname, "..", "lib", "validators.js"));
+	const Validators = require(join(__dirname, "..", "lib", "cjs", "utils", "validators.js"));
 
 // tests
 
