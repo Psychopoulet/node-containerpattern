@@ -58,7 +58,7 @@ export default class NodeContainerPattern extends Map {
 
 	// constructor
 
-	constructor (recursionSeparator: string = ".") {
+	public constructor (recursionSeparator: string = ".") {
 
 		super();
 
