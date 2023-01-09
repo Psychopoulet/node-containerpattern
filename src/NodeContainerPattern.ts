@@ -83,7 +83,7 @@ export default class NodeContainerPattern extends Map {
 
 			// check limits
 			else if (isArray(this.limits[key]) && !inArray(this.limits[key], value)) {
-				throw new Error("The \"" + key + "\" data does not correspond to the limits (" + JSON.stringify(this.limits[key]) + ")");
+				throw new Error("The \"" + key + "\" value (" + value + ") does not correspond to the limits (" + JSON.stringify(this.limits[key]) + ")");
 			}
 
 			// check skeleton
