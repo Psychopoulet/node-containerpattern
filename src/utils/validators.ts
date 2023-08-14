@@ -3,7 +3,7 @@
 // deps
 
 	// natives
-	import { isIPv4, isIPv6 } from "net";
+	import { isIPv4, isIPv6 } from "node:net";
 
 	// locals
 	import { patternColor, patternEmail, patternUrl } from "./patterns";
