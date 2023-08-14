@@ -20,12 +20,12 @@
 
     "build": "npx tsc --project \"./tsconfig.json\"",
 
-    "lint": "npx eslint ./bin/*.js ./test/**/*.js",
-    "check-requires": "npx used-deps-analyzer \"./package.json\" \"./src\" --no-dev --overkill \"fs-extra\"",
+    "lint": "npx eslint ./test/**/*.js",
+    "check-requires": "npx used-deps-analyzer \"./package.json\" \"./src\" --no-dev --overkill \"fs-extra\" \"node-promfs\"",
     "check-updates": "npx check-version-modules",
     "unit-tests": "npm run build && npx nyc --reporter=html --reporter=text mocha",
 
-    "tests": "npm run-script check-updates && npm run-script unit-tests",
+    "tests": "npm run-script lint && npm run check-requires && npm run-script check-updates && npm run-script unit-tests",
     "ci": "npm run-script tests && npx nyc report --reporter=text-lcov | coveralls"
 
   },
@@ -71,7 +71,7 @@
     "mocha": "10.2.0",
     "nyc": "15.1.0",
     "typescript": "5.1.6",
-    "used-deps-analyzer": "0.1.0"
+    "used-deps-analyzer": "0.1.1"
   },
   "homepage": "https://github.com/Psychopoulet/node-containerpattern#readme",
   "engines": {
