@@ -40,16 +40,16 @@
 
   "dependencies": {},
   "devDependencies": {
-    "@types/node": "20.5.0",
-    "check-version-modules": "1.4.0",
+    "@types/node": "20.8.2",
+    "check-version-modules": "2.0.0",
     "coveralls": "3.1.1",
-    "eslint": "8.47.0",
+    "eslint": "8.50.0",
     "fs-extra": "11.1.1",
     "husky": "8.0.3",
     "mocha": "10.2.0",
     "nyc": "15.1.0",
-    "typescript": "5.1.6",
-    "used-deps-analyzer": "0.1.4"
+    "typescript": "5.2.2",
+    "used-deps-analyzer": "0.1.8"
   },
   "optionalDependencies": {},
 
