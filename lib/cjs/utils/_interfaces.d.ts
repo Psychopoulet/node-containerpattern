@@ -1,6 +1,6 @@
-export type tValidSkeleton = "array" | "boolean" | "color" | "email" | "float" | "ipv4" | "ipv6" | "integer" | "object" | "string" | "url";
-export type tMinMaxValidSkeleton = "array" | "color" | "email" | "float" | "ipv4" | "ipv6" | "integer" | "string" | "url";
-export type tRegexValidSkeleton = "color" | "email" | "ipv4" | "ipv6" | "string" | "url";
+export type tValidSkeleton = "array" | "boolean" | "color" | "email" | "float" | "ipv4" | "ipv6" | "integer" | "object" | "string" | "url" | "serial";
+export type tMinMaxValidSkeleton = "array" | "color" | "email" | "float" | "ipv4" | "ipv6" | "integer" | "string" | "url" | "serial";
+export type tRegexValidSkeleton = "color" | "email" | "ipv4" | "ipv6" | "string" | "url" | "serial";
 export type tValidType = tValidSkeleton | "function";
 export interface iDocumentationFunction {
     "fullkey": string;
@@ -9,12 +9,10 @@ export interface iDocumentationFunction {
     "min"?: number;
     "max"?: number;
     "regex"?: string;
-    "limits"?: Array<any>;
+    "limits"?: any[];
 }
 export interface iDocumentationObjectOrArray extends iDocumentationFunction {
-    "content": {
-        [key: string]: iDocumentationFunction | iDocumentationObjectOrArray | iDocumentationValue;
-    };
+    "content": Record<string, iDocumentationFunction | iDocumentationObjectOrArray | iDocumentationValue>;
 }
 export interface iDocumentationValue extends iDocumentationFunction {
     "value": string | number | boolean;

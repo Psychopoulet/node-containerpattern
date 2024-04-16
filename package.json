@@ -1,7 +1,7 @@
 {
 
   "name": "node-containerpattern",
-  "version": "1.7.6",
+  "version": "1.7.7",
   "description": "A 'Container pattern' object for a clean global use of data.",
 
   "type": "commonjs",
@@ -44,15 +44,15 @@
 
   "dependencies": {},
   "devDependencies": {
-    "@types/node": "20.11.0",
-    "check-version-modules": "2.0.0",
+    "@types/node": "20.12.7",
+    "check-version-modules": "2.1.2",
     "eslint-plugin-personnallinter": "git+ssh://git@github.com/Psychopoulet/eslint-plugin-personnallinter",
     "fs-extra": "11.2.0",
-    "husky": "8.0.3",
-    "mocha": "10.2.0",
+    "husky": "9.0.11",
+    "mocha": "10.4.0",
     "nyc": "15.1.0",
     "rimraf": "5.0.5",
-    "typescript": "5.3.3",
+    "typescript": "5.4.5",
     "used-deps-analyzer": "0.1.8"
   },
   "optionalDependencies": {},
