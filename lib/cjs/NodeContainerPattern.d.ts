@@ -1,25 +1,13 @@
-import { tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton, tValidType, iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue } from "./utils/_interfaces";
-export { tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton, tValidType, iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue };
+import type { tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton, tValidType, iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue } from "./utils/_interfaces";
+export type { tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton, tValidType, iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue };
 export default class NodeContainerPattern extends Map {
-    documentations: {
-        [key: string]: any;
-    };
-    limits: {
-        [key: string]: Array<string | number>;
-    };
-    mins: {
-        [key: string]: number;
-    };
-    maxs: {
-        [key: string]: number;
-    };
+    documentations: Record<string, any>;
+    limits: Record<string, Array<string | number>>;
+    mins: Record<string, number>;
+    maxs: Record<string, number>;
     recursionSeparator: string;
-    regexs: {
-        [key: string]: RegExp;
-    };
-    skeletons: {
-        [key: string]: tValidSkeleton;
-    };
+    regexs: Record<string, RegExp>;
+    skeletons: Record<string, tValidSkeleton>;
     constructor(recursionSeparator?: string);
     private _ensureData;
     private _ensureDataRecursive;
@@ -34,12 +22,10 @@ export default class NodeContainerPattern extends Map {
     clearSkeletons(): this;
     delete(_key: string): boolean;
     document(_key: string, documentation: string): this;
-    documentation(): {
-        [key: string]: any;
-    };
+    documentation(): Record<string, any>;
     get(_key: string): any;
     has(_key: string): boolean;
-    limit(_key: string, limit: Array<any>): this;
+    limit(_key: string, limit: any[]): this;
     min(_key: string, min: number): this;
     max(_key: string, max: number): this;
     regex(_key: string, regex: RegExp): this;

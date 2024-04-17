@@ -13,7 +13,7 @@
 	// locals
 	const Container = require(join(__dirname, "..", "lib", "cjs", "main.cjs"));
 	const stringifyRegex = require(join(__dirname, "..", "lib", "cjs", "utils", "stringifyRegex.js")).default;
-	const { patternEmail, patternUrl, patternIPV4, patternIPV6 } = require(join(__dirname, "..", "lib", "cjs", "utils", "patterns.js"));
+	const { patternEmail, patternUrl, patternIPV4, patternIPV6, patternSerialWindows, patternSerialUnix } = require(join(__dirname, "..", "lib", "cjs", "utils", "patterns.js"));
 
 // private
 
@@ -171,7 +171,15 @@ describe("documentation", () => {
 
 			.skeleton("testipv6", "ipv6")
 				.set("testipv6", "0000:0000:0000:0000:0000:0000:0000:0001")
-				.document("testipv6", "This is an ipv6");
+				.document("testipv6", "This is an ipv6")
+
+			.skeleton("testserial-windows", "serial")
+				.set("testserial-windows", "COM1")
+				.document("testserial-windows", "This is an serial")
+
+			.skeleton("testserial-unix", "serial")
+				.set("testserial-unix", "/dev/tty-test")
+				.document("testserial-unix", "This is an serial");
 
 		// ipv4
 
@@ -218,6 +226,24 @@ describe("documentation", () => {
 			"regex": stringifyRegex(patternUrl),
 			"value": "https://www.google.com"
 		}, "normal running has invalid return for \"testurl\"");
+
+		// serial
+
+		deepStrictEqual(container.documentation()["testserial-windows"], {
+			"fullkey": "testserial-windows",
+			"type": "serial",
+			"documentation": "This is an serial",
+			"min": 4,
+			"value": "COM1"
+		}, "normal running has invalid return for \"testserial-windows\"");
+
+		deepStrictEqual(container.documentation()["testserial-unix"], {
+			"fullkey": "testserial-unix",
+			"type": "serial",
+			"documentation": "This is an serial",
+			"min": 4,
+			"value": "/dev/tty-test"
+		}, "normal running has invalid return for \"testserial-unix\"");
 
 	});
 

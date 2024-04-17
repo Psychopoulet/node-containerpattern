@@ -102,6 +102,21 @@ describe("ensureDataSpecific", () => {
 
 	});
 
+	it("should check serial", () => {
+
+		throws(() => {
+			ensureDataSpecific("test", "serial", 4);
+		}, Error, "check data does not throw an error");
+
+		throws(() => {
+			ensureDataSpecific("test", "serial", "test");
+		}, Error, "check data does not throw an error");
+
+		strictEqual(ensureDataSpecific("test", "serial", "COM1  "), "COM1", "checked data is invalid");
+		strictEqual(ensureDataSpecific("test", "serial", "/dev/ttyACM0  "), "/dev/ttyACM0", "checked data is invalid");
+
+	});
+
 	it("should check whatever value", () => {
 
 		strictEqual(ensureDataSpecific("test", "whatever", 3.14), 3.14, "checked data is invalid");

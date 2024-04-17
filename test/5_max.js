@@ -32,6 +32,7 @@ describe("max", () => {
 			.skeleton("testipv6", "ipv6")
 			.skeleton("teststring", "string")
 			.skeleton("testurl", "url")
+			.skeleton("testserial", "serial")
 			.skeleton("module", "object")
 				.skeleton("module.maxversion", "integer")
 				.skeleton("module.versions", "array")
@@ -149,6 +150,12 @@ describe("max", () => {
 	it("should check normal testurl running", () => {
 
 		strictEqual(container.max("testurl", 2) instanceof Container, true, "normal running has invalid return");
+
+	});
+
+	it("should check normal testserial running", () => {
+
+		strictEqual(container.max("testserial", 2) instanceof Container, true, "normal running has invalid return");
 
 	});
 

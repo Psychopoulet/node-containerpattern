@@ -32,6 +32,7 @@ describe("min", () => {
 			.skeleton("testipv6", "ipv6")
 			.skeleton("teststring", "string")
 			.skeleton("testurl", "url")
+			.skeleton("testserial", "serial")
 			.skeleton("module", "object")
 				.skeleton("module.minversion", "integer")
 				.skeleton("module.versions", "array")
@@ -149,6 +150,12 @@ describe("min", () => {
 	it("should check normal testurl running", () => {
 
 		strictEqual(container.min("testurl", 2) instanceof Container, true, "normal running has invalid return");
+
+	});
+
+	it("should check normal testserial running", () => {
+
+		strictEqual(container.min("testserial", 2) instanceof Container, true, "normal running has invalid return");
 
 	});
 
