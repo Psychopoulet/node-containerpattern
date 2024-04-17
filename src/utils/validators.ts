@@ -4,7 +4,7 @@
     import { isIPv4, isIPv6 } from "node:net";
 
     // locals
-    import { patternColor, patternEmail, patternUrl } from "./patterns";
+    import { patternColor, patternEmail, patternUrl, patternSerialWindows, patternSerialUnix } from "./patterns";
 
 // module
 
@@ -50,6 +50,15 @@ export function isDefined (obj: any): boolean {
 
             export function isUrl (obj: any): boolean {
                 return isNotEmptyString(obj) && patternUrl.test(obj);
+            }
+
+            export function isSerial (obj: any): boolean {
+
+                return isNotEmptyString(obj) && (
+                    patternSerialWindows.test(obj)
+                    || patternSerialUnix.test(obj)
+                );
+
             }
 
     export function isObject (obj: any): boolean {

@@ -9,6 +9,7 @@ export declare function isEmail(obj: any): boolean;
 export declare function isIPV4(obj: any): boolean;
 export declare function isIPV6(obj: any): boolean;
 export declare function isUrl(obj: any): boolean;
+export declare function isSerial(obj: any): boolean;
 export declare function isObject(obj: any): boolean;
 export declare function isRegExp(obj: any): boolean;
 export declare function isArray(obj: any): boolean;

@@ -92,10 +92,10 @@ export default class NodeContainerPattern extends Map {
                 if ("object" === skeleton) {
                     return ensureDataObject(key, skeleton, value);
                 }
-                else if (inArray([ "color", "email", "ipv4", "ipv6", "url" ], skeleton)) {
+                else if (inArray([ "color", "email", "ipv4", "ipv6", "url", "serial" ], skeleton)) {
                     return ensureDataSpecific(key, skeleton, value);
                 }
-                else if (inArray([ "array", "string", "serial" ], skeleton)) {
+                else if (inArray([ "array", "string" ], skeleton)) {
 
                     const result: any[] | string = "array" === skeleton ? ensureDataArray(key, skeleton, value) : ensureDataBasic(key, skeleton, value) as string;
 
@@ -504,7 +504,7 @@ export default class NodeContainerPattern extends Map {
         }
 
         // associate a key with a min value (min length for string & array)
-        // (MUST have a valid skeleton : [ "array", "color", "email", "float", "ipv4", "ipv6, "integer", "string", "url" ])
+        // (MUST have a valid skeleton : [ "array", "color", "email", "float", "ipv4", "ipv6, "integer", "string", "url", "serial" ])
         public min (_key: string, min: number): this {
 
             const key: string = ensureKey(_key);
@@ -526,7 +526,7 @@ export default class NodeContainerPattern extends Map {
             else if ("float" === this.skeletons[key] && !isNumber(min)) {
                 throw new TypeError("The \"" + key + "\" data has an invalid \"min\" attribute");
             }
-            else if ([ "array", "color", "email", "integer", "ipv4", "ipv6", "string", "url" ].includes(this.skeletons[key]) && !isInteger(min)) {
+            else if ([ "array", "color", "email", "integer", "ipv4", "ipv6", "string", "url", "serial" ].includes(this.skeletons[key]) && !isInteger(min)) {
                 throw new TypeError("The \"" + key + "\" data has an invalid \"min\" attribute");
             }
 
@@ -561,7 +561,7 @@ export default class NodeContainerPattern extends Map {
             else if ("float" === this.skeletons[key] && !isNumber(max)) {
                 throw new TypeError("The \"" + key + "\" data has an invalid \"max\" attribute");
             }
-            else if ([ "array", "color", "email", "integer", "ipv4", "ipv6", "string", "url" ].includes(this.skeletons[key]) && !isInteger(max)) {
+            else if ([ "array", "color", "email", "integer", "ipv4", "ipv6", "string", "url", "serial" ].includes(this.skeletons[key]) && !isInteger(max)) {
                 throw new TypeError("The \"" + key + "\" data has an invalid \"max\" attribute");
             }
 
@@ -574,7 +574,7 @@ export default class NodeContainerPattern extends Map {
         }
 
         // associate a key with a pattern
-        // (MUST have a valid skeleton : [ "color", "email", "ipv4", "ipv6", "string", "url" ])
+        // (MUST have a valid skeleton : [ "color", "email", "ipv4", "ipv6", "string", "url", "serial" ])
         // (useless with "color", "email", "ipv4", "ipv6", & "url", tested with natives checkers. more usefull with "string")
         public regex (_key: string, regex: RegExp): this {
 
@@ -668,7 +668,7 @@ export default class NodeContainerPattern extends Map {
         }
 
         // associate a key with a skeleton
-        // (MUST have a valid skeleton : [ "array", "boolean", "color", "email", "float", "ipv4", "ipv6, "integer", "object", "string", "url" ])
+        // (MUST have a valid skeleton : [ "array", "boolean", "color", "email", "float", "ipv4", "ipv6, "integer", "object", "string", "url", "serial" ])
         public skeleton (_key: string, _skeleton: tValidSkeleton): this {
 
             const key: string = ensureKey(_key);
@@ -725,6 +725,11 @@ export default class NodeContainerPattern extends Map {
                     // www.s.tv, ftp://s.tv, https://thisisatest.com?req=sort_desc
                     else if ("url" === skeleton) {
                         this.min(key, 8).regex(key, patternUrl);
+                    }
+
+                    // COMx => /dev/tty???
+                    else if ("serial" === skeleton) {
+                        this.min(key, 4);
                     }
 
                 }
