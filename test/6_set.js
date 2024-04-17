@@ -37,6 +37,7 @@ describe("set", () => {
 				.skeleton("testskeletonipv4", "ipv4")
 				.skeleton("testskeletonipv6", "ipv6")
 				.skeleton("testskeletonurl", "url")
+				.skeleton("testskeletonserial", "serial")
 				.skeleton("testskeletonobject", "object")
 				.skeleton("testskeletonbooleans", "object")
 					.skeleton("testskeletonbooleans.recursive", "boolean")
@@ -546,6 +547,48 @@ describe("set", () => {
 				}, Error, "normal running with skeleton throws an error");
 
 				strictEqual(container.get("testskeletonurl"), "http://localhost:8080", "normal running has invalid return");
+
+				strictEqual(container.size, 1, "normal running has invalid return");
+
+			});
+
+		});
+
+		describe("serial", () => {
+
+			before(() => {
+				container.clearData();
+			});
+
+			after(() => {
+				container.clearData();
+			});
+
+			it("should check normal running with skeleton", () => {
+
+				doesNotThrow(() => {
+					container.set("testskeletonserial", "");
+				}, Error, "empty running with skeleton throws an error");
+
+				throws(() => {
+					container.set("testskeletonserial", 5);
+				}, Error, "wrong running with skeleton does not throw an error");
+
+				throws(() => {
+					container.set("testskeletonserial", "test");
+				}, Error, "wrong running with skeleton does not throw an error");
+
+				doesNotThrow(() => {
+					container.set("testskeletonserial", "COM1");
+				}, Error, "normal running with skeleton throws an error");
+
+				strictEqual(container.get("testskeletonserial"), "COM1", "normal running has invalid return");
+
+				doesNotThrow(() => {
+					container.set("testskeletonserial", "/dev/tty-test");
+				}, Error, "normal running with skeleton throws an error");
+
+				strictEqual(container.get("testskeletonserial"), "/dev/tty-test", "normal running has invalid return");
 
 				strictEqual(container.size, 1, "normal running has invalid return");
 

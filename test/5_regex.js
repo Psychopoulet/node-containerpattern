@@ -137,4 +137,16 @@ describe("regex", () => {
 
 	});
 
+	it("should check normal serial running", () => {
+
+		strictEqual(container.skeleton("test", "serial").regex("test", /^test$/) instanceof Container, true, "normal running has invalid return");
+
+		throws(() => {
+			container.set("test", "value");
+		}, Error, "check value does not throw an error");
+
+		strictEqual(container.set("test", "COM1") instanceof Container, true, "normal running has invalid return");
+
+	});
+
 });

@@ -214,6 +214,7 @@ describe("meta", () => {
 			strictEqual(container.skeleton("testskeletonobject", "object") instanceof Container, true, "normal running has invalid return");
 			strictEqual(container.skeleton("testskeletonstring", "string") instanceof Container, true, "normal running has invalid return");
 			strictEqual(container.skeleton("testskeletonurl", "url") instanceof Container, true, "normal running has invalid return");
+			strictEqual(container.skeleton("testskeletonserial", "serial") instanceof Container, true, "normal running has invalid return");
 		});
 
 		it("should check normal recursive running", () => {
