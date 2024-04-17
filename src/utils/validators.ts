@@ -25,11 +25,11 @@ export function isDefined (obj: any): boolean {
     }
 
         export function isEmptyString (obj: any): boolean {
-            return isString(obj) && "" === obj.trim();
+            return isString(obj) && "" === (obj as string).trim();
         }
 
         export function isNotEmptyString (obj: any): boolean {
-            return isString(obj) && "" !== obj.trim();
+            return isString(obj) && "" !== (obj as string).trim();
         }
 
             export function isColor (obj: any): boolean {
@@ -74,11 +74,11 @@ export function isDefined (obj: any): boolean {
         }
 
             export function isEmptyArray (obj: any): boolean {
-                return isArray(obj) && !obj.length;
+                return isArray(obj) && 0 >= (obj as any[]).length;
             }
 
             export function isNotEmptyArray (obj: any): boolean {
-                return isArray(obj) && 0 < obj.length;
+                return isArray(obj) && 0 < (obj as any[]).length;
             }
 
             export function inArray (searchIn: any, obj: any): boolean {

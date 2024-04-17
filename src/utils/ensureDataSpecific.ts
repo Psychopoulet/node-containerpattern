@@ -14,7 +14,14 @@ export default function ensureDataSpecific (key: string, skeleton: tValidSkeleto
     if (isEmptyString(value)) {
         return "";
     }
-    else if (![ "color", "email", "ipv4", "ipv6", "url", "serial" ].includes(skeleton)) {
+    else if (![
+        "color",
+        "email",
+        "ipv4",
+        "ipv6",
+        "url",
+        "serial"
+    ].includes(skeleton)) {
         return value;
     }
     else {

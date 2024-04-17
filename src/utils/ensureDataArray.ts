@@ -17,7 +17,7 @@ export default function ensureDataArray (key: string, skeleton: tValidSkeleton, 
             throw new TypeError("The \"" + key + "\" data does not correspond to the skeleton");
         }
         else {
-            return JSON.parse(value as string);
+            return JSON.parse(value as string) as any[];
         }
 
     }

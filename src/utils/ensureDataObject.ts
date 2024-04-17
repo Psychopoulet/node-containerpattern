@@ -17,12 +17,12 @@ export default function ensureDataObject (key: string, skeleton: tValidSkeleton,
             throw new TypeError("The \"" + key + "\" data does not correspond to the skeleton");
         }
         else {
-            return JSON.parse(value as string);
+            return JSON.parse(value as string) as Record<string, any>;
         }
 
     }
     else {
-        return value as { [key:string]: any };
+        return value as Record<string, any>;
     }
 
 }

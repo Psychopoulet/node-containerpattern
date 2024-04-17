@@ -34,9 +34,43 @@
 
 // consts
 
-    const VALID_SKELETONS: tValidSkeleton[] = [ "array", "boolean", "color", "email", "float", "ipv4", "ipv6", "integer", "object", "string", "url", "serial" ];
-    const MIN_MAX_SKELETONS: tMinMaxValidSkeleton[] = [ "array", "color", "email", "float", "ipv4", "ipv6", "integer", "string", "url", "serial" ];
-    const REGEX_SKELETONS: tRegexValidSkeleton[] = [ "color", "email", "ipv4", "ipv6", "string", "url", "serial" ];
+    const VALID_SKELETONS: tValidSkeleton[] = [
+        "array",
+        "boolean",
+        "color",
+        "email",
+        "float",
+        "ipv4",
+        "ipv6",
+        "integer",
+        "object",
+        "string",
+        "url",
+        "serial"
+    ];
+
+    const MIN_MAX_SKELETONS: tMinMaxValidSkeleton[] = [
+        "array",
+        "color",
+        "email",
+        "float",
+        "ipv4",
+        "ipv6",
+        "integer",
+        "string",
+        "url",
+        "serial"
+    ];
+
+    const REGEX_SKELETONS: tRegexValidSkeleton[] = [
+        "color",
+        "email",
+        "ipv4",
+        "ipv6",
+        "string",
+        "url",
+        "serial"
+    ];
 
 // module
 
@@ -92,7 +126,14 @@ export default class NodeContainerPattern extends Map {
                 if ("object" === skeleton) {
                     return ensureDataObject(key, skeleton, value);
                 }
-                else if (inArray([ "color", "email", "ipv4", "ipv6", "url", "serial" ], skeleton)) {
+                else if (inArray([
+                    "color",
+                    "email",
+                    "ipv4",
+                    "ipv6",
+                    "url",
+                    "serial"
+                ], skeleton)) {
                     return ensureDataSpecific(key, skeleton, value);
                 }
                 else if (inArray([ "array", "string" ], skeleton)) {
@@ -116,7 +157,7 @@ export default class NodeContainerPattern extends Map {
                     else if ("string" === skeleton && isDefined(this.regexs[key]) && !this.regexs[key].test(result as string)) {
 
                         throw new Error(
-                            "The \"" + key + "\" data (" + result + ") does not match with its pattern (" + this.regexs[key] + ")"
+                            "The \"" + key + "\" data (" + (result as string) + ") does not match with its pattern (" + this.regexs[key] + ")"
                         );
 
                     }
@@ -183,12 +224,14 @@ export default class NodeContainerPattern extends Map {
 
                 if (keys.length) {
 
+                    type tDefaultValue = Record<string, any> | [];
+
                     const nextKey: string = parentKey + this.recursionSeparator + key;
-                    const defaultValue: {} | [] = isDefined(this.skeletons[nextKey]) && "array" === this.skeletons[nextKey] ? [] : {};
+                    const defaultValue: tDefaultValue = isDefined(this.skeletons[nextKey]) && "array" === this.skeletons[nextKey] ? [] : {};
 
                     parentValue[key] = this._createBaseObject(
                         parentKey + this.recursionSeparator + key,
-                        !parentValue[key] ? defaultValue : parentValue[key], keys, value
+                        !parentValue[key] ? defaultValue : parentValue[key] as tDefaultValue, keys, value
                     );
 
                 }
@@ -214,7 +257,7 @@ export default class NodeContainerPattern extends Map {
 
                     toExtract.push({
                         key,
-                        "value": object[key]
+                        "value": (object as Record<string, any>)[key]
                     });
 
                 });
@@ -222,7 +265,7 @@ export default class NodeContainerPattern extends Map {
             }
             else if (this === object || isArray(object)) {
 
-                object.forEach((value: any, key: number): void => {
+                (object as any[]).forEach((value: any, key: number): void => {
 
                     toExtract.push({
                         key,
@@ -244,7 +287,7 @@ export default class NodeContainerPattern extends Map {
                     type
                 };
 
-                if (this.documentations[fullKey]) {
+                if ("undefined" !== typeof this.documentations[fullKey]) {
                     documentation.documentation = this.documentations[fullKey];
                 }
 
@@ -526,7 +569,17 @@ export default class NodeContainerPattern extends Map {
             else if ("float" === this.skeletons[key] && !isNumber(min)) {
                 throw new TypeError("The \"" + key + "\" data has an invalid \"min\" attribute");
             }
-            else if ([ "array", "color", "email", "integer", "ipv4", "ipv6", "string", "url", "serial" ].includes(this.skeletons[key]) && !isInteger(min)) {
+            else if ([
+                "array",
+                "color",
+                "email",
+                "integer",
+                "ipv4",
+                "ipv6",
+                "string",
+                "url",
+                "serial"
+            ].includes(this.skeletons[key]) && !isInteger(min)) {
                 throw new TypeError("The \"" + key + "\" data has an invalid \"min\" attribute");
             }
 
@@ -561,7 +614,17 @@ export default class NodeContainerPattern extends Map {
             else if ("float" === this.skeletons[key] && !isNumber(max)) {
                 throw new TypeError("The \"" + key + "\" data has an invalid \"max\" attribute");
             }
-            else if ([ "array", "color", "email", "integer", "ipv4", "ipv6", "string", "url", "serial" ].includes(this.skeletons[key]) && !isInteger(max)) {
+            else if ([
+                "array",
+                "color",
+                "email",
+                "integer",
+                "ipv4",
+                "ipv6",
+                "string",
+                "url",
+                "serial"
+            ].includes(this.skeletons[key]) && !isInteger(max)) {
                 throw new TypeError("The \"" + key + "\" data has an invalid \"max\" attribute");
             }
 
@@ -623,7 +686,7 @@ export default class NodeContainerPattern extends Map {
                 if (!isPlainObject(value) || isEmptyPlainObject(value)) {
 
                     const firstKey: string = keys.shift() as string;
-                    const defaultParentValue: {} | [] = isDefined(this.skeletons[firstKey]) && "array" === this.skeletons[firstKey] ? [] : {};
+                    const defaultParentValue: Record<string, any> | [] = isDefined(this.skeletons[firstKey]) && "array" === this.skeletons[firstKey] ? [] : {};
 
                     super.set(firstKey,
                         this._createBaseObject(firstKey,
@@ -638,7 +701,7 @@ export default class NodeContainerPattern extends Map {
                 else {
 
                     const firstKey: string = keys.shift() as string;
-                    const defaultParentValue: {} | [] = isDefined(this.skeletons[firstKey]) && "array" === this.skeletons[firstKey] ? [] : {};
+                    const defaultParentValue: Record<string, any> | [] = isDefined(this.skeletons[firstKey]) && "array" === this.skeletons[firstKey] ? [] : {};
 
                     super.set(firstKey,
                         this._createBaseObject(firstKey,

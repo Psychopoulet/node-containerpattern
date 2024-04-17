@@ -17,7 +17,7 @@ export default function ensureKey (key: any): string {
         throw new Error("The key is empty");
     }
     else {
-        return key.trim();
+        return (key as string).trim();
     }
 
 }
