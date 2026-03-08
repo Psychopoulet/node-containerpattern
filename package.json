@@ -48,10 +48,10 @@
 
   "dependencies": {},
   "devDependencies": {
-    "@types/node": "25.3.3",
+    "@types/node": "25.3.5",
     "check-version-modules": "2.2.2",
     "eslint-plugin-personnallinter": "git+ssh://git@github.com/Psychopoulet/eslint-plugin-personnallinter",
-    "fs-extra": "11.2.0",
+    "fs-extra": "11.3.4",
     "husky": "9.1.7",
     "mocha": "11.7.5",
     "nyc": "18.0.0",
