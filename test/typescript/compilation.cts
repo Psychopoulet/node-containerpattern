@@ -7,6 +7,13 @@
 	// locals
 	import Container = require("../../lib/cjs/main.cjs");
 
+// types & interfaces
+
+	interface iUser{
+		"login": string;
+		"pwd": string;
+	}
+
 // consts
 
 	const container: Container = new Container();
@@ -14,6 +21,11 @@
 // module
 
 try {
+
+	const user: iUser = {
+		"login": "login",
+		"pwd": "pwd"
+	};
 
 	container
 		.skeleton("contact", "email").document("contact", "Contact address")
@@ -24,13 +36,13 @@ try {
 		.set("contact", "myaddress@provider.com")
 		.set("debug", true) // '"yes"', '"y"', '"1"', '1', '"true"' or 'true' => get = true, else => get = false
 		.set("vat", '5.5').set('vat', 5.5)
-		.set("conf", { usr : { login : 'login', pwd : 'pwd' } })
+		.set("conf", { usr : user })
 		.set("conf.usr.login", "login2")
 		.set("object", new Object())
 
 		.limit("debug", [true, false]); // debug is now limited to 'true' or 'false'
 
-	console.log(container.get("conf").usr.login);
+	console.log((container.get("conf") as Record<string, iUser>).usr.login);
 	console.log(container.get("conf.usr.login"));
 	console.log(container.get("object"));
 	console.log(container.get("conf"));
