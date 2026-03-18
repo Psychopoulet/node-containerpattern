@@ -202,7 +202,7 @@ export default class NodeContainerPattern extends Map {
 
         private _ensureDataRecursive (key: string, value: Record<string, unknown>): Record<string, unknown> {
 
-            for (const i in value) {
+            for (const i of Object.keys(value)) {
 
                 value[i] = this._ensureData(key + this.recursionSeparator + i, value[i]);
 

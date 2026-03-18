@@ -15,7 +15,7 @@ export default function ensureDataBasic (key: string, skeleton: tValidSkeleton, 
         return String(value);
     }
     else if ("boolean" === skeleton) {
-        return "true" === value || "yes" === value || "y" === value || "1" === value || 1 === value || true === value;
+        return [ "TRUE", "True", "true", "YES", "Yes", "yes", "Y", "y", "1", 1, true ].includes(value);
     }
     else if ("float" === skeleton) {
 

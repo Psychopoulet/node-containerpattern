@@ -25,7 +25,7 @@ export default class NodeContainerPattern extends Map {
     documentation(): Record<string, any>;
     get(_key: string): any;
     has(_key: string): boolean;
-    limit(_key: string, limit: any[]): this;
+    limit(_key: string, limit: unknown[]): this;
     min(_key: string, min: number): this;
     max(_key: string, max: number): this;
     regex(_key: string, regex: RegExp): this;
