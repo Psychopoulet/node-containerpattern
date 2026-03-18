@@ -6,6 +6,8 @@ export type tMinMaxValidSkeleton = "array" | "color" | "email" | "float" | "ipv4
 
 export type tRegexValidSkeleton = "color" | "email" | "ipv4" | "ipv6" | "string" | "url" | "serial";
 
+export type tSpecificType = "color" | "email" | "ipv4" | "ipv6" | "url" | "serial";
+
 export type tValidType = tValidSkeleton | "function";
 
 export interface iDocumentationFunction {

@@ -1,6 +1,7 @@
 export type tValidSkeleton = "array" | "boolean" | "color" | "email" | "float" | "ipv4" | "ipv6" | "integer" | "object" | "string" | "url" | "serial";
 export type tMinMaxValidSkeleton = "array" | "color" | "email" | "float" | "ipv4" | "ipv6" | "integer" | "string" | "url" | "serial";
 export type tRegexValidSkeleton = "color" | "email" | "ipv4" | "ipv6" | "string" | "url" | "serial";
+export type tSpecificType = "color" | "email" | "ipv4" | "ipv6" | "url" | "serial";
 export type tValidType = tValidSkeleton | "function";
 export interface iDocumentationFunction {
     "fullkey": string;

@@ -27,13 +27,13 @@
 
     import type {
         tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton,
-        tValidType,
+        tSpecificType, tValidType,
         iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue, tDocumentation
     } from "./utils/_interfaces";
 
     export type {
         tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton,
-        tValidType,
+        tSpecificType, tValidType,
         iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue, tDocumentation
     };
 
@@ -73,6 +73,15 @@
         "ipv4",
         "ipv6",
         "string",
+        "url",
+        "serial"
+    ];
+
+    const DATA_SPECIFIC: tSpecificType[] = [
+        "color",
+        "email",
+        "ipv4",
+        "ipv6",
         "url",
         "serial"
     ];
@@ -131,14 +140,7 @@ export default class NodeContainerPattern extends Map {
                 if ("object" === skeleton) {
                     return ensureDataObject(key, skeleton, value as Record<string, unknown>);
                 }
-                else if (inArray([
-                    "color",
-                    "email",
-                    "ipv4",
-                    "ipv6",
-                    "url",
-                    "serial"
-                ], skeleton)) {
+                else if (inArray(DATA_SPECIFIC, skeleton)) {
                     return ensureDataSpecific(key, skeleton, value as string);
                 }
                 else if (inArray([ "array", "string" ], skeleton)) {
@@ -357,13 +359,13 @@ export default class NodeContainerPattern extends Map {
             this.clearData().clearDocumentations().clearLimits().clearMinsMaxs().clearRegexs().clearSkeletons();
         }
 
-        // forget all the keys and there values and documentations (=> Map.clear)
+        // forget all the keys and their values (=> Map.clear)
         public clearData (): this {
             super.clear();
             return this;
         }
 
-        // forget all the skeletons
+        // forget all the documentations
         public clearDocumentations (): this {
             this.documentations = {};
             return this;
