@@ -129,7 +129,7 @@ export default class NodeContainerPattern extends Map {
                 const skeleton: tValidSkeleton = this.skeletons[key];
 
                 if ("object" === skeleton) {
-                    return ensureDataObject(key, skeleton, value);
+                    return ensureDataObject(key, skeleton, value as Record<string, unknown>);
                 }
                 else if (inArray([
                     "color",
@@ -139,69 +139,68 @@ export default class NodeContainerPattern extends Map {
                     "url",
                     "serial"
                 ], skeleton)) {
-                    return ensureDataSpecific(key, skeleton, value);
+                    return ensureDataSpecific(key, skeleton, value as string);
                 }
                 else if (inArray([ "array", "string" ], skeleton)) {
 
-                    const result: Array<string | number | boolean> | string | number | boolean = "array" === skeleton ? ensureDataArray(key, skeleton, value) : ensureDataBasic(key, skeleton, value);
+                    const result: unknown[] | string = "array" === skeleton
+                        ? ensureDataArray(key, skeleton, value as unknown[])
+                        : ensureDataBasic(key, skeleton, value as string);
 
-                    if (isNumber(this.mins[key]) && result.length < this.mins[key]) {
+                        if (isNumber(this.mins[key]) && result.length < this.mins[key]) {
 
-                        throw new RangeError(
-                            "The \"" + key + "\" data length (" + result.length + ") is lower than the min allowed (" + this.mins[key] + ")"
-                        );
+                            throw new RangeError(
+                                "The \"" + key + "\" data length (" + result.length + ") is lower than the min allowed (" + this.mins[key] + ")"
+                            );
 
-                    }
-                    else if (isNumber(this.maxs[key]) && result.length > this.maxs[key]) {
+                        }
+                        else if (isNumber(this.maxs[key]) && result.length > this.maxs[key]) {
 
-                        throw new RangeError(
-                            "The \"" + key + "\" data length (" + result.length + ") is higher than the max allowed (" + this.maxs[key] + ")"
-                        );
+                            throw new RangeError(
+                                "The \"" + key + "\" data length (" + result.length + ") is higher than the max allowed (" + this.maxs[key] + ")"
+                            );
 
-                    }
-                    else if ("string" === skeleton && isDefined(this.regexs[key]) && !this.regexs[key].test(result as string)) {
+                        }
+                        else if ("string" === skeleton && isDefined(this.regexs[key]) && !this.regexs[key].test(result as string)) {
 
-                        throw new Error(
-                            "The \"" + key + "\" data (" + (result as string) + ") does not match with its pattern (" + this.regexs[key] + ")"
-                        );
+                            throw new Error(
+                                "The \"" + key + "\" data (" + (result as string) + ") does not match with its pattern (" + this.regexs[key] + ")"
+                            );
 
-                    }
-                    else {
-                        return result;
-                    }
+                        }
+
+                    return result;
 
                 }
                 else if (inArray([ "integer", "float" ], skeleton)) {
 
-                    const result: number = ensureDataBasic(key, skeleton, value) as number;
+                    const result: number = ensureDataBasic(key, skeleton, value as number) as number;
 
-                    if (isNumber(this.mins[key]) && result < this.mins[key]) {
+                        if (isNumber(this.mins[key]) && result < this.mins[key]) {
 
-                        throw new RangeError(
-                            "The \"" + key + "\" data (" + result + ") is lower than the min allowed (" + this.mins[key] + ")"
-                        );
+                            throw new RangeError(
+                                "The \"" + key + "\" data (" + result + ") is lower than the min allowed (" + this.mins[key] + ")"
+                            );
 
-                    }
-                    else if (isNumber(this.maxs[key]) && result > this.maxs[key]) {
+                        }
+                        else if (isNumber(this.maxs[key]) && result > this.maxs[key]) {
 
-                        throw new RangeError(
-                            "The \"" + key + "\" data (" + result + ") is higher than the max allowed (" + this.maxs[key] + ")"
-                        );
+                            throw new RangeError(
+                                "The \"" + key + "\" data (" + result + ") is higher than the max allowed (" + this.maxs[key] + ")"
+                            );
 
-                    }
-                    else {
-                        return result;
-                    }
+                        }
+
+                    return result;
 
                 }
                 else {
-                    return ensureDataBasic(key, skeleton, value);
+                    return ensureDataBasic(key, skeleton, value as string | number | boolean);
                 }
 
             }
-            else {
-                return value;
-            }
+
+            return value;
 
         }
 
@@ -209,10 +208,11 @@ export default class NodeContainerPattern extends Map {
 
             for (const i of Object.keys(value)) {
 
-                value[i] = this._ensureData(key + this.recursionSeparator + i, value[i]);
-
                 if (isPlainObject(value[i])) {
-                    value[i] = this._ensureDataRecursive(key + this.recursionSeparator + i, value[i]);
+                    value[i] = this._ensureDataRecursive(key + this.recursionSeparator + i, value[i] as Record<string, unknown>);
+                }
+                else {
+                    value[i] = this._ensureData(key + this.recursionSeparator + i, value[i]);
                 }
 
             }
@@ -316,10 +316,18 @@ export default class NodeContainerPattern extends Map {
                 }
 
                 if ("array" === type) {
-                    (documentation as iDocumentationObjectOrArray).content = isEmptyArray(value) ? {} : this._extractDocumentation(fullKey, value);
+
+                    (documentation as iDocumentationObjectOrArray).content = isEmptyArray(value)
+                        ? {}
+                        : this._extractDocumentation(fullKey, value);
+
                 }
                 else if ("object" === type) {
-                    (documentation as iDocumentationObjectOrArray).content = isEmptyPlainObject(value) ? {} : this._extractDocumentation(fullKey, value);
+
+                    (documentation as iDocumentationObjectOrArray).content = isEmptyPlainObject(value)
+                        ? {}
+                        : this._extractDocumentation(fullKey, value as Record<string, unknown>);
+
                 }
                 else if ("function" !== type) {
                     (documentation as iDocumentationValue).value = value;
