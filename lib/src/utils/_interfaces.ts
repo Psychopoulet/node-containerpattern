@@ -15,7 +15,7 @@ export interface iDocumentationFunction {
     "min"?: number;
     "max"?: number;
     "regex"?: string;
-    "limits"?: any[];
+    "limits"?: unknown[];
 }
 
 export interface iDocumentationObjectOrArray extends iDocumentationFunction {

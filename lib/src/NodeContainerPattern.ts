@@ -106,7 +106,7 @@ export default class NodeContainerPattern extends Map {
 
     // private
 
-        private _ensureData (key: string, value: any): any {
+        private _ensureData (key: string, value: unknown): unknown {
 
             // check existance
             if (!isDefined(value)) {
@@ -200,7 +200,7 @@ export default class NodeContainerPattern extends Map {
 
         }
 
-        private _ensureDataRecursive (key: string, value: Record<string, any>): Record<string, any> {
+        private _ensureDataRecursive (key: string, value: Record<string, unknown>): Record<string, unknown> {
 
             for (const i in value) {
 
@@ -527,7 +527,7 @@ export default class NodeContainerPattern extends Map {
         }
 
         // associate a key with a limit
-        public limit (_key: string, limit: any[]): this {
+        public limit (_key: string, limit: unknown[]): this {
 
             const key: string = ensureKey(_key);
 
@@ -701,7 +701,7 @@ export default class NodeContainerPattern extends Map {
                 else {
 
                     const firstKey: string = keys.shift() as string;
-                    const defaultParentValue: Record<string, any> | [] = isDefined(this.skeletons[firstKey]) && "array" === this.skeletons[firstKey] ? [] : {};
+                    const defaultParentValue: Record<string, unknown> | [] = isDefined(this.skeletons[firstKey]) && "array" === this.skeletons[firstKey] ? [] : {};
 
                     super.set(firstKey,
                         this._createBaseObject(firstKey,

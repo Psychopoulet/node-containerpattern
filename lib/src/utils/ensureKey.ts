@@ -5,7 +5,7 @@
 
 // module
 
-export default function ensureKey (key: any): string {
+export default function ensureKey (key: unknown): string {
 
     if (!isDefined(key)) {
         throw new ReferenceError("The key does not exist");
