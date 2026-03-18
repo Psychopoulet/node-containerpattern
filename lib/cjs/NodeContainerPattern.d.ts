@@ -1,8 +1,8 @@
 import type { tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton, tValidType, iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue } from "./utils/_interfaces";
 export type { tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton, tValidType, iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue };
 export default class NodeContainerPattern extends Map {
-    documentations: Record<string, any>;
-    limits: Record<string, Array<string | number>>;
+    documentations: Record<string, string>;
+    limits: Record<string, Array<string | number | boolean>>;
     mins: Record<string, number>;
     maxs: Record<string, number>;
     recursionSeparator: string;
@@ -22,13 +22,13 @@ export default class NodeContainerPattern extends Map {
     clearSkeletons(): this;
     delete(_key: string): boolean;
     document(_key: string, documentation: string): this;
-    documentation(): Record<string, any>;
-    get(_key: string): any;
+    documentation(): Record<string, unknown>;
+    get(_key: string): unknown;
     has(_key: string): boolean;
-    limit(_key: string, limit: unknown[]): this;
+    limit(_key: string, limit: Array<string | number | boolean>): this;
     min(_key: string, min: number): this;
     max(_key: string, max: number): this;
     regex(_key: string, regex: RegExp): this;
-    set(_key: string, _value: any): this;
+    set(_key: string, _value: unknown): this;
     skeleton(_key: string, _skeleton: tValidSkeleton): this;
 }

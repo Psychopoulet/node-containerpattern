@@ -9,7 +9,7 @@
 
 // module
 
-export default function ensureDataArray (key: string, skeleton: tValidSkeleton, value: any[] | string): any[] {
+export default function ensureDataArray (key: string, skeleton: tValidSkeleton, value: unknown[] | string): unknown[] {
 
     if ("array" === skeleton && !isArray(value)) {
 
@@ -17,12 +17,12 @@ export default function ensureDataArray (key: string, skeleton: tValidSkeleton, 
             throw new TypeError("The \"" + key + "\" data does not correspond to the skeleton");
         }
         else {
-            return JSON.parse(value as string) as any[];
+            return JSON.parse(value as string) as unknown[];
         }
 
     }
     else {
-        return value as any[];
+        return value as unknown[];
     }
 
 }

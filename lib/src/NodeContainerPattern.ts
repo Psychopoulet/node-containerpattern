@@ -85,8 +85,8 @@ export default class NodeContainerPattern extends Map {
 
         // public
 
-        public documentations: Record<string, any>;
-        public limits: Record<string, Array<string | number>>;
+        public documentations: Record<string, string>;
+        public limits: Record<string, Array<string | number | boolean>>;
         public mins: Record<string, number>;
         public maxs: Record<string, number>;
         public recursionSeparator: string;
@@ -143,7 +143,7 @@ export default class NodeContainerPattern extends Map {
                 }
                 else if (inArray([ "array", "string" ], skeleton)) {
 
-                    const result: any[] | string = "array" === skeleton ? ensureDataArray(key, skeleton, value) : ensureDataBasic(key, skeleton, value) as string;
+                    const result: Array<string | number | boolean> | string | number | boolean = "array" === skeleton ? ensureDataArray(key, skeleton, value) : ensureDataBasic(key, skeleton, value);
 
                     if (isNumber(this.mins[key]) && result.length < this.mins[key]) {
 
@@ -221,15 +221,15 @@ export default class NodeContainerPattern extends Map {
 
         }
 
-        private _createBaseObject (parentKey: string, _parentValue: any, keys: string[], value: any): any {
+        private _createBaseObject (parentKey: string, _parentValue: unknown, keys: string[], value: unknown): unknown {
 
-            const parentValue: any = this._ensureData(parentKey, _parentValue);
+            const parentValue: unknown = this._ensureData(parentKey, _parentValue);
 
                 const key: string = keys.shift() as string;
 
                 if (keys.length) {
 
-                    type tDefaultValue = Record<string, any> | [];
+                    type tDefaultValue = Record<string, unknown> | [];
 
                     const nextKey: string = parentKey + this.recursionSeparator + key;
                     const defaultValue: tDefaultValue = isDefined(this.skeletons[nextKey]) && "array" === this.skeletons[nextKey] ? [] : {};
@@ -250,11 +250,11 @@ export default class NodeContainerPattern extends Map {
 
         }
 
-        private _extractDocumentation (previousKeys: string, object: any): Record<string, any> {
+        private _extractDocumentation (previousKeys: string, object: unknown): Record<string, unknown> {
 
-            const result: Record<string, any> = {};
+            const result: Record<string, unknown> = {};
 
-            const toExtract: any[] = [];
+            const toExtract: unknown[] = [];
 
             if (isPlainObject(object)) {
 
@@ -262,7 +262,7 @@ export default class NodeContainerPattern extends Map {
 
                     toExtract.push({
                         key,
-                        "value": (object as Record<string, any>)[key]
+                        "value": (object as Record<string, unknown>)[key]
                     });
 
                 });
@@ -270,7 +270,7 @@ export default class NodeContainerPattern extends Map {
             }
             else if (this === object || isArray(object)) {
 
-                (object as any[]).forEach((value: any, key: number): void => {
+                (object as unknown[]).forEach((value: unknown, key: number): void => {
 
                     toExtract.push({
                         key,
@@ -458,12 +458,12 @@ export default class NodeContainerPattern extends Map {
         }
 
         // generate a documentation for all the stored data
-        public documentation (): Record<string, any> {
+        public documentation (): Record<string, unknown> {
             return this._extractDocumentation("", this);
         }
 
         // the value in association with this key (may be recursive)
-        public get (_key: string): any {
+        public get (_key: string): unknown {
 
             const key: string = ensureKey(_key);
 
@@ -532,7 +532,7 @@ export default class NodeContainerPattern extends Map {
         }
 
         // associate a key with a limit
-        public limit (_key: string, limit: unknown[]): this {
+        public limit (_key: string, limit: Array<string | number | boolean>): this {
 
             const key: string = ensureKey(_key);
 
@@ -677,10 +677,10 @@ export default class NodeContainerPattern extends Map {
         }
 
         // associate and remember a key with a value (may be recursive)
-        public set (_key: string, _value: any): this {
+        public set (_key: string, _value: unknown): this {
 
             const key: string = ensureKey(_key);
-            const value: any = this._ensureData(key, _value);
+            const value: unknown = this._ensureData(key, _value);
 
             // check key recursivity
             if (-1 < key.indexOf(this.recursionSeparator)) {
@@ -691,7 +691,7 @@ export default class NodeContainerPattern extends Map {
                 if (!isPlainObject(value) || isEmptyPlainObject(value)) {
 
                     const firstKey: string = keys.shift() as string;
-                    const defaultParentValue: Record<string, any> | [] = isDefined(this.skeletons[firstKey]) && "array" === this.skeletons[firstKey] ? [] : {};
+                    const defaultParentValue: Record<string, unknown> | [] = isDefined(this.skeletons[firstKey]) && "array" === this.skeletons[firstKey] ? [] : {};
 
                     super.set(firstKey,
                         this._createBaseObject(firstKey,

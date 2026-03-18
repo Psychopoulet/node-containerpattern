@@ -8,51 +8,51 @@
 
 // module
 
-export function isDefined (obj: any): boolean {
+export function isDefined (obj: unknown): boolean {
     return "undefined" !== typeof obj;
 }
 
-    export function isNumber (obj: any): boolean {
+    export function isNumber (obj: unknown): boolean {
         return isDefined(obj) && "number" === typeof obj;
     }
 
-        export function isInteger (obj: any): boolean {
+        export function isInteger (obj: unknown): boolean {
             return isNumber(obj) && Number.isInteger(obj);
         }
 
-    export function isString (obj: any): boolean {
+    export function isString (obj: unknown): boolean {
         return isDefined(obj) && "string" === typeof obj;
     }
 
-        export function isEmptyString (obj: any): boolean {
+        export function isEmptyString (obj: unknown): boolean {
             return isString(obj) && "" === (obj as string).trim();
         }
 
-        export function isNotEmptyString (obj: any): boolean {
+        export function isNotEmptyString (obj: unknown): boolean {
             return isString(obj) && "" !== (obj as string).trim();
         }
 
-            export function isColor (obj: any): boolean {
+            export function isColor (obj: unknown): boolean {
                 return isNotEmptyString(obj) && patternColor.test(obj);
             }
 
-            export function isEmail (obj: any): boolean {
+            export function isEmail (obj: unknown): boolean {
                 return isNotEmptyString(obj) && patternEmail.test(obj);
             }
 
-            export function isIPV4 (obj: any): boolean {
+            export function isIPV4 (obj: unknown): boolean {
                 return isNotEmptyString(obj) && isIPv4(obj);
             }
 
-            export function isIPV6 (obj: any): boolean {
+            export function isIPV6 (obj: unknown): boolean {
                 return isNotEmptyString(obj) && isIPv6(obj);
             }
 
-            export function isUrl (obj: any): boolean {
+            export function isUrl (obj: unknown): boolean {
                 return isNotEmptyString(obj) && patternUrl.test(obj);
             }
 
-            export function isSerial (obj: any): boolean {
+            export function isSerial (obj: unknown): boolean {
 
                 return isNotEmptyString(obj) && (
                     patternSerialWindows.test(obj)
@@ -61,34 +61,34 @@ export function isDefined (obj: any): boolean {
 
             }
 
-    export function isObject (obj: any): boolean {
+    export function isObject (obj: unknown): boolean {
         return isDefined(obj) && null !== obj && "object" === typeof obj;
     }
 
-        export function isRegExp (obj: any): boolean {
+        export function isRegExp (obj: unknown): boolean {
             return isObject(obj) && obj instanceof RegExp;
         }
 
-        export function isArray (obj: any): boolean {
+        export function isArray (obj: unknown): boolean {
             return isObject(obj) && obj instanceof Array;
         }
 
-            export function isEmptyArray (obj: any): boolean {
-                return isArray(obj) && 0 >= (obj as any[]).length;
+            export function isEmptyArray (obj: unknown): boolean {
+                return isArray(obj) && 0 >= (obj as unknown[]).length;
             }
 
-            export function isNotEmptyArray (obj: any): boolean {
-                return isArray(obj) && 0 < (obj as any[]).length;
+            export function isNotEmptyArray (obj: unknown): boolean {
+                return isArray(obj) && 0 < (obj as unknown[]).length;
             }
 
-            export function inArray (searchIn: any, obj: any): boolean {
-                return isNotEmptyArray(searchIn) && isDefined(obj) && (searchIn as any[]).includes(obj);
+            export function inArray (searchIn: unknown, obj: unknown): boolean {
+                return isNotEmptyArray(searchIn) && isDefined(obj) && (searchIn as unknown[]).includes(obj);
             }
 
-        export function isPlainObject (obj: any): boolean {
+        export function isPlainObject (obj: unknown): boolean {
             return isObject(obj) && Object === obj.constructor;
         }
 
-            export function isEmptyPlainObject (obj: any): boolean {
+            export function isEmptyPlainObject (obj: unknown): boolean {
                 return isPlainObject(obj) && !Object.keys(obj).length;
             }
