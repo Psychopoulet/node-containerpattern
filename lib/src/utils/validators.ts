@@ -33,30 +33,30 @@ export function isDefined (obj: unknown): boolean {
         }
 
             export function isColor (obj: unknown): boolean {
-                return isNotEmptyString(obj) && patternColor.test(obj);
+                return isNotEmptyString(obj) && patternColor.test(obj as string);
             }
 
             export function isEmail (obj: unknown): boolean {
-                return isNotEmptyString(obj) && patternEmail.test(obj);
+                return isNotEmptyString(obj) && patternEmail.test(obj as string);
             }
 
             export function isIPV4 (obj: unknown): boolean {
-                return isNotEmptyString(obj) && isIPv4(obj);
+                return isNotEmptyString(obj) && isIPv4(obj as string);
             }
 
             export function isIPV6 (obj: unknown): boolean {
-                return isNotEmptyString(obj) && isIPv6(obj);
+                return isNotEmptyString(obj) && isIPv6(obj as string);
             }
 
             export function isUrl (obj: unknown): boolean {
-                return isNotEmptyString(obj) && patternUrl.test(obj);
+                return isNotEmptyString(obj) && patternUrl.test(obj as string);
             }
 
             export function isSerial (obj: unknown): boolean {
 
                 return isNotEmptyString(obj) && (
-                    patternSerialWindows.test(obj)
-                    || patternSerialUnix.test(obj)
+                    patternSerialWindows.test(obj as string)
+                    || patternSerialUnix.test(obj as string)
                 );
 
             }
@@ -86,9 +86,9 @@ export function isDefined (obj: unknown): boolean {
             }
 
         export function isPlainObject (obj: unknown): boolean {
-            return isObject(obj) && Object === obj.constructor;
+            return isObject(obj) && Object === (obj as object).constructor;
         }
 
             export function isEmptyPlainObject (obj: unknown): boolean {
-                return isPlainObject(obj) && !Object.keys(obj).length;
+                return isPlainObject(obj) && !Object.keys(obj as object).length;
             }
