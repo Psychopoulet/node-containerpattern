@@ -145,7 +145,7 @@ export default class NodeContainerPattern extends Map {
 
                     const result: unknown[] | string = "array" === skeleton
                         ? ensureDataArray(key, skeleton, value as unknown[])
-                        : ensureDataBasic(key, skeleton, value as string);
+                        : ensureDataBasic(key, skeleton, value as string) as string;
 
                         if (isNumber(this.mins[key]) && result.length < this.mins[key]) {
 
@@ -223,7 +223,7 @@ export default class NodeContainerPattern extends Map {
 
         private _createBaseObject (parentKey: string, _parentValue: unknown, keys: string[], value: unknown): unknown {
 
-            const parentValue = this._ensureData(parentKey, _parentValue);
+            const parentValue = this._ensureData(parentKey, _parentValue) as Record<string, unknown>;
 
                 const key: string = keys.shift() as string;
 
@@ -236,7 +236,11 @@ export default class NodeContainerPattern extends Map {
 
                     parentValue[key] = this._createBaseObject(
                         parentKey + this.recursionSeparator + key,
-                        !parentValue[key] ? defaultValue : parentValue[key] as tDefaultValue, keys, value
+                        "undefined" === typeof parentValue[key]
+                            ? defaultValue
+                            : (parentValue[key] as tDefaultValue),
+                        keys,
+                        value
                     );
 
                 }
