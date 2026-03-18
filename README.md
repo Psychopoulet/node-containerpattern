@@ -2,12 +2,17 @@
 A 'Container pattern' object for a clean global use of data.
 Basicaly, it extends Map object with lot of controls, recursive methods and documentation
 
-[![Build status](https://api.travis-ci.org/Psychopoulet/node-containerpattern.svg?branch=master)](https://travis-ci.org/Psychopoulet/node-containerpattern)
-[![Coverage status](https://coveralls.io/repos/github/Psychopoulet/node-containerpattern/badge.svg?branch=master)](https://coveralls.io/github/Psychopoulet/node-containerpattern)
-[![Dependency status](https://david-dm.org/Psychopoulet/node-containerpattern/status.svg)](https://david-dm.org/Psychopoulet/node-containerpattern)
-[![Dev dependency status](https://david-dm.org/Psychopoulet/node-containerpattern/dev-status.svg)](https://david-dm.org/Psychopoulet/node-containerpattern?type=dev)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Psychopoulet_node-containerpattern&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Psychopoulet_node-containerpattern)
 [![Issues](https://img.shields.io/github/issues/Psychopoulet/node-containerpattern.svg)](https://github.com/Psychopoulet/node-containerpattern/issues)
 [![Pull requests](https://img.shields.io/github/issues-pr/Psychopoulet/node-containerpattern.svg)](https://github.com/Psychopoulet/node-containerpattern/pulls)
+
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Psychopoulet_node-containerpattern&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Psychopoulet_node-containerpattern)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Psychopoulet_node-containerpattern&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Psychopoulet_node-containerpattern)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Psychopoulet_node-containerpattern&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Psychopoulet_node-containerpattern)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Psychopoulet_node-containerpattern&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=Psychopoulet_node-containerpattern)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Psychopoulet_node-containerpattern&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Psychopoulet_node-containerpattern)
+
+[![Known Vulnerabilities](https://snyk.io/test/github/Psychopoulet/node-containerpattern/badge.svg)](https://snyk.io/test/github/Psychopoulet/node-containerpattern)
 
 ## Installation
 

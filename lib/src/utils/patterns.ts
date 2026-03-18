@@ -1,3 +1,8 @@
+/*
+    eslint-disable no-useless-escape
+*/
+// => no-useless-escape is disabled to allow data release
+
 // module
 
 export const patternColor: RegExp = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;

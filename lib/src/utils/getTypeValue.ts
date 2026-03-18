@@ -9,7 +9,7 @@
 
 // module
 
-export default function getTypeValue (value: any): tValidType {
+export default function getTypeValue (value: unknown): tValidType {
 
     if (isArray(value)) {
         return "array";

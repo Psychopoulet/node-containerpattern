@@ -9,7 +9,7 @@
 
 // module
 
-export default function ensureDataObject (key: string, skeleton: tValidSkeleton, value: Record<string, any> | string): Record<string, any> {
+export default function ensureDataObject (key: string, skeleton: tValidSkeleton, value: Record<string, unknown> | string): Record<string, unknown> {
 
     if ("object" === skeleton && !isPlainObject(value)) {
 
@@ -17,12 +17,12 @@ export default function ensureDataObject (key: string, skeleton: tValidSkeleton,
             throw new TypeError("The \"" + key + "\" data does not correspond to the skeleton");
         }
         else {
-            return JSON.parse(value as string) as Record<string, any>;
+            return JSON.parse(value as string) as Record<string, unknown>;
         }
 
     }
     else {
-        return value as Record<string, any>;
+        return value as Record<string, unknown>;
     }
 
 }

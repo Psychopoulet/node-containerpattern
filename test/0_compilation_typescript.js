@@ -1,69 +1,62 @@
-
-"use strict";
-
 // deps
 
-	// natives
-	const { exec } = require("child_process");
-	const { join } = require("path");
-	const { unlink } = require("fs");
+    // natives
+    const { exec } = require("node:child_process");
+    const { join } = require("node:path");
+    const { unlink } = require("node:fs/promises");
 
 // consts
 
-	const MAX_TIMEOUT = 10000;
+    const MAX_TIMEOUT = 10000;
 
 // tests
 
 describe("compilation typescript", () => {
 
-	describe("commonjs", () => {
+    describe("commonjs", () => {
 
-		after((done) => {
+        after(() => {
+            return unlink(join(__dirname, "typescript", "compilation.cjs"));
+        });
 
-			unlink(join(__dirname, "typescript", "compilation.cjs"), (err) => {
-				return err ? done(err) : done();
-			});
+        it("should compile typescript file", () => {
 
-		});
+            return new Promise((resolve, reject) => {
 
-		it("should compile typescript file", () => {
+                const args = [
+                    "npx tsc",
+                    join(__dirname, "typescript", "compilation.cts"),
+                    "--target es6",
+                    "--module commonjs"
+                ];
 
-			return new Promise((resolve, reject) => {
+                exec(args.join(" "), {
+                    "cwd": join(__dirname, ".."),
+                    "windowsHide": true
+                }, (err) => {
+                    return err ? reject(err) : resolve();
+                });
 
-				const args = [
-					"npx tsc",
-					join(__dirname, "typescript", "compilation.cts"),
-					"--target es6",
-					"--module commonjs"
-				];
+            });
 
-				exec(args.join(" "), {
-					"cwd": join(__dirname, ".."),
-					"windowsHide": true
-				}, (err) => {
-					return err ? reject(err) : resolve();
-				});
+        }).timeout(MAX_TIMEOUT);
 
-			});
+        it("should exec compiled typescript file", (done) => {
 
-		}).timeout(MAX_TIMEOUT);
+            const args = [
+                "node",
+                join(__dirname, "typescript", "compilation.cjs")
+            ];
 
-		it("should exec compiled typescript file", (done) => {
+            exec(args.join(" "), {
+                "cwd": join(__dirname, ".."),
+                "windowsHide": true
+            }, (err) => {
+                return err ? done(err) : done();
+            });
 
-			const args = [
-				"node",
-				join(__dirname, "typescript", "compilation.cjs")
-			];
+        });
 
-			exec(args.join(" "), {
-				"cwd": join(__dirname, ".."),
-				"windowsHide": true
-			}, (err) => {
-				return err ? done(err) : done();
-			});
-
-		});
-
-	});
+    });
 
 });

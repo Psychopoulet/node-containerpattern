@@ -1,3 +1,8 @@
+/*
+    eslint-disable @typescript-eslint/no-dynamic-delete
+*/
+// => @typescript-eslint/no-dynamic-delete is disabled to allow data release
+
 // deps
 
     // locals
@@ -23,13 +28,13 @@
     import type {
         tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton,
         tValidType,
-        iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue
+        iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue, tDocumentation
     } from "./utils/_interfaces";
 
     export type {
         tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton,
         tValidType,
-        iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue
+        iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue, tDocumentation
     };
 
 // consts
@@ -80,8 +85,8 @@ export default class NodeContainerPattern extends Map {
 
         // public
 
-        public documentations: Record<string, any>;
-        public limits: Record<string, Array<string | number>>;
+        public documentations: Record<string, string>;
+        public limits: Record<string, Array<string | number | boolean>>;
         public mins: Record<string, number>;
         public maxs: Record<string, number>;
         public recursionSeparator: string;
@@ -106,7 +111,7 @@ export default class NodeContainerPattern extends Map {
 
     // private
 
-        private _ensureData (key: string, value: any): any {
+        private _ensureData (key: string, value: unknown): unknown {
 
             // check existance
             if (!isDefined(value)) {
@@ -115,7 +120,7 @@ export default class NodeContainerPattern extends Map {
 
             // check limits
             else if (isArray(this.limits[key]) && !inArray(this.limits[key], value)) {
-                throw new Error("The \"" + key + "\" value (" + value + ") does not correspond to the limits (" + JSON.stringify(this.limits[key]) + ")");
+                throw new Error("The \"" + key + "\" value (" + String(value) + ") does not correspond to the limits (" + JSON.stringify(this.limits[key]) + ")");
             }
 
             // check skeleton
@@ -124,7 +129,7 @@ export default class NodeContainerPattern extends Map {
                 const skeleton: tValidSkeleton = this.skeletons[key];
 
                 if ("object" === skeleton) {
-                    return ensureDataObject(key, skeleton, value);
+                    return ensureDataObject(key, skeleton, value as Record<string, unknown>);
                 }
                 else if (inArray([
                     "color",
@@ -134,80 +139,63 @@ export default class NodeContainerPattern extends Map {
                     "url",
                     "serial"
                 ], skeleton)) {
-                    return ensureDataSpecific(key, skeleton, value);
+                    return ensureDataSpecific(key, skeleton, value as string);
                 }
                 else if (inArray([ "array", "string" ], skeleton)) {
 
-                    const result: any[] | string = "array" === skeleton ? ensureDataArray(key, skeleton, value) : ensureDataBasic(key, skeleton, value) as string;
+                    const result: unknown[] | string = "array" === skeleton
+                        ? ensureDataArray(key, skeleton, value as unknown[])
+                        : ensureDataBasic(key, skeleton, value as string) as string;
 
-                    if (isNumber(this.mins[key]) && result.length < this.mins[key]) {
+                        if (isNumber(this.mins[key]) && result.length < this.mins[key]) {
 
-                        throw new RangeError(
-                            "The \"" + key + "\" data length (" + result.length + ") is lower than the min allowed (" + this.mins[key] + ")"
-                        );
+                            throw new RangeError(
+                                "The \"" + key + "\" data length (" + result.length + ") is lower than the min allowed (" + this.mins[key] + ")"
+                            );
 
-                    }
-                    else if (isNumber(this.maxs[key]) && result.length > this.maxs[key]) {
+                        }
+                        else if (isNumber(this.maxs[key]) && result.length > this.maxs[key]) {
 
-                        throw new RangeError(
-                            "The \"" + key + "\" data length (" + result.length + ") is higher than the max allowed (" + this.maxs[key] + ")"
-                        );
+                            throw new RangeError(
+                                "The \"" + key + "\" data length (" + result.length + ") is higher than the max allowed (" + this.maxs[key] + ")"
+                            );
 
-                    }
-                    else if ("string" === skeleton && isDefined(this.regexs[key]) && !this.regexs[key].test(result as string)) {
+                        }
+                        else if ("string" === skeleton && isDefined(this.regexs[key]) && !this.regexs[key].test(result as string)) {
 
-                        throw new Error(
-                            "The \"" + key + "\" data (" + (result as string) + ") does not match with its pattern (" + this.regexs[key] + ")"
-                        );
+                            throw new Error(
+                                "The \"" + key + "\" data (" + (result as string) + ") does not match with its pattern (" + this.regexs[key] + ")"
+                            );
 
-                    }
-                    else {
-                        return result;
-                    }
+                        }
+
+                    return result;
 
                 }
                 else if (inArray([ "integer", "float" ], skeleton)) {
 
-                    const result: number = ensureDataBasic(key, skeleton, value) as number;
+                    const result: number = ensureDataBasic(key, skeleton, value as number) as number;
 
-                    if (isNumber(this.mins[key]) && result < this.mins[key]) {
+                        if (isNumber(this.mins[key]) && result < this.mins[key]) {
 
-                        throw new RangeError(
-                            "The \"" + key + "\" data (" + result + ") is lower than the min allowed (" + this.mins[key] + ")"
-                        );
+                            throw new RangeError(
+                                "The \"" + key + "\" data (" + result + ") is lower than the min allowed (" + this.mins[key] + ")"
+                            );
 
-                    }
-                    else if (isNumber(this.maxs[key]) && result > this.maxs[key]) {
+                        }
+                        else if (isNumber(this.maxs[key]) && result > this.maxs[key]) {
 
-                        throw new RangeError(
-                            "The \"" + key + "\" data (" + result + ") is higher than the max allowed (" + this.maxs[key] + ")"
-                        );
+                            throw new RangeError(
+                                "The \"" + key + "\" data (" + result + ") is higher than the max allowed (" + this.maxs[key] + ")"
+                            );
 
-                    }
-                    else {
-                        return result;
-                    }
+                        }
+
+                    return result;
 
                 }
                 else {
-                    return ensureDataBasic(key, skeleton, value);
-                }
-
-            }
-            else {
-                return value;
-            }
-
-        }
-
-        private _ensureDataRecursive (key: string, value: Record<string, any>): Record<string, any> {
-
-            for (const i in value) {
-
-                value[i] = this._ensureData(key + this.recursionSeparator + i, value[i]);
-
-                if (isPlainObject(value[i])) {
-                    value[i] = this._ensureDataRecursive(key + this.recursionSeparator + i, value[i]);
+                    return ensureDataBasic(key, skeleton, value as string | number | boolean);
                 }
 
             }
@@ -216,22 +204,43 @@ export default class NodeContainerPattern extends Map {
 
         }
 
-        private _createBaseObject (parentKey: string, _parentValue: any, keys: string[], value: any): any {
+        private _ensureDataRecursive (key: string, value: Record<string, unknown>): Record<string, unknown> {
 
-            const parentValue: any = this._ensureData(parentKey, _parentValue);
+            for (const i of Object.keys(value)) {
+
+                if (isPlainObject(value[i])) {
+                    value[i] = this._ensureDataRecursive(key + this.recursionSeparator + i, value[i] as Record<string, unknown>);
+                }
+                else {
+                    value[i] = this._ensureData(key + this.recursionSeparator + i, value[i]);
+                }
+
+            }
+
+            return value;
+
+        }
+
+        private _createBaseObject (parentKey: string, _parentValue: unknown, keys: string[], value: unknown): unknown {
+
+            const parentValue = this._ensureData(parentKey, _parentValue) as Record<string, unknown>;
 
                 const key: string = keys.shift() as string;
 
                 if (keys.length) {
 
-                    type tDefaultValue = Record<string, any> | [];
+                    type tDefaultValue = Record<string, unknown> | [];
 
                     const nextKey: string = parentKey + this.recursionSeparator + key;
                     const defaultValue: tDefaultValue = isDefined(this.skeletons[nextKey]) && "array" === this.skeletons[nextKey] ? [] : {};
 
                     parentValue[key] = this._createBaseObject(
                         parentKey + this.recursionSeparator + key,
-                        !parentValue[key] ? defaultValue : parentValue[key] as tDefaultValue, keys, value
+                        "undefined" === typeof parentValue[key]
+                            ? defaultValue
+                            : (parentValue[key] as tDefaultValue),
+                        keys,
+                        value
                     );
 
                 }
@@ -245,84 +254,97 @@ export default class NodeContainerPattern extends Map {
 
         }
 
-        private _extractDocumentation (previousKeys: string, object: any): Record<string, any> {
+        private _extractDocumentation (previousKeys: string, object: unknown): Record<string, tDocumentation> {
 
-            const result: Record<string, any> = {};
+            const result: Record<string, tDocumentation> = {};
 
-            const toExtract: any[] = [];
+                const toExtract: Array<{
+                    "key": string;
+                    "value": unknown
+                }> = [];
 
-            if (isPlainObject(object)) {
+                if (isPlainObject(object)) {
 
-                Object.keys(object).forEach((key): void => {
+                    Object.keys(object as Record<string, unknown>).forEach((key): void => {
 
-                    toExtract.push({
-                        key,
-                        "value": (object as Record<string, any>)[key]
+                        toExtract.push({
+                            key,
+                            "value": (object as Record<string, unknown>)[key]
+                        });
+
                     });
 
-                });
+                }
+                else if (this === object || isArray(object)) {
 
-            }
-            else if (this === object || isArray(object)) {
+                    (object as unknown[]).forEach((value, key): void => {
 
-                (object as any[]).forEach((value: any, key: number): void => {
+                        toExtract.push({
+                            "key": String(key),
+                            value
+                        });
 
-                    toExtract.push({
-                        key,
-                        value
                     });
 
+                }
+
+                toExtract.forEach(({ value, key }): void => {
+
+                    const fullKey: string = !isEmptyString(previousKeys) ? previousKeys + this.recursionSeparator + key : key;
+
+                    const type: tValidType = isNotEmptyString(this.skeletons[fullKey])
+                        ? this.skeletons[fullKey]
+                        : getTypeValue(value);
+
+                    const documentation: tDocumentation = {
+                        "fullkey": fullKey,
+                        type
+                    };
+
+                    if ("undefined" !== typeof this.documentations[fullKey]) {
+                        documentation.documentation = this.documentations[fullKey];
+                    }
+
+                    if (isDefined(this.mins[fullKey])) {
+                        documentation.min = this.mins[fullKey];
+                    }
+                    else if ("array" === type) {
+                        documentation.min = 0;
+                    }
+
+                    if (isDefined(this.maxs[fullKey])) {
+                        documentation.max = this.maxs[fullKey];
+                    }
+
+                    if (isArray(this.limits[fullKey])) {
+                        documentation.limits = this.limits[fullKey];
+                    }
+
+                    if (isDefined(this.regexs[fullKey])) {
+                        documentation.regex = stringifyRegex(this.regexs[fullKey]);
+                    }
+
+                    if ("array" === type) {
+
+                        (documentation as iDocumentationObjectOrArray).content = isEmptyArray(value)
+                            ? {}
+                            : this._extractDocumentation(fullKey, value);
+
+                    }
+                    else if ("object" === type) {
+
+                        (documentation as iDocumentationObjectOrArray).content = isEmptyPlainObject(value)
+                            ? {}
+                            : this._extractDocumentation(fullKey, value as Record<string, unknown>);
+
+                    }
+                    else if ("function" !== type) {
+                        (documentation as iDocumentationValue).value = value as string | number | boolean;
+                    }
+
+                    result[key] = documentation;
+
                 });
-
-            }
-
-            toExtract.forEach(({ value, key }): void => {
-
-                const fullKey: string = !isEmptyString(previousKeys) ? previousKeys + this.recursionSeparator + key : key;
-
-                const type: tValidType = isNotEmptyString(this.skeletons[fullKey]) ? this.skeletons[fullKey] as tValidSkeleton : getTypeValue(value);
-
-                const documentation: iDocumentationFunction | iDocumentationObjectOrArray | iDocumentationValue = {
-                    "fullkey": fullKey,
-                    type
-                };
-
-                if ("undefined" !== typeof this.documentations[fullKey]) {
-                    documentation.documentation = this.documentations[fullKey];
-                }
-
-                if (isDefined(this.mins[fullKey])) {
-                    documentation.min = this.mins[fullKey];
-                }
-                else if ("array" === type) {
-                    documentation.min = 0;
-                }
-
-                if (isDefined(this.maxs[fullKey])) {
-                    documentation.max = this.maxs[fullKey];
-                }
-
-                if (isArray(this.limits[fullKey])) {
-                    documentation.limits = this.limits[fullKey];
-                }
-
-                if (isDefined(this.regexs[fullKey])) {
-                    documentation.regex = stringifyRegex(this.regexs[fullKey]);
-                }
-
-                if ("array" === type) {
-                    (documentation as iDocumentationObjectOrArray).content = isEmptyArray(value) ? {} : this._extractDocumentation(fullKey, value);
-                }
-                else if ("object" === type) {
-                    (documentation as iDocumentationObjectOrArray).content = isEmptyPlainObject(value) ? {} : this._extractDocumentation(fullKey, value);
-                }
-                else if ("function" !== type) {
-                    (documentation as iDocumentationValue).value = value;
-                }
-
-                result[key] = documentation;
-
-            });
 
             return result;
 
@@ -385,7 +407,7 @@ export default class NodeContainerPattern extends Map {
                     const lastKey: string = keys.pop() as string;
                     const parentKey: string = keys.join(this.recursionSeparator);
 
-                    const parent = this.get(parentKey);
+                    const parent = this.get(parentKey) as Record<string, unknown>;
 
                     delete parent[lastKey];
 
@@ -453,12 +475,12 @@ export default class NodeContainerPattern extends Map {
         }
 
         // generate a documentation for all the stored data
-        public documentation (): Record<string, any> {
+        public documentation (): Record<string, tDocumentation> {
             return this._extractDocumentation("", this);
         }
 
         // the value in association with this key (may be recursive)
-        public get (_key: string): any {
+        public get (_key: string): unknown {
 
             const key: string = ensureKey(_key);
 
@@ -472,7 +494,7 @@ export default class NodeContainerPattern extends Map {
                 let value = this.get(keys[0]);
 
                     for (let i: number = 1; i < keys.length; ++i) {
-                        value = value[keys[i]];
+                        value = (value as Record<string, unknown>)[keys[i]];
                     }
 
                 return value;
@@ -503,9 +525,9 @@ export default class NodeContainerPattern extends Map {
 
                     let exists: boolean = false;
 
-                        for (let i: number = 1, value = super.get(keys[0]); i < keys.length; ++i) {
+                        for (let i: number = 1, value = super.get(keys[0]) as unknown; i < keys.length; ++i) {
 
-                            if (!isObject(value) || !isDefined(value[keys[i]])) {
+                            if (!isObject(value) || !isDefined((value as Record<string, unknown>)[keys[i]])) {
                                 break;
                             }
                             else if (i === keys.length - 1) {
@@ -513,7 +535,7 @@ export default class NodeContainerPattern extends Map {
                                 break;
                             }
                             else {
-                                value = value[keys[i]];
+                                value = (value as Record<string, unknown>)[keys[i]];
                             }
 
                         }
@@ -527,7 +549,7 @@ export default class NodeContainerPattern extends Map {
         }
 
         // associate a key with a limit
-        public limit (_key: string, limit: any[]): this {
+        public limit (_key: string, limit: Array<string | number | boolean>): this {
 
             const key: string = ensureKey(_key);
 
@@ -672,12 +694,13 @@ export default class NodeContainerPattern extends Map {
         }
 
         // associate and remember a key with a value (may be recursive)
-        public set (_key: string, _value: any): this {
+        public set (_key: string, _value: unknown): this {
 
             const key: string = ensureKey(_key);
-            const value: any = this._ensureData(key, _value);
+            const value: unknown = this._ensureData(key, _value);
 
             // check key recursivity
+            // keys length is not 0, we can extract at least one key
             if (-1 < key.indexOf(this.recursionSeparator)) {
 
                 const keys: string[] = key.split(this.recursionSeparator);
@@ -686,7 +709,7 @@ export default class NodeContainerPattern extends Map {
                 if (!isPlainObject(value) || isEmptyPlainObject(value)) {
 
                     const firstKey: string = keys.shift() as string;
-                    const defaultParentValue: Record<string, any> | [] = isDefined(this.skeletons[firstKey]) && "array" === this.skeletons[firstKey] ? [] : {};
+                    const defaultParentValue: Record<string, unknown> | [] = isDefined(this.skeletons[firstKey]) && "array" === this.skeletons[firstKey] ? [] : {};
 
                     super.set(firstKey,
                         this._createBaseObject(firstKey,
@@ -701,12 +724,12 @@ export default class NodeContainerPattern extends Map {
                 else {
 
                     const firstKey: string = keys.shift() as string;
-                    const defaultParentValue: Record<string, any> | [] = isDefined(this.skeletons[firstKey]) && "array" === this.skeletons[firstKey] ? [] : {};
+                    const defaultParentValue: Record<string, unknown> | [] = isDefined(this.skeletons[firstKey]) && "array" === this.skeletons[firstKey] ? [] : {};
 
                     super.set(firstKey,
                         this._createBaseObject(firstKey,
                             super.has(firstKey) ? super.get(firstKey) : defaultParentValue,
-                            keys, this._ensureDataRecursive(key, value)
+                            keys, this._ensureDataRecursive(key, value as Record<string, unknown>)
                         )
                     );
 
@@ -723,7 +746,7 @@ export default class NodeContainerPattern extends Map {
 
             // check content recursivity
             else {
-                super.set(key, this._ensureDataRecursive(key, value));
+                super.set(key, this._ensureDataRecursive(key, value as Record<string, unknown>));
             }
 
             return this;
