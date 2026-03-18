@@ -254,11 +254,14 @@ export default class NodeContainerPattern extends Map {
 
             const result: Record<string, tDocumentation> = {};
 
-                const toExtract: unknown[] = [];
+                const toExtract: Array<{
+                    "key": string;
+                    "value": unknown
+                }> = [];
 
                 if (isPlainObject(object)) {
 
-                    Object.keys(object).forEach((key): void => {
+                    Object.keys(object as Record<string, unknown>).forEach((key): void => {
 
                         toExtract.push({
                             key,
@@ -270,10 +273,10 @@ export default class NodeContainerPattern extends Map {
                 }
                 else if (this === object || isArray(object)) {
 
-                    (object as unknown[]).forEach((value: unknown, key: number): void => {
+                    (object as unknown[]).forEach((value, key): void => {
 
                         toExtract.push({
-                            key,
+                            "key": String(key),
                             value
                         });
 
@@ -286,7 +289,7 @@ export default class NodeContainerPattern extends Map {
                     const fullKey: string = !isEmptyString(previousKeys) ? previousKeys + this.recursionSeparator + key : key;
 
                     const type: tValidType = isNotEmptyString(this.skeletons[fullKey])
-                        ? this.skeletons[fullKey] as tValidSkeleton
+                        ? this.skeletons[fullKey]
                         : getTypeValue(value);
 
                     const documentation: tDocumentation = {
@@ -332,7 +335,7 @@ export default class NodeContainerPattern extends Map {
 
                     }
                     else if ("function" !== type) {
-                        (documentation as iDocumentationValue).value = value;
+                        (documentation as iDocumentationValue).value = value as string | number | boolean;
                     }
 
                     result[key] = documentation;
