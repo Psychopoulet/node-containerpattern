@@ -1,5 +1,5 @@
-import type { tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton, tValidType, iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue, tDocumentation } from "./utils/_interfaces";
-export type { tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton, tValidType, iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue, tDocumentation };
+import type { tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton, tSpecificType, tValidType, iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue, tDocumentation } from "./utils/_interfaces";
+export type { tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton, tSpecificType, tValidType, iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue, tDocumentation };
 export default class NodeContainerPattern extends Map {
     documentations: Record<string, string>;
     limits: Record<string, Array<string | number | boolean>>;
