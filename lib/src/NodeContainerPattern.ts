@@ -28,13 +28,13 @@
     import type {
         tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton,
         tValidType,
-        iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue
+        iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue, tDocumentation
     } from "./utils/_interfaces";
 
     export type {
         tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton,
         tValidType,
-        iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue
+        iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue, tDocumentation
     };
 
 // consts
@@ -250,9 +250,9 @@ export default class NodeContainerPattern extends Map {
 
         }
 
-        private _extractDocumentation (previousKeys: string, object: unknown): Record<string, unknown> {
+        private _extractDocumentation (previousKeys: string, object: unknown): Record<string, tDocumentation> {
 
-            const result: Record<string, unknown> = {};
+            const result: Record<string, tDocumentation> = {};
 
                 const toExtract: unknown[] = [];
 
@@ -285,9 +285,11 @@ export default class NodeContainerPattern extends Map {
 
                     const fullKey: string = !isEmptyString(previousKeys) ? previousKeys + this.recursionSeparator + key : key;
 
-                    const type: tValidType = isNotEmptyString(this.skeletons[fullKey]) ? this.skeletons[fullKey] as tValidSkeleton : getTypeValue(value);
+                    const type: tValidType = isNotEmptyString(this.skeletons[fullKey])
+                        ? this.skeletons[fullKey] as tValidSkeleton
+                        : getTypeValue(value);
 
-                    const documentation: iDocumentationFunction | iDocumentationObjectOrArray | iDocumentationValue = {
+                    const documentation: tDocumentation = {
                         "fullkey": fullKey,
                         type
                     };
@@ -398,7 +400,7 @@ export default class NodeContainerPattern extends Map {
                     const lastKey: string = keys.pop() as string;
                     const parentKey: string = keys.join(this.recursionSeparator);
 
-                    const parent = this.get(parentKey);
+                    const parent = this.get(parentKey) as Record<string, unknown>;
 
                     delete parent[lastKey];
 
@@ -466,7 +468,7 @@ export default class NodeContainerPattern extends Map {
         }
 
         // generate a documentation for all the stored data
-        public documentation (): Record<string, unknown> {
+        public documentation (): Record<string, tDocumentation> {
             return this._extractDocumentation("", this);
         }
 

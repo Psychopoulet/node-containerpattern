@@ -17,3 +17,4 @@ export interface iDocumentationObjectOrArray extends iDocumentationFunction {
 export interface iDocumentationValue extends iDocumentationFunction {
     "value": string | number | boolean;
 }
+export type tDocumentation = iDocumentationFunction | iDocumentationObjectOrArray | iDocumentationValue;

@@ -1,5 +1,5 @@
-import type { tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton, tValidType, iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue } from "./utils/_interfaces";
-export type { tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton, tValidType, iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue };
+import type { tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton, tValidType, iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue, tDocumentation } from "./utils/_interfaces";
+export type { tValidSkeleton, tMinMaxValidSkeleton, tRegexValidSkeleton, tValidType, iDocumentationFunction, iDocumentationObjectOrArray, iDocumentationValue, tDocumentation };
 export default class NodeContainerPattern extends Map {
     documentations: Record<string, string>;
     limits: Record<string, Array<string | number | boolean>>;
@@ -22,7 +22,7 @@ export default class NodeContainerPattern extends Map {
     clearSkeletons(): this;
     delete(_key: string): boolean;
     document(_key: string, documentation: string): this;
-    documentation(): Record<string, unknown>;
+    documentation(): Record<string, tDocumentation>;
     get(_key: string): unknown;
     has(_key: string): boolean;
     limit(_key: string, limit: Array<string | number | boolean>): this;
