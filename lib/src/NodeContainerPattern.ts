@@ -409,7 +409,7 @@ export default class NodeContainerPattern extends Map {
                     const lastKey: string = keys.pop() as string;
                     const parentKey: string = keys.join(this.recursionSeparator);
 
-                    const parent = this.get(parentKey) as Record<string, unknown>;
+                    const parent: Record<string, unknown> = this.get(parentKey);
 
                     delete parent[lastKey];
 
@@ -482,7 +482,7 @@ export default class NodeContainerPattern extends Map {
         }
 
         // the value in association with this key (may be recursive)
-        public get (_key: string): unknown {
+        public get <T = unknown> (_key: string): T {
 
             const key: string = ensureKey(_key);
 
@@ -493,17 +493,17 @@ export default class NodeContainerPattern extends Map {
 
                 const keys: string[] = key.split(this.recursionSeparator);
 
-                let value = this.get(keys[0]);
+                let value = this.get<T>(keys[0]);
 
                     for (let i: number = 1; i < keys.length; ++i) {
-                        value = (value as Record<string, unknown>)[keys[i]];
+                        value = (value as Record<string, unknown>)[keys[i]] as T;
                     }
 
                 return value;
 
             }
             else {
-                return super.get(key);
+                return super.get(key) as T;
             }
 
         }
