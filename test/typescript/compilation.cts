@@ -42,6 +42,7 @@ try {
 
 		.limit("debug", [true, false]); // debug is now limited to 'true' or 'false'
 
+	console.log((container.get<Record<string, iUser>>("conf")).usr.login);
 	console.log((container.get("conf") as Record<string, iUser>).usr.login);
 	console.log(container.get("conf.usr.login"));
 	console.log(container.get("object"));
