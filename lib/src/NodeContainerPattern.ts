@@ -240,7 +240,7 @@ export default class NodeContainerPattern extends Map {
                         parentKey + this.recursionSeparator + key,
                         "undefined" === typeof parentValue[key]
                             ? defaultValue
-                            : (parentValue[key] as tDefaultValue),
+                            : parentValue[key],
                         keys,
                         value
                     );
@@ -337,7 +337,7 @@ export default class NodeContainerPattern extends Map {
 
                         (documentation as iDocumentationObjectOrArray).content = isEmptyPlainObject(value)
                             ? {}
-                            : this._extractDocumentation(fullKey, value as Record<string, unknown>);
+                            : this._extractDocumentation(fullKey, value);
 
                     }
                     else if ("function" !== type) {
