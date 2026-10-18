@@ -5,7 +5,7 @@
     const { join } = require("node:path");
 
     // locals
-    const ensureDataBasic = require(join(__dirname, "..", "lib", "cjs", "utils", "ensureDataBasic.js")).default;
+    const ensureDataBasic = require(join(__dirname, "..", "lib", "src", "utils", "ensureDataBasic.ts")).default;
 
 // tests
 

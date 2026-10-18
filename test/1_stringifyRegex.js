@@ -5,7 +5,7 @@
     const { join } = require("node:path");
 
     // locals
-    const stringifyRegex = require(join(__dirname, "..", "lib", "cjs", "utils", "stringifyRegex.js")).default;
+    const stringifyRegex = require(join(__dirname, "..", "lib", "src", "utils", "stringifyRegex.ts")).default;
 
 // tests
 

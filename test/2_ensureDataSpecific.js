@@ -5,7 +5,7 @@
     const { join } = require("node:path");
 
     // locals
-    const ensureDataSpecific = require(join(__dirname, "..", "lib", "cjs", "utils", "ensureDataSpecific.js")).default;
+    const ensureDataSpecific = require(join(__dirname, "..", "lib", "src", "utils", "ensureDataSpecific.ts")).default;
 
 // tests
 
