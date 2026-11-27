@@ -1,6 +1,6 @@
 # Publish / version tagging — structure aligned with tests.yml
 # Creates refs/tags/<name> only when that tag is absent on origin (git ls-remote).
-# publish-bun runs only when that job actually created and pushed a new tag.
+# publish-npm runs only when that job actually created and pushed a new tag.
 
 # ══════════════════════════════════════════════════════════════════════════════
 # METADATA
