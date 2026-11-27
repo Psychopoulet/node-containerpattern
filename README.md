@@ -17,7 +17,7 @@ Basicaly, it extends Map object with lot of controls, recursive methods and docu
 ## Installation
 
 ```bash
-$ npm install node-containerpattern
+$ bun add node-containerpattern
 ```
 
 ## Features
@@ -51,7 +51,7 @@ $ npm install node-containerpattern
 ## Tests
 
 ```bash
-$ npm run-script tests
+$ bun run tests
 ```
 
 ## License
